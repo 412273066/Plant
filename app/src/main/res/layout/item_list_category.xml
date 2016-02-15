@@ -7,7 +7,7 @@
     card_view:cardElevation="5dp"
     card_view:contentPaddingBottom="0dp"
     card_view:contentPaddingLeft="0dp"
-    card_view:contentPaddingRight="1dp"
+    card_view:contentPaddingRight="0dp"
     card_view:contentPaddingTop="0dp">
 
     <RelativeLayout
@@ -22,12 +22,13 @@
 
         <TextView
             android:id="@+id/text_cate_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/imageView"
-            android:layout_centerHorizontal="true"
-            android:text="item"
-            android:textColor="#BBFFFFFF"
+            android:text="种类一"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:background="#66666666"
             android:textSize="15sp" />
 
 

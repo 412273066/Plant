@@ -24,7 +24,7 @@ public class NetworkImageHolderView implements Holder<String> {
 
     @Override
     public void UpdateUI(Context context,int position, String data) {
-        imageView.setImageResource(R.mipmap.ic_default_adimage);
+        imageView.setImageResource(R.mipmap.ic_default_not_found);
         ImageLoader.getInstance().displayImage(data,imageView);
     }
 }

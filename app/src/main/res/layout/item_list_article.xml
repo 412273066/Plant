@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    >
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="雷军内部讲话：去他妈的kpi，我们造机器人去了！"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/color_black_normal_text"
+        android:textSize="@dimen/text_title_small" />
+
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1月15日"
+        android:layout_margin="3dp"
+        android:textColor="@color/color_black_secondary_text"
+        android:textSize="@dimen/text_hint" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:src="@mipmap/ic_default_not_found" />
+
+    <TextView
+        android:id="@+id/text_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="[2016小米闹天宫年会]雷军内部讲话实录。重新出发，大胆探索"
+        android:textColor="@color/color_black_secondary_text"
+        android:layout_margin="3dp"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:textSize="@dimen/text_button" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查看全文"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/color_black_normal_text"
+        android:textSize="@dimen/text_button"
+        android:gravity="right" />
+</LinearLayout>
+

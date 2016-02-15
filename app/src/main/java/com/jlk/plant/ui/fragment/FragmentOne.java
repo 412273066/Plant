@@ -14,6 +14,7 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.jlk.plant.R;
 import com.jlk.plant.adapter.ListCateAdapter;
 import com.jlk.plant.base.BaseFragment;
+import com.jlk.plant.custom.view.SpacesItemDecoration;
 import com.jlk.plant.models.Category;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -50,23 +51,23 @@ public class FragmentOne extends BaseFragment {
 
     @Override
     public void initData() {
-        data=new ArrayList<>();
-        Category item1=new Category("1","观花植物","https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3903672296,3890938056&fm=5");
-        Category item2=new Category("1","观草植物","https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=4056768107,349449491&fm=5");
-        Category item3=new Category("1","室内植物","https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1507857947,1081769355&fm=58");
-        Category item4=new Category("1","草本植物","https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1015996287,2371183842&fm=58");
-        Category item5=new Category("1","木本植物","https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2516940836,1070676706&fm=58");
-        Category item6=new Category("1","多肉植物","https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2875812309,3386562784&fm=58");
-        Category item7=new Category("1","食肉植物","https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2730420098,2001633972&fm=58");
-        Category item8=new Category("1","水生植物","https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3361260144,1666757931&fm=58");
-        data.add(item1 );
-        data.add(item2 );
-        data.add(item3 );
-        data.add(item4 );
-        data.add(item5 );
-        data.add(item6 );
-        data.add(item7 );
-        data.add(item8 );
+        data = new ArrayList<>();
+        Category item1 = new Category("1", "观花植物", "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3903672296,3890938056&fm=5");
+        Category item2 = new Category("1", "观草植物", "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=4056768107,349449491&fm=5");
+        Category item3 = new Category("1", "室内植物", "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1507857947,1081769355&fm=58");
+        Category item4 = new Category("1", "草本植物", "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1015996287,2371183842&fm=58");
+        Category item5 = new Category("1", "木本植物", "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2516940836,1070676706&fm=58");
+        Category item6 = new Category("1", "多肉植物", "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2875812309,3386562784&fm=58");
+        Category item7 = new Category("1", "食肉植物", "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2730420098,2001633972&fm=58");
+        Category item8 = new Category("1", "水生植物", "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3361260144,1666757931&fm=58");
+        data.add(item1);
+        data.add(item2);
+        data.add(item3);
+        data.add(item4);
+        data.add(item5);
+        data.add(item6);
+        data.add(item7);
+        data.add(item8);
 
     }
 
@@ -81,22 +82,24 @@ public class FragmentOne extends BaseFragment {
         init();
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerview);
         //创建默认的线性LayoutManager
-        mLayoutManager = new GridLayoutManager(mContext,2);
+        mLayoutManager = new GridLayoutManager(mContext, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
+        // 设置item间隔
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0,-3,-3,-3));
         //创建并设置Adapter
         ListCateAdapter mAdapter = new ListCateAdapter();
         mAdapter.addDatas(data);
-        View headerView= LayoutInflater.from(mContext).inflate(R.layout.layout_header_view,mRecyclerView,false);
+        View headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
         mAdapter.setHeaderView(headerView);
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<String>() {
-            @Override
-            public void onItemClick(int position, String data) {
-                Toast.makeText(mContext, "第" + position + "个被点击!", Toast.LENGTH_SHORT).show();
-            }
+        mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Category>() {
 
+            @Override
+            public void onItemClick(int position, Category data) {
+                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
+            }
         });
 
     }
@@ -133,7 +136,7 @@ public class FragmentOne extends BaseFragment {
     private void initImageLoader() {
         //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
-                showImageForEmptyUri(R.mipmap.ic_default_adimage)
+                showImageForEmptyUri(R.mipmap.ic_default_not_found)
                 .cacheInMemory(true).cacheOnDisk(true).build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
