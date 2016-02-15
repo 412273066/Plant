@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="color_main">#ff99cc66</color>
+    <color name="color_assist">#ffccff99</color>
+    <color name="activity_background">#FFFFFF</color>
+    <color name="color_status_bar">#ff95c771</color>
+    <color name="color_light_gray">#ffe7e7e7</color>
+    <!-- 白色 -->
+    <color name="color_white_normal_text">#FFFFFFFF</color>
+    <color name="color_white_secondary_text">#b3ffffff</color>
+    <color name="color_white_disable_text">#4dffffff</color>
+    <color name="color_white_dividers">#1fffffff</color>
+
+
+    <!-- 黑色 -->
+    <color name="color_black_normal_text">#de000000</color>
+    <color name="color_black_secondary_text">#8a000000</color>
+    <color name="color_black_disable_text">#42000000</color>
+    <color name="color_black_dividers">#1f000000</color>
+
+    <!-- 灰色 -->
+    <color name="grey">#808080</color>
+
+
+
+</resources>

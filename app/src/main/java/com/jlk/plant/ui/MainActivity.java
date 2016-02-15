@@ -1,0 +1,88 @@
+package com.jlk.plant.ui;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.FrameLayout;
+import android.widget.RadioGroup;
+
+import com.jlk.plant.R;
+import com.jlk.plant.base.BaseFragmentActivity;
+import com.jlk.plant.ui.fragment.FragmentOne;
+import com.jlk.plant.ui.fragment.FragmentThree;
+import com.jlk.plant.ui.fragment.FragmentTwo;
+
+
+public class MainActivity extends BaseFragmentActivity {
+    private RadioGroup mBottomTab;
+    private FrameLayout mTabContentFrameLayout;
+    private FragmentManager mFragmentManager;
+    private FragmentOne fragmentOne;
+    private FragmentTwo fragmentTwo;
+    private FragmentThree fragmentThree;
+    private static final String TAG = "MainActivity";
+
+    @Override
+    public void setActivityContext() {
+        mContext = this;
+    }
+
+    @Override
+    public void setContentView() {
+        setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public void initViews() {
+        if (mTabContentFrameLayout == null)
+            mTabContentFrameLayout = (FrameLayout) findViewById(R.id.tab_content);
+        if (mBottomTab == null)
+            mBottomTab = (RadioGroup) findViewById(R.id.layout_tab);
+
+
+    }
+
+    @Override
+    public void initListeners() {
+        mBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                Log.i(TAG, "tab bar is clicked");
+
+                Fragment newFragment = fragmentOne;
+                switch (checkedId) {
+                    case R.id.one:
+                        newFragment = fragmentOne;
+                        break;
+                    case R.id.two:
+                        newFragment = fragmentTwo;
+                        break;
+                    case R.id.three:
+                        newFragment = fragmentThree;
+                        break;
+                    default:
+                        break;
+                }
+                FragmentTransaction transaction = mFragmentManager
+                        .beginTransaction();
+                transaction.replace(R.id.tab_content, newFragment);
+                transaction.commit();
+            }
+        });
+    }
+
+    @Override
+    public void initData() {
+        fragmentOne = new FragmentOne();
+        fragmentTwo = new FragmentTwo();
+        fragmentThree = new FragmentThree();
+
+        mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+
+        transaction.replace(R.id.tab_content, fragmentOne);
+        transaction.commit();
+    }
+
+
+}
