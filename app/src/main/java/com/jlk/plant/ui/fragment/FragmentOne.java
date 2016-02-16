@@ -87,7 +87,7 @@ public class FragmentOne extends BaseFragment {
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         // 设置item间隔
-        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0,-3,-3,-3));
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0,0,0,0));
         //创建并设置Adapter
         ListCateAdapter mAdapter = new ListCateAdapter();
         mAdapter.addDatas(data);
