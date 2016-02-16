@@ -30,10 +30,10 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         this.mAppContext = getApplicationContext();
         setActivityContext();
         setContentView();
-
+        initData();
         initViews();
         initListeners();
-        initData();
+
     }
 
     protected Toast mToast;

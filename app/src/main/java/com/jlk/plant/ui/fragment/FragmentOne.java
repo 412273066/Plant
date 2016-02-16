@@ -1,12 +1,12 @@
 package com.jlk.plant.ui.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -16,6 +16,7 @@ import com.jlk.plant.adapter.ListCateAdapter;
 import com.jlk.plant.base.BaseFragment;
 import com.jlk.plant.custom.view.SpacesItemDecoration;
 import com.jlk.plant.models.Category;
+import com.jlk.plant.ui.ListPlantActivity;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -87,7 +88,7 @@ public class FragmentOne extends BaseFragment {
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         // 设置item间隔
-        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0,0,0,0));
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 0, 0, 0));
         //创建并设置Adapter
         ListCateAdapter mAdapter = new ListCateAdapter();
         mAdapter.addDatas(data);
@@ -98,7 +99,9 @@ public class FragmentOne extends BaseFragment {
 
             @Override
             public void onItemClick(int position, Category data) {
-                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ListPlantActivity.class);
+               mContext.startActivity(intent);
+//                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
             }
         });
 
