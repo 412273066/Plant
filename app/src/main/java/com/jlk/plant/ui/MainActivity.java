@@ -20,7 +20,7 @@ public class MainActivity extends BaseFragmentActivity {
     private FragmentOne fragmentOne;
     private FragmentTwo fragmentTwo;
     private FragmentThree fragmentThree;
-    private static final String TAG = "MainActivity";
+    private final String tag = "MainActivity";
 
     @Override
     public void setActivityContext() {

@@ -1,8 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:orientation="vertical">
 
-    android:layout_height="40dp"
-    android:layout_marginBottom="5dp">
+    <com.bigkoo.convenientbanner.ConvenientBanner xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/convenientBanner"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:canLoop="true" />
 
     <TextView
         android:id="@+id/header"
@@ -10,13 +16,13 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:text="分类"
+        android:layout_margin="8dp"
         android:textColor="@color/color_black_disable_text"
         android:textSize="16sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1.0dp"
-        android:layout_alignParentBottom="true"
         android:background="@color/color_black_dividers" />
 
-</RelativeLayout>
+</LinearLayout>

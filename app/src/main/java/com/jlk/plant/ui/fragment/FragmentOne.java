@@ -39,9 +39,9 @@ public class FragmentOne extends BaseFragment {
     private ConvenientBanner convenientBanner;//顶部广告栏控件
     private List<String> networkImages;
     private String[] images = {
-            "http://img2.3lian.com/2014/f2/37/d/40.jpg",
-            "http://d.3987.com/sqmy_131219/001.jpg",
-            "http://img2.3lian.com/2014/f2/37/d/39.jpg",
+//            "http://img2.3lian.com/2014/f2/37/d/40.jpg",
+//            "http://d.3987.com/sqmy_131219/001.jpg",
+//            "http://img2.3lian.com/2014/f2/37/d/39.jpg",
             "http://www.8kmm.com/UploadFiles/2012/8/201208140920132659.jpg",
             "http://f.hiphotos.baidu.com/image/h%3D200/sign=1478eb74d5a20cf45990f9df460b4b0c/d058ccbf6c81800a5422e5fdb43533fa838b4779.jpg",
             "http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg"
@@ -79,7 +79,11 @@ public class FragmentOne extends BaseFragment {
 
     @Override
     public void initViews() {
-        convenientBanner = (ConvenientBanner) mRootView.findViewById(R.id.convenientBanner);
+
+        View headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
+
+
+        convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
         init();
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerview);
         //创建默认的线性LayoutManager
@@ -92,7 +96,7 @@ public class FragmentOne extends BaseFragment {
         //创建并设置Adapter
         ListCateAdapter mAdapter = new ListCateAdapter();
         mAdapter.addDatas(data);
-        View headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
+
         mAdapter.setHeaderView(headerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Category>() {
@@ -100,7 +104,7 @@ public class FragmentOne extends BaseFragment {
             @Override
             public void onItemClick(int position, Category data) {
                 Intent intent = new Intent(mContext, ListPlantActivity.class);
-               mContext.startActivity(intent);
+                mContext.startActivity(intent);
 //                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
             }
         });

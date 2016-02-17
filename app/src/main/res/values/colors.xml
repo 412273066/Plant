@@ -2,7 +2,7 @@
 <resources>
 
     <color name="color_main">#FF99cc66</color>
-    <color name="color_assist">#ffccff99</color>
+    <color name="color_assist">#ffa6dc7c</color>
     <color name="activity_background">#e3e3e3</color>
     <color name="color_status_bar">#ff95c771</color>
     <color name="color_light_gray">#ffe7e7e7</color>

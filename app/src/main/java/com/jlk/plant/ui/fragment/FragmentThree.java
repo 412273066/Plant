@@ -29,7 +29,6 @@ public class FragmentThree extends BaseFragment {
 	@Override
 	public void initViews() {
 
-
 	}
 
 	@Override

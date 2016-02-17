@@ -9,6 +9,6 @@
     android:background="@color/activity_background"
     android:orientation="vertical">
 
-    <include layout="@layout/item_list_plant"/>
+    <include layout="@layout/activity_plant_detail"/>
 
 </LinearLayout>

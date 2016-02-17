@@ -12,10 +12,10 @@ public class Plant {
     private String plantHabit;
     private String plantUse;
     private String plantCreatTime;
-
+    private String categoryName;
     private String img;
 
-    public Plant(String plantId, String plantName, String plantType, String plantInfo, String plantFeature, String plantHabit, String plantUse, String plantCreatTime, String img) {
+    public Plant(String plantId, String plantName, String plantType, String plantInfo, String plantFeature, String plantHabit, String plantUse, String plantCreatTime, String categoryName, String img) {
         this.plantId = plantId;
         this.plantName = plantName;
         this.plantType = plantType;
@@ -24,7 +24,16 @@ public class Plant {
         this.plantHabit = plantHabit;
         this.plantUse = plantUse;
         this.plantCreatTime = plantCreatTime;
+        this.categoryName = categoryName;
         this.img = img;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getImg() {
