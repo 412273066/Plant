@@ -9,6 +9,7 @@ import com.jlk.plant.R;
 import com.jlk.plant.adapter.ListPlantAdapter;
 import com.jlk.plant.base.BaseFragmentActivity;
 import com.jlk.plant.models.Plant;
+import com.shamanland.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ListPlantActivity extends BaseFragmentActivity {
     private final String tag = "ListPlantActivity";
     private ListView listView;
     List list;
+    private FloatingActionButton fab;
 
     @Override
     public void setActivityContext() {
@@ -34,11 +36,13 @@ public class ListPlantActivity extends BaseFragmentActivity {
     public void initViews() {
 
         findViewById(R.id.back).setVisibility(View.VISIBLE);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         listView = (ListView) findViewById(R.id.listView);
         ListPlantAdapter adapter = new ListPlantAdapter(list, mContext);
         listView.setAdapter(adapter);
-
+        //下滑隐藏 上滑显示
+//        listView.setOnTouchListener(new ShowHideOnScroll(fab));
 
     }
 
@@ -47,7 +51,15 @@ public class ListPlantActivity extends BaseFragmentActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent(mContext,DetailPlantActivity.class);
+                Intent intent = new Intent(mContext, DetailPlantActivity.class);
+                startActivity(intent);
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+           Intent intent =new Intent(mContext,SearchActivity.class);
+
                 startActivity(intent);
             }
         });
@@ -64,11 +76,21 @@ public class ListPlantActivity extends BaseFragmentActivity {
     @Override
     public void initData() {
         list = new ArrayList<Plant>();
-        Plant item1 = new Plant("1", "绣球花", "虎耳草科绣球属", "", "", "", "", "", "","");
-        Plant item2 = new Plant("2", "千日红", "石竹目苋科千日红属", "", "", "", "", "", "","");
-        Plant item3 = new Plant("3", "三角梅", "叶子花属", "", "", "", "", "", "","");
-        Plant item4 = new Plant("4", "丁香花", "紫丁香属", "", "", "", "", "", "","");
-        Plant item5 = new Plant("5", "海棠", "苹果属", "", "", "", "", "", "","");
+        Plant item1 = new Plant("1", "绣球花", "虎耳草科绣球属", "", "", "", "", "", "", "");
+        Plant item2 = new Plant("2", "千日红", "石竹目苋科千日红属", "", "", "", "", "", "", "");
+        Plant item3 = new Plant("3", "三角梅", "叶子花属", "", "", "", "", "", "", "");
+        Plant item4 = new Plant("4", "丁香花", "紫丁香属", "", "", "", "", "", "", "");
+        Plant item5 = new Plant("5", "海棠", "苹果属", "", "", "", "", "", "", "");
+        list.add(item1);
+        list.add(item2);
+        list.add(item3);
+        list.add(item4);
+        list.add(item5);
+        list.add(item1);
+        list.add(item2);
+        list.add(item3);
+        list.add(item4);
+        list.add(item5);
         list.add(item1);
         list.add(item2);
         list.add(item3);

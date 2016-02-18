@@ -16,7 +16,7 @@ import java.util.List;
  * @author jlk
  */
 public class FragmentTwo extends BaseFragment {
-    private String TAG = "FragmentTwo";
+    private String tag = "FragmentTwo";
     private ListView listView;
     List list;
 

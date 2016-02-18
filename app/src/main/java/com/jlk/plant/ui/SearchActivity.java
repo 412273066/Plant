@@ -6,7 +6,7 @@ import com.jlk.plant.R;
 import com.jlk.plant.base.BaseFragmentActivity;
 
 
-public class DetailPlantActivity extends BaseFragmentActivity {
+public class SearchActivity extends BaseFragmentActivity {
 
     private final String tag = "DetailPlantActivity";
 
@@ -17,7 +17,7 @@ public class DetailPlantActivity extends BaseFragmentActivity {
 
     @Override
     public void setContentView() {
-        setContentView(R.layout.activity_plant_detail);
+        setContentView(R.layout.activity_search);
     }
 
     @Override

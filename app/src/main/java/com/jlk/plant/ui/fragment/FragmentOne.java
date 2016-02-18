@@ -34,7 +34,7 @@ import java.util.List;
  * @author jlk
  */
 public class FragmentOne extends BaseFragment {
-    private String TAG = "FragmentOne";
+    private String tag = "FragmentOne";
     private TextView title;// 标题
     private ConvenientBanner convenientBanner;//顶部广告栏控件
     private List<String> networkImages;

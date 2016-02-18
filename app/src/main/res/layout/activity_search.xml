@@ -1,12 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
  >
 
     <include
         android:id="@+id/layout_title"
-        layout="@layout/layout_title_bar" />
+        layout="@layout/layout_search_bar" />
 
     <ListView
         android:id="@+id/listView"
@@ -21,16 +20,4 @@
         android:paddingTop="5dp"
         android:scrollbars="none" />
 
-    <com.shamanland.fab.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/search_btn"
-        app:floatingActionButtonColor="@color/color_main"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="20dp"
-        app:floatingActionButtonSize="mini" />
 </RelativeLayout>
