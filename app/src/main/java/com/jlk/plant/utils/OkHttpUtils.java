@@ -14,7 +14,7 @@ import okhttp3.Response;
 /**
  * Created by test on 2016/2/15.
  */
-public class OkhttpUtils {
+public class OkHttpUtils {
 
     private String json;
     private String url;
@@ -24,13 +24,13 @@ public class OkhttpUtils {
     public static final int POST_FAIL = 400;
 
 
-    public OkhttpUtils(String json, String url) {
+    public OkHttpUtils(String json, String url) {
         this.json = json;
         this.url = url;
 
     }
 
-    public OkhttpUtils(String json, String url, OnHttpPostListener httpPostListener) {
+    public OkHttpUtils(String json, String url, OnHttpPostListener httpPostListener) {
         this.json = json;
         this.url = url;
         this.httpPostListener = httpPostListener;

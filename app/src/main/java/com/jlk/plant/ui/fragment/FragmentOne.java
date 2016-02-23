@@ -21,7 +21,7 @@ import com.jlk.plant.models.Banner;
 import com.jlk.plant.models.Category;
 import com.jlk.plant.models.returnmodels.GetBannerListReturn;
 import com.jlk.plant.ui.ListPlantActivity;
-import com.jlk.plant.utils.OkhttpUtils;
+import com.jlk.plant.utils.OkHttpUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -86,9 +86,9 @@ public class FragmentOne extends BaseFragment {
             }
         });
 
-        OkhttpUtils client = new OkhttpUtils("", AppInterface.GETBANNERLIST);
+        OkHttpUtils client = new OkHttpUtils("", AppInterface.GETBANNERLIST);
 
-        client.setOnHttpPostListener(new OkhttpUtils.OnHttpPostListener() {
+        client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
             public void onPostSuccessListener(Call call, Response response) {
                 try {
