@@ -3,7 +3,6 @@ package com.jlk.plant.ui.fragment;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -11,21 +10,26 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.google.gson.Gson;
 import com.jlk.plant.R;
 import com.jlk.plant.adapter.ListCateAdapter;
+import com.jlk.plant.app.AppConfig;
+import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragment;
 import com.jlk.plant.custom.view.SpacesItemDecoration;
+import com.jlk.plant.models.Banner;
 import com.jlk.plant.models.Category;
+import com.jlk.plant.models.returnmodels.GetBannerListReturn;
 import com.jlk.plant.ui.ListPlantActivity;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.jlk.plant.utils.OkhttpUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -37,11 +41,7 @@ public class FragmentOne extends BaseFragment {
     private String tag = "FragmentOne";
     private TextView title;// 标题
     private ConvenientBanner convenientBanner;//顶部广告栏控件
-    private List<String> networkImages;
     private String[] images = {
-//            "http://img2.3lian.com/2014/f2/37/d/40.jpg",
-//            "http://d.3987.com/sqmy_131219/001.jpg",
-//            "http://img2.3lian.com/2014/f2/37/d/39.jpg",
             "http://www.8kmm.com/UploadFiles/2012/8/201208140920132659.jpg",
             "http://f.hiphotos.baidu.com/image/h%3D200/sign=1478eb74d5a20cf45990f9df460b4b0c/d058ccbf6c81800a5422e5fdb43533fa838b4779.jpg",
             "http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg"
@@ -49,6 +49,7 @@ public class FragmentOne extends BaseFragment {
     private RecyclerView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private ArrayList<Category> data;
+    private View headerView;
 
     @Override
     public void initData() {
@@ -70,33 +71,9 @@ public class FragmentOne extends BaseFragment {
         data.add(item7);
         data.add(item8);
 
-    }
-
-    @Override
-    public void initListeners() {
-
-    }
-
-    @Override
-    public void initViews() {
-
-        View headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
-
-
-        convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
-        init();
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerview);
-        //创建默认的线性LayoutManager
-        mLayoutManager = new GridLayoutManager(mContext, 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        mRecyclerView.setHasFixedSize(true);
-        // 设置item间隔
-        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 0, 0, 0));
         //创建并设置Adapter
         ListCateAdapter mAdapter = new ListCateAdapter();
         mAdapter.addDatas(data);
-
         mAdapter.setHeaderView(headerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Category>() {
@@ -109,6 +86,80 @@ public class FragmentOne extends BaseFragment {
             }
         });
 
+        OkhttpUtils client = new OkhttpUtils("", AppInterface.GETBANNERLIST);
+
+        client.setOnHttpPostListener(new OkhttpUtils.OnHttpPostListener() {
+            @Override
+            public void onPostSuccessListener(Call call, Response response) {
+                try {
+                    String json = response.body().string();
+                    Gson gson = new Gson();
+                    GetBannerListReturn result = gson.fromJson(json, GetBannerListReturn.class);
+                    List<Banner> list = result.getList();
+                    images = new String[list.size()];
+
+                    for (int i = 0; i < images.length; i++) {
+                        images[i] = list.get(i).getImg();
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            initBanner();
+                        }
+                    });
+
+                    System.out.println("获取成功");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onPostFailListener(Call call, IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initBanner();
+                    }
+                });
+                System.out.println("获取失败");
+
+            }
+
+            @Override
+            public void onPrePostListener() {
+                System.out.println("提交之前");
+            }
+        });
+
+        client.doPost();
+
+
+    }
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initViews() {
+        AppConfig.initImageLoader(mContext);
+
+        headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
+
+        convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
+
+        //创建默认的线性LayoutManager
+        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerview);
+        mLayoutManager = new GridLayoutManager(mContext, 2);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        mRecyclerView.setHasFixedSize(true);
+        // 设置item间隔
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 0, 0, 0));
+
+
     }
 
     @Override
@@ -116,12 +167,12 @@ public class FragmentOne extends BaseFragment {
         return R.layout.fragment_one;
     }
 
-    private void init() {
-        initImageLoader();
+    private void initBanner() {
+
 //      convenientBanner.setManualPageable(false);//设置不能手动影响
 
         //网络加载例子
-        networkImages = Arrays.asList(images);
+        List<String> networkImages = Arrays.asList(images);
         convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
             @Override
             public NetworkImageHolderView createHolder() {
@@ -132,28 +183,13 @@ public class FragmentOne extends BaseFragment {
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
-                        Log.i(TAG, "num " + position + " was clicked!");
+//                        Log.i(TAG, "num " + position + " was clicked!");
                     }
                 });
 
 
     }
 
-    //初始化网络图片缓存库
-    private void initImageLoader() {
-        //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
-                showImageForEmptyUri(R.mipmap.ic_default_not_found)
-                .cacheInMemory(true).cacheOnDisk(true).build();
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                mAppContext).defaultDisplayImageOptions(defaultOptions)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                .tasksProcessingOrder(QueueProcessingType.LIFO).build();
-        ImageLoader.getInstance().init(config);
-    }
 
     // 开始自动翻页
     @Override

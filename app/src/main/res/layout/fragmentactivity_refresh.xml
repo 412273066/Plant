@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/layout_title_bar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/activity_background" >
+
+        <RelativeLayout
+            android:id="@+id/layout_load_fail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textview_load_fail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="30dp"
+                android:drawableLeft="@drawable/ic_net_error_refresh"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="网络异常，加载失败，点击重新刷新"
+                android:textColor="@color/selector_text_gray_color"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_load_fail"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_net_error" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </FrameLayout>
+
+</LinearLayout>

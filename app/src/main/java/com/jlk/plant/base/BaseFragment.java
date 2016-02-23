@@ -34,9 +34,10 @@ public abstract class BaseFragment extends Fragment {
         if (this.mRootView == null) {
             Log.i(TAG, "onCreateView Inflater");
             this.mRootView = paramLayoutInflater.inflate(setRootViewResourceId(), paramViewGroup, false);
-            initData();
+
             initViews();
             initListeners();
+            initData();
 
         } else {
             Log.i(TAG, "onCreateView not Inflater");
