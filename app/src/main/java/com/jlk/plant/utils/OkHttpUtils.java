@@ -75,7 +75,7 @@ public class OkhttpUtils {
                 .build();
 
         Call call = client.newCall(request);
-        //ÇëÇó¼ÓÈëµ÷¶È
+        //è¯·æ±‚åŠ å…¥è°ƒåº¦
         MyCallback callback = new MyCallback();
 
         call.enqueue(callback);
@@ -83,7 +83,7 @@ public class OkhttpUtils {
     }
 
     /**
-     * ÉèÖÃµ÷ÓÃ³É¹¦¼àÌıÆ÷
+     * è®¾ç½®è°ƒç”¨æˆåŠŸç›‘å¬å™¨
      *
      * @author JHong
      */
@@ -97,7 +97,7 @@ public class OkhttpUtils {
 
 
     /**
-     * µ÷ÓÃ³É¹¦»Øµ÷½Ó¿Ú
+     * è°ƒç”¨æˆåŠŸå›è°ƒæ¥å£
      *
      * @author JHong
      */
