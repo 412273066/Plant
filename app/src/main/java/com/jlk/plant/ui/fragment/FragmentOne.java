@@ -144,7 +144,7 @@ public class FragmentOne extends BaseFragment {
 
     @Override
     public void initViews() {
-        AppConfig.initImageLoader(mContext);
+
 
         headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
 

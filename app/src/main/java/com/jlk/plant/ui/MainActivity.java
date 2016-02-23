@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
 import com.jlk.plant.R;
+import com.jlk.plant.app.AppConfig;
 import com.jlk.plant.base.BaseFragmentActivity;
 import com.jlk.plant.ui.fragment.FragmentOne;
 import com.jlk.plant.ui.fragment.FragmentThree;
@@ -34,6 +35,9 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     public void initViews() {
+        AppConfig.initImageLoader(mContext);
+        AppConfig.initDatabase(mContext);
+
         if (mTabContentFrameLayout == null)
             mTabContentFrameLayout = (FrameLayout) findViewById(R.id.tab_content);
         if (mBottomTab == null)
