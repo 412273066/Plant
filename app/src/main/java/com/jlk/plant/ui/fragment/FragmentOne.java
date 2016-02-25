@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -13,14 +14,15 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.jlk.plant.R;
 import com.jlk.plant.adapter.ListCateAdapter;
-import com.jlk.plant.app.AppConfig;
 import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragment;
 import com.jlk.plant.custom.view.SpacesItemDecoration;
+import com.jlk.plant.db.dao.BannerDao;
 import com.jlk.plant.models.Banner;
 import com.jlk.plant.models.Category;
 import com.jlk.plant.models.returnmodels.GetBannerListReturn;
 import com.jlk.plant.ui.ListPlantActivity;
+import com.jlk.plant.utils.L;
 import com.jlk.plant.utils.OkHttpUtils;
 
 import java.io.IOException;
@@ -41,11 +43,7 @@ public class FragmentOne extends BaseFragment {
     private String tag = "FragmentOne";
     private TextView title;// 标题
     private ConvenientBanner convenientBanner;//顶部广告栏控件
-    private String[] images = {
-            "http://www.8kmm.com/UploadFiles/2012/8/201208140920132659.jpg",
-            "http://f.hiphotos.baidu.com/image/h%3D200/sign=1478eb74d5a20cf45990f9df460b4b0c/d058ccbf6c81800a5422e5fdb43533fa838b4779.jpg",
-            "http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg"
-    };
+    private String[] images;
     private RecyclerView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private ArrayList<Category> data;
@@ -91,44 +89,17 @@ public class FragmentOne extends BaseFragment {
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
             public void onPostSuccessListener(Call call, Response response) {
-                try {
-                    String json = response.body().string();
-                    Gson gson = new Gson();
-                    GetBannerListReturn result = gson.fromJson(json, GetBannerListReturn.class);
-                    List<Banner> list = result.getList();
-                    images = new String[list.size()];
-
-                    for (int i = 0; i < images.length; i++) {
-                        images[i] = list.get(i).getImg();
-                    }
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            initBanner();
-                        }
-                    });
-
-                    System.out.println("获取成功");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                doOnPostSuccess(call, response);
             }
 
             @Override
             public void onPostFailListener(Call call, IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initBanner();
-                    }
-                });
-                System.out.println("获取失败");
-
+                doOnPostFail(call, e);
             }
 
             @Override
             public void onPrePostListener() {
-                System.out.println("提交之前");
+//                L.i("提交之前");
             }
         });
 
@@ -159,7 +130,7 @@ public class FragmentOne extends BaseFragment {
         // 设置item间隔
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 0, 0, 0));
 
-
+        loadBanner();
     }
 
     @Override
@@ -167,7 +138,25 @@ public class FragmentOne extends BaseFragment {
         return R.layout.fragment_one;
     }
 
-    private void initBanner() {
+    /**
+     * 设置图片
+     *
+     * @param list
+     */
+    private void initBanner(List<Banner> list) {
+
+        if (list != null && list.size() > 0) {
+            images = new String[list.size()];
+
+            for (int i = 0; i < images.length; i++) {
+                images[i] = list.get(i).getImg();
+            }
+
+        } else {
+            Toast.makeText(mContext, "数据获取失败。", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
 //      convenientBanner.setManualPageable(false);//设置不能手动影响
 
@@ -205,6 +194,105 @@ public class FragmentOne extends BaseFragment {
         super.onPause();
         //停止翻页
         convenientBanner.stopTurning();
+    }
+
+    /**
+     * 进入界面加载banner
+     */
+    private void loadBanner() {
+        List<Banner> list = loadFromDatabase();
+        //数据库没有数据显示3张暂无图片
+        if (list == null || list.size() == 0) {
+            list = new ArrayList<>();
+            Banner item;
+            for (int i = 0; i < 3; i++) {
+                item = new Banner();
+                item.setImg("drawable://" + R.mipmap.ic_default_not_found);
+                list.add(item);
+            }
+
+        }
+        initBanner(list);
+    }
+
+    /**
+     * 连接成功操作
+     *
+     * @param call
+     * @param response
+     */
+    private void doOnPostSuccess(Call call, Response response) {
+        try {
+            String json = response.body().string();
+            Gson gson = new Gson();
+            GetBannerListReturn result = gson.fromJson(json, GetBannerListReturn.class);
+            final List<Banner> list = result.getList();
+
+            CacheToDatabase(list);
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    initBanner(list);
+                }
+            });
+
+            L.i("返回json->" + json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 连接失败操作
+     *
+     * @param call
+     * @param e
+     */
+    private void doOnPostFail(Call call, IOException e) {
+
+//        final List<Banner> list = loadFromDatabase();
+//
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                initBanner(list);
+//            }
+//        });
+        e.printStackTrace();
+        L.i("连接失败");
+
+    }
+
+    /**
+     * 缓存到数据库
+     *
+     * @param list
+     */
+    private void CacheToDatabase(List list) {
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        BannerDao dao = new BannerDao(mContext);
+        if (dao.delAll()) {
+            L.i("清除成功");
+        }
+        if (dao.addList(list)) {
+            L.i("添加成功");
+        }
+    }
+
+    /**
+     * 从数据库加载
+     *
+     * @return
+     */
+    private List loadFromDatabase() {
+
+        BannerDao dao = new BannerDao(mContext);
+
+        return dao.queryAll();
     }
 
 }

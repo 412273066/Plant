@@ -15,9 +15,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:text="分类"
+        android:text="植物分类"
         android:layout_margin="8dp"
-        android:textColor="@color/color_black_disable_text"
+        android:textColor="@color/color_main"
         android:textSize="16sp" />
 
     <View

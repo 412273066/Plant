@@ -20,9 +20,9 @@ public class OkHttpUtils {
     private String url;
     private OnHttpPostListener httpPostListener;
 
-    public static final int POST_SUCCESS = 200;
-    public static final int POST_FAIL = 400;
-
+    //    public static final int POST_SUCCESS = 200;
+//    public static final int POST_FAIL = 400;
+    private int timeout = 10;
 
     public OkHttpUtils(String json, String url) {
         this.json = json;
@@ -38,17 +38,17 @@ public class OkHttpUtils {
 
 
     public void doPost() {
-        if(this.httpPostListener!=null){
+        if (this.httpPostListener != null) {
             httpPostListener.onPrePostListener();
         }
-
+        L.i("json--->" + json);
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS).build();
+                .connectTimeout(timeout, TimeUnit.SECONDS)
+                .writeTimeout(timeout, TimeUnit.SECONDS)
+                .readTimeout(timeout, TimeUnit.SECONDS).build();
 
         RequestBody body = RequestBody.create(JSON, json);
 
@@ -65,14 +65,16 @@ public class OkHttpUtils {
 
     public void doGet() {
 
-        if(this.httpPostListener!=null){
+        if (this.httpPostListener != null) {
             httpPostListener.onPrePostListener();
         }
 
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(timeout, TimeUnit.SECONDS)
+                .writeTimeout(timeout, TimeUnit.SECONDS)
+                .readTimeout(timeout, TimeUnit.SECONDS).build();
+
+        Request request = new Request.Builder().url(url).build();
 
         Call call = client.newCall(request);
         //请求加入调度
@@ -92,7 +94,7 @@ public class OkHttpUtils {
             this.httpPostListener = listener;
             return;
         }
-        throw new NullPointerException("OnPostFinishListener is null");
+        throw new NullPointerException("OnHttpPostListener is null");
     }
 
 
@@ -101,13 +103,28 @@ public class OkHttpUtils {
      *
      * @author JHong
      */
-    public static abstract interface OnHttpPostListener {
+    public interface OnHttpPostListener {
 //      public abstract void onPostFinishListener(int statusCode, Call call, Objects objects);
 
+        /**
+         * 连接成功
+         *
+         * @param call
+         * @param response
+         */
         public abstract void onPostSuccessListener(Call call, Response response);
 
+        /**
+         * 连接失败
+         *
+         * @param call
+         * @param e
+         */
         public abstract void onPostFailListener(Call call, IOException e);
 
+        /**
+         * 连接之前
+         */
         public abstract void onPrePostListener();
     }
 
@@ -124,7 +141,6 @@ public class OkHttpUtils {
             if (httpPostListener != null) {
                 httpPostListener.onPostSuccessListener(call, response);
             }
-
         }
 
     }

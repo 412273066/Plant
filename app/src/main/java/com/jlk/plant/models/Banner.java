@@ -20,6 +20,10 @@ public class Banner {
         this.createTime = createTime;
     }
 
+    public Banner() {
+
+    }
+
     public String getBannerId() {
         return bannerId;
     }
