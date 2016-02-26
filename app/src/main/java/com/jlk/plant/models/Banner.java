@@ -8,15 +8,15 @@ public class Banner {
     private String title;
     private String content;
     private String img;
-    private String author;
+    private String userId;
     private String createTime;
 
-    public Banner(String bannerId, String title, String content, String img, String author, String createTime) {
+    public Banner(String bannerId, String title, String content, String img, String userId, String createTime) {
         this.bannerId = bannerId;
         this.title = title;
         this.content = content;
         this.img = img;
-        this.author = author;
+        this.userId = userId;
         this.createTime = createTime;
     }
 
@@ -56,12 +56,12 @@ public class Banner {
         this.img = img;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getuserId() {
+        return userId;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setuserId(String userId) {
+        this.userId = userId;
     }
 
     public String getCreateTime() {

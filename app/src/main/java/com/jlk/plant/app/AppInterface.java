@@ -6,6 +6,6 @@ package com.jlk.plant.app;
 public class AppInterface {
     public static final String SERVER_URL="http://192.168.3.57/plant_server/";
 
-    public static final String GETBANNERLIST=SERVER_URL+"index.php";
+    public static final String GETBANNERLIST=SERVER_URL+"app/banner/";
 
 }

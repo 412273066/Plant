@@ -12,10 +12,14 @@ public class Plant {
     private String plantHabit;
     private String plantUse;
     private String plantCreatTime;
-    private String categoryName;
+    private String categoryId;
     private String img;
+    private String userId;
 
-    public Plant(String plantId, String plantName, String plantType, String plantInfo, String plantFeature, String plantHabit, String plantUse, String plantCreatTime, String categoryName, String img) {
+    public Plant(String plantId, String plantName, String plantType,
+                 String plantInfo, String plantFeature, String plantHabit,
+                 String plantUse,String plantCreatTime, String categoryId,
+                 String img, String userId) {
         this.plantId = plantId;
         this.plantName = plantName;
         this.plantType = plantType;
@@ -24,24 +28,9 @@ public class Plant {
         this.plantHabit = plantHabit;
         this.plantUse = plantUse;
         this.plantCreatTime = plantCreatTime;
-        this.categoryName = categoryName;
+        this.categoryId = categoryId;
         this.img = img;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
+        this.userId = userId;
     }
 
     public String getPlantId() {
@@ -106,5 +95,29 @@ public class Plant {
 
     public void setPlantCreatTime(String plantCreatTime) {
         this.plantCreatTime = plantCreatTime;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

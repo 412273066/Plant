@@ -12,6 +12,7 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.jlk.plant.R;
 import com.jlk.plant.adapter.ListCateAdapter;
 import com.jlk.plant.app.AppInterface;
@@ -224,6 +225,7 @@ public class FragmentOne extends BaseFragment {
     private void doOnPostSuccess(Call call, Response response) {
         try {
             String json = response.body().string();
+            L.i("返回json->" + json);
             Gson gson = new Gson();
             GetBannerListReturn result = gson.fromJson(json, GetBannerListReturn.class);
             final List<Banner> list = result.getList();
@@ -237,9 +239,16 @@ public class FragmentOne extends BaseFragment {
                 }
             });
 
-            L.i("返回json->" + json);
+
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JsonSyntaxException e) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
