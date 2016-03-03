@@ -37,7 +37,7 @@ public class BannerDao extends BaseDao {
 
                 db.execSQL(
                         cmd,
-                        new Object[]{item.getTitle(), item.getContent(), item.getImg(), item.getAuthor(), item.getCreateTime()});
+                        new Object[]{item.getTitle(), item.getContent(), item.getImg(), item.getuserId(), item.getCreateTime()});
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -69,7 +69,7 @@ public class BannerDao extends BaseDao {
 
                     db.execSQL(
                             cmd,
-                            new Object[]{item.getTitle(), item.getContent(), item.getImg(), item.getAuthor(), item.getCreateTime()});
+                            new Object[]{item.getTitle(), item.getContent(), item.getImg(), item.getuserId(), item.getCreateTime()});
                 }
 
                 return true;

@@ -5,10 +5,9 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -41,18 +40,26 @@ public class OkHttpUtils {
         if (this.httpPostListener != null) {
             httpPostListener.onPrePostListener();
         }
-        L.i("json--->" + json);
 
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+//        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+//        RequestBody body = RequestBody.create(JSON, json);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(timeout, TimeUnit.SECONDS)
                 .writeTimeout(timeout, TimeUnit.SECONDS)
                 .readTimeout(timeout, TimeUnit.SECONDS).build();
 
-        RequestBody body = RequestBody.create(JSON, json);
+        FormBody.Builder builder = new FormBody.Builder();
 
-        Request request = new Request.Builder().url(url).post(body).build();
+        if (json != null) {
+            builder.add("json", json);
+            L.i(url + ":" + json);
+        }
+
+        FormBody formBody = builder.build();
+
+        Request request = new Request.Builder().url(url).post(formBody).build();
 
         Call call = client.newCall(request);
 

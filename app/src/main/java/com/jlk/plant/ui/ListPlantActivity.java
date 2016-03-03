@@ -76,26 +76,26 @@ public class ListPlantActivity extends BaseFragmentActivity {
     @Override
     public void initData() {
         list = new ArrayList<Plant>();
-        Plant item1 = new Plant("1", "绣球花", "虎耳草科绣球属", "", "", "", "", "", "", "");
-        Plant item2 = new Plant("2", "千日红", "石竹目苋科千日红属", "", "", "", "", "", "", "");
-        Plant item3 = new Plant("3", "三角梅", "叶子花属", "", "", "", "", "", "", "");
-        Plant item4 = new Plant("4", "丁香花", "紫丁香属", "", "", "", "", "", "", "");
-        Plant item5 = new Plant("5", "海棠", "苹果属", "", "", "", "", "", "", "");
-        list.add(item1);
-        list.add(item2);
-        list.add(item3);
-        list.add(item4);
-        list.add(item5);
-        list.add(item1);
-        list.add(item2);
-        list.add(item3);
-        list.add(item4);
-        list.add(item5);
-        list.add(item1);
-        list.add(item2);
-        list.add(item3);
-        list.add(item4);
-        list.add(item5);
+//        Plant item1 = new Plant("1", "绣球花", "虎耳草科绣球属", "", "", "", "", "", "", "");
+//        Plant item2 = new Plant("2", "千日红", "石竹目苋科千日红属", "", "", "", "", "", "", "");
+//        Plant item3 = new Plant("3", "三角梅", "叶子花属", "", "", "", "", "", "", "");
+//        Plant item4 = new Plant("4", "丁香花", "紫丁香属", "", "", "", "", "", "", "");
+//        Plant item5 = new Plant("5", "海棠", "苹果属", "", "", "", "", "", "", "");
+//        list.add(item1);
+//        list.add(item2);
+//        list.add(item3);
+//        list.add(item4);
+//        list.add(item5);
+//        list.add(item1);
+//        list.add(item2);
+//        list.add(item3);
+//        list.add(item4);
+//        list.add(item5);
+//        list.add(item1);
+//        list.add(item2);
+//        list.add(item3);
+//        list.add(item4);
+//        list.add(item5);
 
 
     }

@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,18 +18,20 @@ import com.jlk.plant.R;
 import com.jlk.plant.adapter.ListCateAdapter;
 import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragment;
-import com.jlk.plant.custom.view.SpacesItemDecoration;
 import com.jlk.plant.db.dao.BannerDao;
 import com.jlk.plant.models.Banner;
 import com.jlk.plant.models.Category;
+import com.jlk.plant.models.requestmodels.GetCategoryListRequest;
 import com.jlk.plant.models.returnmodels.GetBannerListReturn;
+import com.jlk.plant.models.returnmodels.GetCategoryListReturn;
 import com.jlk.plant.ui.ListPlantActivity;
 import com.jlk.plant.utils.L;
 import com.jlk.plant.utils.OkHttpUtils;
+import com.srx.widget.PullCallback;
+import com.srx.widget.PullToLoadView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.Call;
@@ -36,7 +39,7 @@ import okhttp3.Response;
 
 
 /**
- * 健康管理fragment
+ * 首页fragment
  *
  * @author jlk
  */
@@ -44,92 +47,95 @@ public class FragmentOne extends BaseFragment {
     private String tag = "FragmentOne";
     private TextView title;// 标题
     private ConvenientBanner convenientBanner;//顶部广告栏控件
-    private String[] images;
     private RecyclerView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private ArrayList<Category> data;
     private View headerView;
+    ListCateAdapter mAdapter;
+    private PullToLoadView mPullToLoadView;
+    private boolean isLoading = false;
+    private boolean isHasLoadedAll = false;
+
+    private int page = 1;
+    private int size = 8;
 
     @Override
     public void initData() {
-        data = new ArrayList<>();
-        Category item1 = new Category("1", "观花植物", "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3903672296,3890938056&fm=5");
-        Category item2 = new Category("1", "观草植物", "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=4056768107,349449491&fm=5");
-        Category item3 = new Category("1", "室内植物", "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1507857947,1081769355&fm=58");
-        Category item4 = new Category("1", "草本植物", "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1015996287,2371183842&fm=58");
-        Category item5 = new Category("1", "木本植物", "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2516940836,1070676706&fm=58");
-        Category item6 = new Category("1", "多肉植物", "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2875812309,3386562784&fm=58");
-        Category item7 = new Category("1", "食肉植物", "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2730420098,2001633972&fm=58");
-        Category item8 = new Category("1", "水生植物", "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3361260144,1666757931&fm=58");
-        data.add(item1);
-        data.add(item2);
-        data.add(item3);
-        data.add(item4);
-        data.add(item5);
-        data.add(item6);
-        data.add(item7);
-        data.add(item8);
 
-        //创建并设置Adapter
-        ListCateAdapter mAdapter = new ListCateAdapter();
-        mAdapter.addDatas(data);
-        mAdapter.setHeaderView(headerView);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Category>() {
-
-            @Override
-            public void onItemClick(int position, Category data) {
-                Intent intent = new Intent(mContext, ListPlantActivity.class);
-                mContext.startActivity(intent);
-//                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        OkHttpUtils client = new OkHttpUtils("", AppInterface.GETBANNERLIST);
-
-        client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
-            @Override
-            public void onPostSuccessListener(Call call, Response response) {
-                doOnPostSuccess(call, response);
-            }
-
-            @Override
-            public void onPostFailListener(Call call, IOException e) {
-                doOnPostFail(call, e);
-            }
-
-            @Override
-            public void onPrePostListener() {
-//                L.i("提交之前");
-            }
-        });
-
-        client.doPost();
-
+        initCategoryData();
+        initBannerData();
 
     }
 
     @Override
     public void initListeners() {
+        mPullToLoadView.setPullCallback(new PullCallback() {
+            @Override
+            public void onLoadMore() {
+                isLoading = true;
+                Toast.makeText(mContext, "拼命加载中...", Toast.LENGTH_SHORT).show();
+                LoadMoreCategoryData();
+                L.i("onLoadMore");
 
+            }
+
+            @Override
+            public void onRefresh() {
+//                Toast.makeText(mContext, "拼命刷新中...", Toast.LENGTH_SHORT).show();
+                initCategoryData();
+                initBannerData();
+                L.i("onRefresh");
+            }
+
+            @Override
+            public boolean isLoading() {
+                if (isLoading) {
+                    L.i("isLoading true");
+                } else {
+
+                    L.i("isLoading false");
+                }
+                return isLoading;
+            }
+
+            @Override
+            public boolean hasLoadedAllItems() {
+                if (isHasLoadedAll) {
+                    L.i("isHasLoadedAll true");
+                } else {
+
+                    L.i("isHasLoadedAll false");
+                }
+                return isHasLoadedAll;
+            }
+        });
     }
 
     @Override
     public void initViews() {
-
+        mPullToLoadView = (PullToLoadView) mRootView.findViewById(R.id.pullToLoadView);
 
         headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
 
         convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
 
         //创建默认的线性LayoutManager
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerview);
+//        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerview);
+        mRecyclerView = mPullToLoadView.getRecyclerView();
+
         mLayoutManager = new GridLayoutManager(mContext, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         // 设置item间隔
-        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 0, 0, 0));
+//        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 0, 0, 0));
+        mPullToLoadView.isLoadMoreEnabled(true);
+
+        mPullToLoadView.setColorSchemeResources(R.color.color_main);
+//        mPullToLoadView.initLoad();
+        //隐藏底部加载时进度条
+        ProgressBar progressBar = (ProgressBar) mPullToLoadView.findViewById(R.id.progressBar);
+        progressBar.setIndeterminateDrawable(null);
 
         loadBanner();
     }
@@ -146,11 +152,13 @@ public class FragmentOne extends BaseFragment {
      */
     private void initBanner(List<Banner> list) {
 
-        if (list != null && list.size() > 0) {
-            images = new String[list.size()];
+        List<String> networkImages;
 
-            for (int i = 0; i < images.length; i++) {
-                images[i] = list.get(i).getImg();
+        if (list != null && list.size() > 0) {
+            networkImages = new ArrayList<>();
+
+            for (int i = 0; i < list.size(); i++) {
+                networkImages.add(list.get(i).getImg());
             }
 
         } else {
@@ -162,7 +170,7 @@ public class FragmentOne extends BaseFragment {
 //      convenientBanner.setManualPageable(false);//设置不能手动影响
 
         //网络加载例子
-        List<String> networkImages = Arrays.asList(images);
+
         convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
             @Override
             public NetworkImageHolderView createHolder() {
@@ -249,6 +257,15 @@ public class FragmentOne extends BaseFragment {
                     Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
                 }
             });
+        } finally {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mPullToLoadView.setComplete();
+                    isLoading = false;
+                }
+            });
+
         }
     }
 
@@ -263,14 +280,15 @@ public class FragmentOne extends BaseFragment {
 
 //        final List<Banner> list = loadFromDatabase();
 //
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                initBanner(list);
-//            }
-//        });
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mContext, "连接失败,请检查网络连接是否正常。", Toast.LENGTH_SHORT).show();
+            }
+        });
         e.printStackTrace();
         L.i("连接失败");
+
 
     }
 
@@ -302,6 +320,219 @@ public class FragmentOne extends BaseFragment {
         BannerDao dao = new BannerDao(mContext);
 
         return dao.queryAll();
+    }
+
+    /**
+     * 获取服务器中种类的数据
+     */
+    private void initCategoryData() {
+
+        GetCategoryListRequest request = new GetCategoryListRequest(1, size);
+        String json = new Gson().toJson(request);
+
+        OkHttpUtils client = new OkHttpUtils(json, AppInterface.GETCATEGORYLIST);
+
+        client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
+            @Override
+            public void onPostSuccessListener(Call call, Response response) {
+                try {
+                    String json = response.body().string();
+                    L.i(AppInterface.GETCATEGORYLIST + "返回:" + json);
+                    Gson gson = new Gson();
+                    final GetCategoryListReturn result = gson.fromJson(json, GetCategoryListReturn.class);
+
+                    data = (ArrayList<Category>) result.getList();
+
+//                    CacheToDatabase(list);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (data == null || data.size() == 0) {
+                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                data = new ArrayList<Category>();
+                            }
+
+                            //创建并设置Adapter
+                            mAdapter = new ListCateAdapter();
+                            mAdapter.addDatas(data);
+                            mAdapter.setHeaderView(headerView);
+
+                            mRecyclerView.setAdapter(mAdapter);
+                            page = 1;
+                            isHasLoadedAll = false;
+
+                            mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Category>() {
+
+                                @Override
+                                public void onItemClick(int position, Category data) {
+                                    Intent intent = new Intent(mContext, ListPlantActivity.class);
+                                    mContext.startActivity(intent);
+//                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+                    });
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JsonSyntaxException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } finally {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            isLoading = false;
+                            mPullToLoadView.setComplete();
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onPostFailListener(Call call, IOException e) {
+                e.printStackTrace();
+                isLoading = false;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        data = new ArrayList<Category>();
+                        //创建并设置Adapter
+                        mAdapter = new ListCateAdapter();
+                        mAdapter.addDatas(data);
+                        mAdapter.setHeaderView(headerView);
+
+                        mRecyclerView.setAdapter(mAdapter);
+                        mPullToLoadView.setComplete();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onPrePostListener() {
+
+            }
+        });
+
+
+        client.doPost();
+
+
+    }
+
+    /**
+     * 获取服务器广告数据
+     */
+    public void initBannerData() {
+        OkHttpUtils client = new OkHttpUtils("", AppInterface.GETBANNERLIST);
+
+        client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
+            @Override
+            public void onPostSuccessListener(Call call, Response response) {
+                doOnPostSuccess(call, response);
+            }
+
+            @Override
+            public void onPostFailListener(Call call, IOException e) {
+                doOnPostFail(call, e);
+            }
+
+            @Override
+            public void onPrePostListener() {
+//                L.i("提交之前");
+            }
+        });
+
+        client.doPost();
+
+    }
+
+    /**
+     * 获取服务器中种类的数据
+     */
+    private void LoadMoreCategoryData() {
+
+        GetCategoryListRequest request = new GetCategoryListRequest(page + 1, size);
+        String json = new Gson().toJson(request);
+
+        OkHttpUtils client = new OkHttpUtils(json, AppInterface.GETCATEGORYLIST);
+
+        client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
+            @Override
+            public void onPostSuccessListener(Call call, Response response) {
+                try {
+                    String json = response.body().string();
+                    L.i(AppInterface.GETCATEGORYLIST + "返回:" + json);
+                    Gson gson = new Gson();
+                    final GetCategoryListReturn result = gson.fromJson(json, GetCategoryListReturn.class);
+
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ArrayList<Category> newData = (ArrayList<Category>) result.getList();
+                            if (newData == null || newData.size() == 0) {
+//                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                isHasLoadedAll = true;
+                            } else {
+                                mAdapter.addDatas(newData);
+                                page++;
+                            }
+                            mPullToLoadView.setComplete();
+                            L.i("data size:" + data.size());
+                        }
+                    });
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JsonSyntaxException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } finally {
+                    isLoading = false;
+
+                }
+            }
+
+            @Override
+            public void onPostFailListener(Call call, IOException e) {
+                e.printStackTrace();
+                isLoading = false;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mContext, "加载失败,请检查网络是否正常!", Toast.LENGTH_SHORT).show();
+                        mPullToLoadView.setComplete();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onPrePostListener() {
+
+            }
+        });
+
+
+        client.doPost();
+
+
     }
 
 }

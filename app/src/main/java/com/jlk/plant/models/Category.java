@@ -1,13 +1,26 @@
 package com.jlk.plant.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by test on 2016/2/5.
  */
 public class Category {
+    @Expose
+    @SerializedName("cate_id")
     private String categoryId;
+    @Expose
+    @SerializedName("cate_name")
     private String categoryName;
+    @Expose
+    @SerializedName("img")
     private String img;
+    @Expose
+    @SerializedName("create_time")
     private String createTime;
+    @Expose
+    @SerializedName("user_id")
     private String userId;
 
     public Category(String categoryId, String categoryName, String img, String createTime, String userId) {
