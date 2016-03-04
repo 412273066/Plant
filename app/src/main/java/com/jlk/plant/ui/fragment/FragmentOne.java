@@ -12,7 +12,6 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.jlk.plant.R;
 import com.jlk.plant.adapter.ListCateAdapter;
 import com.jlk.plant.app.AppInterface;
@@ -226,6 +225,9 @@ public class FragmentOne extends BaseFragment {
         setupBanner(list);
     }
 
+    /**
+     * 进入界面加载category
+     */
     private void loadCategory() {
         data = (ArrayList<Category>) loadCategoryFromDatabase();
 
@@ -240,19 +242,6 @@ public class FragmentOne extends BaseFragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
-
-        //数据库没有数据显示3张暂无图片
-//        if (list == null || list.size() == 0) {
-//            list = new ArrayList<>();
-//            Banner item;
-//            for (int i = 0; i < 3; i++) {
-//                item = new Banner();
-//                item.setImg("drawable://" + R.mipmap.ic_default_not_found);
-//                list.add(item);
-//            }
-//
-//        }
-//        setupBanner(list);
     }
 
     /**
@@ -269,33 +258,28 @@ public class FragmentOne extends BaseFragment {
             GetBannerListReturn result = gson.fromJson(json, GetBannerListReturn.class);
             final List<Banner> list = result.getList();
 
-            CacheToDatabase(list);
-
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     setupBanner(list);
+                    isLoading = false;
+                    mPullToLoadView.setComplete();
                 }
             });
+            //在子线程缓存数据
+            CacheToDatabase(list);
 
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (JsonSyntaxException e) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+                    isLoading = false;
+                    mPullToLoadView.setComplete();
                 }
             });
         } finally {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mPullToLoadView.setComplete();
-                    isLoading = false;
-                }
-            });
 
         }
     }
@@ -433,31 +417,24 @@ public class FragmentOne extends BaseFragment {
                                 }
                             });
 
-                            CacheCategoryToDatabase(data);
-
+                            isLoading = false;
+                            mPullToLoadView.setComplete();
                         }
                     });
+                    //在子线程缓存数据
+                    CacheCategoryToDatabase(data);
 
-
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                } catch (JsonSyntaxException e) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+                            isLoading = false;
+                            mPullToLoadView.setComplete();
                         }
                     });
                 } finally {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            isLoading = false;
-                            mPullToLoadView.setComplete();
-
-                        }
-                    });
 
                 }
             }
@@ -542,28 +519,33 @@ public class FragmentOne extends BaseFragment {
                             ArrayList<Category> newData = (ArrayList<Category>) result.getList();
                             if (newData == null || newData.size() == 0) {
 //                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                isHasLoadedAll = true;
 
                             } else {
                                 mAdapter.addDatas(newData);
                                 page++;
+                                L.i("page++");
                             }
+                            if (newData.size() < size) {
+                                isHasLoadedAll = true;
+
+                            }
+                            isLoading = false;
                             mPullToLoadView.setComplete();
                         }
                     });
 
 
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                } catch (JsonSyntaxException e) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+                            isLoading = false;
+                            mPullToLoadView.setComplete();
                         }
                     });
                 } finally {
-                    isLoading = false;
 
                 }
             }
@@ -571,11 +553,11 @@ public class FragmentOne extends BaseFragment {
             @Override
             public void onPostFailListener(Call call, IOException e) {
                 e.printStackTrace();
-                isLoading = false;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(mContext, "加载失败,请检查网络是否正常!", Toast.LENGTH_SHORT).show();
+                        isLoading = false;
                         mPullToLoadView.setComplete();
                     }
                 });
