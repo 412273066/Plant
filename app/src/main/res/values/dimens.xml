@@ -22,6 +22,6 @@
     <!-- 标题栏高-->
     <dimen name="title_bar_height">40dp</dimen>
     <!-- 导航栏高-->
-    <dimen name="tab_bar_height">40dp</dimen>
+    <dimen name="tab_bar_height">42dp</dimen>
 
 </resources>

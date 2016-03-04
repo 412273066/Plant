@@ -41,8 +41,15 @@ public class DBhelper extends SQLiteOpenHelper {
                 "[title] varchar(255)," +
                 "[content] varchar(255)," +
                 "[img] varchar(255) NOT NULL," +
-                "[author] varchar(255)," +
-                "[create_time] TIMESTAMP);");
+                "[user_id] integer," +
+                "[create_time] varchar(255));");
+
+        db.execSQL("CREATE TABLE [category] (" +
+                "[cate_id] integer NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "[cate_name] varchar(255)," +
+                "[img] varchar(255) NOT NULL," +
+                "[create_time] varchar(255)," +
+                "[user_id] integer);");
 
     }
 

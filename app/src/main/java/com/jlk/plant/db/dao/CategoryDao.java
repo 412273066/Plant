@@ -4,23 +4,21 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.jlk.plant.models.Banner;
+import com.jlk.plant.models.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by test on 2016/2/24.
+ * Created by test on 2016/3/4.
  */
-public class BannerDao extends BaseDao {
-
-    public BannerDao(Context mContext) {
+public class CategoryDao extends BaseDao {
+    public CategoryDao(Context mContext) {
         super(mContext);
     }
 
     @Override
     public boolean add(Object object) {
-
         if (object == null) {
             return false;
         }
@@ -30,14 +28,14 @@ public class BannerDao extends BaseDao {
 
         if (db.isOpen()) { // 如果数据库打开, 执行添加的操作
             try {
-                Banner item = (Banner) object;
+                Category item = (Category) object;
 
                 // 执行添加到数据库的操作
-                String cmd = "insert into banner(title,content,img,user_id,create_time) values(?,?,?,?,?);";
+                String cmd = "insert into category(cate_id,cate_name,img,user_id,create_time) values(?,?,?,?,?);";
 
                 db.execSQL(
                         cmd,
-                        new Object[]{item.getTitle(), item.getContent(), item.getImg(), item.getUserId(), item.getCreateTime()});
+                        new Object[]{item.getCategoryId(), item.getCategoryName(), item.getImg(), item.getUserId(), item.getCreateTime()});
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -60,16 +58,16 @@ public class BannerDao extends BaseDao {
 
         if (db.isOpen()) { // 如果数据库打开, 执行添加的操作
             try {
-                ArrayList<Banner> newList = (ArrayList<Banner>) list;
+                ArrayList<Category> newList = (ArrayList<Category>) list;
 
                 for (int i = 0; i < newList.size(); i++) {
-                    Banner item = newList.get(i);
+                    Category item = newList.get(i);
                     // 执行添加到数据库的操作
-                    String cmd = "insert into banner(title,content,img,user_id,create_time) values(?,?,?,?,?);";
+                    String cmd = "insert into category(cate_id,cate_name,img,user_id,create_time) values(?,?,?,?,?);";
 
                     db.execSQL(
                             cmd,
-                            new Object[]{item.getTitle(), item.getContent(), item.getImg(), item.getUserId(), item.getCreateTime()});
+                            new Object[]{item.getCategoryId(), item.getCategoryName(), item.getImg(), item.getUserId(), item.getCreateTime()});
                 }
 
                 return true;
@@ -90,19 +88,18 @@ public class BannerDao extends BaseDao {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase(); // 获得可写的数据库对象
         if (db.isOpen()) { // 如果数据库打开, 执行添加的操作
             try {
-                String table = "banner";
+                String table = "category";
 
-                Cursor cursor = db.rawQuery("select banner_id,title,content,img,user_id,create_time from  " + table + " where banner_id=?;",
+                Cursor cursor = db.rawQuery("select cate_id,cate_name,img,user_id,create_time from  " + table + " where cate_id=?;",
                         new String[]{String.valueOf(id)});
                 if (cursor != null && cursor.moveToFirst()) {
-                    String banner_id = cursor.getString(0);
-                    String title = cursor.getString(1);
-                    String content = cursor.getString(2);
-                    String img = cursor.getString(3);
-                    String user_id = cursor.getString(4);
-                    String createTime = cursor.getString(5);
+                    String cate_id = cursor.getString(0);
+                    String cate_name = cursor.getString(1);
+                    String img = cursor.getString(2);
+                    String user_id = cursor.getString(3);
+                    String createTime = cursor.getString(4);
 
-                    return new Banner(banner_id, title, content, img, user_id, createTime);
+                    return new Category(cate_id, cate_name, img, createTime, user_id);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -119,23 +116,22 @@ public class BannerDao extends BaseDao {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase(); // 获得可写的数据库对象
         if (db.isOpen()) { // 如果数据库打开, 执行添加的操作
             try {
-                String table = "banner";
-                Cursor cursor = db.rawQuery("select banner_id,title,content,img,user_id,create_time from "
-                        + table + " order by banner_id desc;", null);
+                String table = "category";
+                Cursor cursor = db.rawQuery("select cate_id,cate_name,img,user_id,create_time from "
+                        + table + " order by cate_id ;", null);
 
                 if (cursor != null && cursor.getCount() > 0) {
-                    List<Banner> list = new ArrayList<Banner>();
-                    String id, title, content, img, user_id, createTime;
-                    Banner item;
+                    List<Category> list = new ArrayList<Category>();
+                    String id, name,  img, userId, createTime;
+                    Category item;
                     while (cursor.moveToNext()) {
-                        id = cursor.getString(cursor.getColumnIndex("banner_id"));
-                        title = cursor.getString(cursor.getColumnIndex("title")); //
-                        content = cursor.getString(cursor.getColumnIndex("content")); //
+                        id = cursor.getString(cursor.getColumnIndex("cate_id"));
+                        name = cursor.getString(cursor.getColumnIndex("cate_name")); //
                         img = cursor.getString(cursor.getColumnIndex("img")); //
-                        user_id = cursor.getString(cursor.getColumnIndex("user_id")); //
+                        userId = cursor.getString(cursor.getColumnIndex("user_id")); //
                         createTime = cursor.getString(cursor.getColumnIndex("create_time")); //
 
-                        item = new Banner(id, title, content, img, user_id, createTime);
+                        item = new Category(id, name, img, createTime, userId);
 
                         list.add(item);
                     }
@@ -168,13 +164,13 @@ public class BannerDao extends BaseDao {
         SQLiteDatabase db = mOpenHelper.getReadableDatabase(); // 获得一个只读的数据库对象
         if (db.isOpen()) {
             try {
-                Banner item = (Banner) object;
+                Category item = (Category) object;
 
-                String table = "banner";
+                String table = "category";
 
                 Cursor cursor = db.rawQuery("SELECT * FROM " + table
-                                + " WHERE title = ? and content = ?;",
-                        new String[]{item.getTitle(), item.getContent()});
+                                + " WHERE cate_name = ? ;",
+                        new String[]{item.getCategoryName()});
                 if (cursor != null) {
                     int i = cursor.getCount();
                     cursor.close();

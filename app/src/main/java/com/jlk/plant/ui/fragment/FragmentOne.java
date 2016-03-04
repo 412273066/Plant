@@ -5,7 +5,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +18,7 @@ import com.jlk.plant.adapter.ListCateAdapter;
 import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragment;
 import com.jlk.plant.db.dao.BannerDao;
+import com.jlk.plant.db.dao.CategoryDao;
 import com.jlk.plant.models.Banner;
 import com.jlk.plant.models.Category;
 import com.jlk.plant.models.requestmodels.GetCategoryListRequest;
@@ -73,7 +73,7 @@ public class FragmentOne extends BaseFragment {
             @Override
             public void onLoadMore() {
                 isLoading = true;
-                Toast.makeText(mContext, "拼命加载中...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "拼命加载中...", Toast.LENGTH_SHORT).show();
                 LoadMoreCategoryData();
                 L.i("onLoadMore");
 
@@ -113,12 +113,13 @@ public class FragmentOne extends BaseFragment {
 
     @Override
     public void initViews() {
-        mPullToLoadView = (PullToLoadView) mRootView.findViewById(R.id.pullToLoadView);
+
 
         headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
 
         convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
 
+        mPullToLoadView = (PullToLoadView) mRootView.findViewById(R.id.pullToLoadView);
         //创建默认的线性LayoutManager
 //        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerview);
         mRecyclerView = mPullToLoadView.getRecyclerView();
@@ -134,11 +135,16 @@ public class FragmentOne extends BaseFragment {
         mPullToLoadView.setColorSchemeResources(R.color.color_main);
 //        mPullToLoadView.initLoad();
         //隐藏底部加载时进度条
-        ProgressBar progressBar = (ProgressBar) mPullToLoadView.findViewById(R.id.progressBar);
-        progressBar.setIndeterminateDrawable(null);
+//        ProgressBar progressBar = (ProgressBar) mPullToLoadView.findViewById(R.id.progressBar);
+//        progressBar.setIndeterminateDrawable(null);
 
         loadBanner();
+
+        loadCategory();
+
+
     }
+
 
     @Override
     public int setRootViewResourceId() {
@@ -146,11 +152,11 @@ public class FragmentOne extends BaseFragment {
     }
 
     /**
-     * 设置图片
+     * 设置banner图片
      *
      * @param list
      */
-    private void initBanner(List<Banner> list) {
+    private void setupBanner(List<Banner> list) {
 
         List<String> networkImages;
 
@@ -165,10 +171,7 @@ public class FragmentOne extends BaseFragment {
             Toast.makeText(mContext, "数据获取失败。", Toast.LENGTH_SHORT).show();
             return;
         }
-
-
-//      convenientBanner.setManualPageable(false);//设置不能手动影响
-
+        //convenientBanner.setManualPageable(false);//设置不能手动影响
         //网络加载例子
 
         convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
@@ -184,7 +187,6 @@ public class FragmentOne extends BaseFragment {
 //                        Log.i(TAG, "num " + position + " was clicked!");
                     }
                 });
-
 
     }
 
@@ -209,7 +211,7 @@ public class FragmentOne extends BaseFragment {
      * 进入界面加载banner
      */
     private void loadBanner() {
-        List<Banner> list = loadFromDatabase();
+        List<Banner> list = loadBannerFromDatabase();
         //数据库没有数据显示3张暂无图片
         if (list == null || list.size() == 0) {
             list = new ArrayList<>();
@@ -221,7 +223,36 @@ public class FragmentOne extends BaseFragment {
             }
 
         }
-        initBanner(list);
+        setupBanner(list);
+    }
+
+    private void loadCategory() {
+        data = (ArrayList<Category>) loadCategoryFromDatabase();
+
+        if (data == null || data.size() == 0) {
+            data = new ArrayList<Category>();
+        }
+
+        //创建并设置Adapter
+        mAdapter = new ListCateAdapter();
+        mAdapter.addDatas(data);
+        mAdapter.setHeaderView(headerView);
+
+        mRecyclerView.setAdapter(mAdapter);
+
+
+        //数据库没有数据显示3张暂无图片
+//        if (list == null || list.size() == 0) {
+//            list = new ArrayList<>();
+//            Banner item;
+//            for (int i = 0; i < 3; i++) {
+//                item = new Banner();
+//                item.setImg("drawable://" + R.mipmap.ic_default_not_found);
+//                list.add(item);
+//            }
+//
+//        }
+//        setupBanner(list);
     }
 
     /**
@@ -243,7 +274,7 @@ public class FragmentOne extends BaseFragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    initBanner(list);
+                    setupBanner(list);
                 }
             });
 
@@ -278,7 +309,6 @@ public class FragmentOne extends BaseFragment {
      */
     private void doOnPostFail(Call call, IOException e) {
 
-//        final List<Banner> list = loadFromDatabase();
 //
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -302,7 +332,25 @@ public class FragmentOne extends BaseFragment {
             return;
         }
         BannerDao dao = new BannerDao(mContext);
-        if (dao.delAll()) {
+        if (dao.delAll("banner")) {
+            L.i("banner清除成功");
+        }
+        if (dao.addList(list)) {
+            L.i("banner添加成功");
+        }
+    }
+
+    /**
+     * 缓存到数据库
+     *
+     * @param list
+     */
+    private void CacheCategoryToDatabase(List list) {
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        CategoryDao dao = new CategoryDao(mContext);
+        if (dao.delAll("category")) {
             L.i("清除成功");
         }
         if (dao.addList(list)) {
@@ -315,9 +363,21 @@ public class FragmentOne extends BaseFragment {
      *
      * @return
      */
-    private List loadFromDatabase() {
+    private List loadBannerFromDatabase() {
 
         BannerDao dao = new BannerDao(mContext);
+
+        return dao.queryAll();
+    }
+
+    /**
+     * 从数据库加载
+     *
+     * @return
+     */
+    private List loadCategoryFromDatabase() {
+
+        CategoryDao dao = new CategoryDao(mContext);
 
         return dao.queryAll();
     }
@@ -354,7 +414,8 @@ public class FragmentOne extends BaseFragment {
 
                             //创建并设置Adapter
                             mAdapter = new ListCateAdapter();
-                            mAdapter.addDatas(data);
+                            mAdapter.addDatas(
+                                    data);
                             mAdapter.setHeaderView(headerView);
 
                             mRecyclerView.setAdapter(mAdapter);
@@ -368,8 +429,11 @@ public class FragmentOne extends BaseFragment {
                                     Intent intent = new Intent(mContext, ListPlantActivity.class);
                                     mContext.startActivity(intent);
 //                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
+
                                 }
                             });
+
+                            CacheCategoryToDatabase(data);
 
                         }
                     });
@@ -405,13 +469,8 @@ public class FragmentOne extends BaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        data = new ArrayList<Category>();
-                        //创建并设置Adapter
-                        mAdapter = new ListCateAdapter();
-                        mAdapter.addDatas(data);
-                        mAdapter.setHeaderView(headerView);
-
-                        mRecyclerView.setAdapter(mAdapter);
+//                        loadCategory();
+//                        Toast.makeText(mContext, "加载失败,请检查网络是否正常!", Toast.LENGTH_SHORT).show();
                         mPullToLoadView.setComplete();
                     }
                 });
@@ -484,12 +543,12 @@ public class FragmentOne extends BaseFragment {
                             if (newData == null || newData.size() == 0) {
 //                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
                                 isHasLoadedAll = true;
+
                             } else {
                                 mAdapter.addDatas(newData);
                                 page++;
                             }
                             mPullToLoadView.setComplete();
-                            L.i("data size:" + data.size());
                         }
                     });
 

@@ -1,14 +1,29 @@
 package com.jlk.plant.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by test on 2016/2/5.
  */
 public class Banner {
+    @Expose
+    @SerializedName("banner_id")
     private String bannerId;
+    @Expose
+    @SerializedName("title")
     private String title;
+    @Expose
+    @SerializedName("content")
     private String content;
+    @Expose
+    @SerializedName("img")
     private String img;
+    @Expose
+    @SerializedName("user_id")
     private String userId;
+    @Expose
+    @SerializedName("create_time")
     private String createTime;
 
     public Banner(String bannerId, String title, String content, String img, String userId, String createTime) {
@@ -56,11 +71,11 @@ public class Banner {
         this.img = img;
     }
 
-    public String getuserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setuserId(String userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

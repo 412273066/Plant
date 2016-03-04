@@ -1,6 +1,7 @@
 package com.jlk.plant.db.dao;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.jlk.plant.db.DBhelper;
 
@@ -35,14 +36,49 @@ public abstract class BaseDao {
      *
      * @param id
      */
-    public abstract boolean del(int id);
+    public boolean del(String table,int id){
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase(); // 获得可写的数据库对象
+        if (db.isOpen()) { // 如果数据库打开, 执行添加的操作
+            try {
+
+                String cmd = "delete from  " + table + "  where id=?;";
+
+                db.execSQL(cmd, new Object[]{id});
+
+                return true;
+            } catch (Exception e) {
+
+            } finally {
+                db.close(); // 数据库关闭
+            }
+
+        }
+        return false;
+    }
+
 
     /**
      * 删除全部数据
      *
      * @return
      */
-    public abstract boolean delAll();
+    public boolean delAll(String table) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase(); // 获得可写的数据库对象
+        if (db.isOpen()) { // 如果数据库打开, 执行添加的操作
+            try {
+
+                db.execSQL("delete from  " + table + ";");
+
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                db.close(); // 数据库关闭
+            }
+
+        }
+        return false;
+    }
 
     /**
      * 查询某一数据
