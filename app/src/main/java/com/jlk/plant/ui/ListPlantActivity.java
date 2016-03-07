@@ -43,7 +43,6 @@ public class ListPlantActivity extends BaseFragmentActivity {
         listView.setAdapter(adapter);
         //下滑隐藏 上滑显示
 //        listView.setOnTouchListener(new ShowHideOnScroll(fab));
-
     }
 
     @Override
