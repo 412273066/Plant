@@ -9,6 +9,7 @@ public class GetCategoryListRequest extends BaseRequest {
         this.size = size;
     }
 
+
     public int getPage() {
         return page;
     }
