@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.jlk.plant.R;
 import com.jlk.plant.models.Plant;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class ListPlantAdapter extends BaseAdapter {
             holder.text_plant_name
                     .setText(list.get(position).getPlantName());
             holder.text_plant_type.setText(list.get(position).getPlantType());
-//            ImageLoader.getInstance().displayImage(list.get(position).getImg(), holder.imageView);
+            ImageLoader.getInstance().displayImage(list.get(position).getImg(), holder.imageView);
 
         } catch (Exception e) {
             e.printStackTrace();

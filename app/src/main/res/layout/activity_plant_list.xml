@@ -16,8 +16,9 @@
         android:divider="@null"
         android:listSelector="@drawable/selector_list_item"
         android:paddingBottom="5dp"
-        android:paddingLeft="13dp"
-        android:paddingRight="13dp"
+
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
         android:paddingTop="5dp"
         android:scrollbars="none" />
 

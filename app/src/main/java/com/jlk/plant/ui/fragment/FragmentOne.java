@@ -14,6 +14,7 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.google.gson.Gson;
 import com.jlk.plant.R;
 import com.jlk.plant.adapter.ListCateAdapter;
+import com.jlk.plant.adapter.NetworkImageHolderView;
 import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragment;
 import com.jlk.plant.db.dao.BannerDao;
