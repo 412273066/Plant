@@ -240,7 +240,16 @@ public class FragmentOne extends BaseFragment {
         mAdapter = new ListCateAdapter();
         mAdapter.addDatas(data);
         mAdapter.setHeaderView(headerView);
+        mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Category>() {
 
+            @Override
+            public void onItemClick(int position, Category data) {
+                Intent intent = new Intent(mContext, ListPlantActivity.class);
+                mContext.startActivity(intent);
+//                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
     }
@@ -254,7 +263,7 @@ public class FragmentOne extends BaseFragment {
     private void doOnPostSuccess(Call call, Response response) {
         try {
             String json = response.body().string();
-            L.i("返回json->" + json);
+            L.i("返回" + AppInterface.GETBANNERLIST + ":" + json);
             Gson gson = new Gson();
             GetBannerListReturn result = gson.fromJson(json, GetBannerListReturn.class);
             final List<Banner> list = result.getList();
@@ -295,15 +304,6 @@ public class FragmentOne extends BaseFragment {
     private void doOnPostFail(Call call, IOException e) {
 
 //
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mContext, "连接失败,请检查网络连接是否正常。", Toast.LENGTH_SHORT).show();
-            }
-        });
-        e.printStackTrace();
-        L.i("连接失败");
-
 
     }
 
@@ -375,14 +375,14 @@ public class FragmentOne extends BaseFragment {
         GetCategoryListRequest request = new GetCategoryListRequest(1, size);
         String json = new Gson().toJson(request);
 
-        OkHttpUtils client = new OkHttpUtils(json, AppInterface.GETCATEGORYLIST);
+        OkHttpUtils client = new OkHttpUtils(mContext, json, AppInterface.GETCATEGORYLIST);
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
             public void onPostSuccessListener(Call call, Response response) {
                 try {
                     String json = response.body().string();
-                    L.i(AppInterface.GETCATEGORYLIST + "返回:" + json);
+                    L.i("返回" + AppInterface.GETCATEGORYLIST + ":" + json);
                     Gson gson = new Gson();
                     final GetCategoryListReturn result = gson.fromJson(json, GetCategoryListReturn.class);
 
@@ -410,8 +410,9 @@ public class FragmentOne extends BaseFragment {
                             mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Category>() {
 
                                 @Override
-                                public void onItemClick(int position, Category data) {
+                                public void onItemClick(int position, Category item) {
                                     Intent intent = new Intent(mContext, ListPlantActivity.class);
+                                    intent.putExtra("categoryId", item.getCategoryId());
                                     mContext.startActivity(intent);
 //                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
 
@@ -471,7 +472,7 @@ public class FragmentOne extends BaseFragment {
      * 获取服务器广告数据
      */
     public void initBannerData() {
-        OkHttpUtils client = new OkHttpUtils("", AppInterface.GETBANNERLIST);
+        OkHttpUtils client = new OkHttpUtils(mContext, "", AppInterface.GETBANNERLIST);
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
@@ -502,14 +503,14 @@ public class FragmentOne extends BaseFragment {
         GetCategoryListRequest request = new GetCategoryListRequest(page + 1, size);
         String json = new Gson().toJson(request);
 
-        OkHttpUtils client = new OkHttpUtils(json, AppInterface.GETCATEGORYLIST);
+        OkHttpUtils client = new OkHttpUtils(mContext, json, AppInterface.GETCATEGORYLIST);
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
             public void onPostSuccessListener(Call call, Response response) {
                 try {
                     String json = response.body().string();
-                    L.i(AppInterface.GETCATEGORYLIST + "返回:" + json);
+                    L.i("返回" + AppInterface.GETCATEGORYLIST + ":" + json);
                     Gson gson = new Gson();
                     final GetCategoryListReturn result = gson.fromJson(json, GetCategoryListReturn.class);
 
@@ -553,11 +554,9 @@ public class FragmentOne extends BaseFragment {
 
             @Override
             public void onPostFailListener(Call call, IOException e) {
-                e.printStackTrace();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mContext, "加载失败,请检查网络是否正常!", Toast.LENGTH_SHORT).show();
                         isLoading = false;
                         mPullToLoadView.setComplete();
                     }

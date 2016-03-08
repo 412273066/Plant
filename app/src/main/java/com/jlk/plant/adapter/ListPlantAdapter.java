@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.jlk.plant.R;
 import com.jlk.plant.models.Plant;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.util.List;
 
@@ -22,11 +24,15 @@ public class ListPlantAdapter extends BaseAdapter {
     Context mContext;
     private LayoutInflater mInflater;
     protected ViewHolder holder;
+    DisplayImageOptions options;
 
     public ListPlantAdapter(List<Plant> list, Context mContext) {
         this.list = list;
         this.mContext = mContext;
         mInflater = LayoutInflater.from(mContext);
+
+        options = new DisplayImageOptions.Builder().displayer(new RoundedBitmapDisplayer(90))//是否设置为圆角，弧度为多少
+                .build();
     }
 
     @Override
@@ -65,7 +71,8 @@ public class ListPlantAdapter extends BaseAdapter {
             holder.text_plant_name
                     .setText(list.get(position).getPlantName());
             holder.text_plant_type.setText(list.get(position).getPlantType());
-            ImageLoader.getInstance().displayImage(list.get(position).getImg(), holder.imageView);
+
+            ImageLoader.getInstance().displayImage(list.get(position).getImg(), holder.imageView, options);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,6 +10,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 /**
  * Created by test on 2016/2/23.
@@ -23,7 +24,10 @@ public class AppConfig {
         //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.mipmap.ic_default_not_found)
-                .cacheInMemory(true).cacheOnDisk(true).build();
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .displayer(new FadeInBitmapDisplayer(300))//是否图片加载好后渐入的动画时间
+                .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 mContext).defaultDisplayImageOptions(defaultOptions)

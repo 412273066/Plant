@@ -1,5 +1,9 @@
 package com.jlk.plant.utils;
 
+import android.content.Context;
+import android.os.Handler;
+import android.widget.Toast;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -23,16 +27,22 @@ public class OkHttpUtils {
 //    public static final int POST_FAIL = 400;
     private int timeout = 10;
 
-    public OkHttpUtils(String json, String url) {
+    Handler mHandler;
+    private Context mContext;
+
+    public OkHttpUtils(Context mContext, String json, String url) {
         this.json = json;
         this.url = url;
-
+        this.mContext = mContext;
+        this.mHandler = new Handler();
     }
 
-    public OkHttpUtils(String json, String url, OnHttpPostListener httpPostListener) {
+    public OkHttpUtils(Context mContext, String json, String url, OnHttpPostListener httpPostListener) {
         this.json = json;
         this.url = url;
+        this.mContext = mContext;
         this.httpPostListener = httpPostListener;
+
     }
 
 
@@ -54,7 +64,7 @@ public class OkHttpUtils {
 
         if (json != null) {
             builder.add("json", json);
-            L.i(url + ":" + json);
+            L.i("请求"+url + ":" + json);
         }
 
         FormBody formBody = builder.build();
@@ -138,6 +148,14 @@ public class OkHttpUtils {
     private class MyCallback implements Callback {
         @Override
         public void onFailure(Call call, IOException e) {
+            e.printStackTrace();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, "加载失败,请检查网络是否正常!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             if (httpPostListener != null) {
                 httpPostListener.onPostFailListener(call, e);
             }

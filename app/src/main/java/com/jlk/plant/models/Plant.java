@@ -1,19 +1,44 @@
 package com.jlk.plant.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by test on 2016/2/16.
  */
 public class Plant {
+    @Expose
+    @SerializedName("plant_id")
     private String plantId;
+    @Expose
+    @SerializedName("plant_name")
     private String plantName;
+    @Expose
+    @SerializedName("type")
     private String plantType;
+    @Expose
+    @SerializedName("info")
     private String plantInfo;
+    @Expose
+    @SerializedName("feature")
     private String plantFeature;
+    @Expose
+    @SerializedName("habit")
     private String plantHabit;
+    @Expose
+    @SerializedName("use")
     private String plantUse;
+    @Expose
+    @SerializedName("create_time")
     private String plantCreatTime;
+    @Expose
+    @SerializedName("cate_id")
     private String categoryId;
+    @Expose
+    @SerializedName("img")
     private String img;
+    @Expose
+    @SerializedName("user_id")
     private String userId;
 
     public Plant(String plantId, String plantName, String plantType,
