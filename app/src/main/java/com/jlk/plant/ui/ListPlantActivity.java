@@ -30,7 +30,7 @@ public class ListPlantActivity extends BaseFragmentActivity {
 
     private final String tag = "ListPlantActivity";
     private ListView listView;
-    List list;
+    List<Plant> list;
     private FloatingActionButton fab;
     private int page = 1;
     private int size = 5;
@@ -65,6 +65,12 @@ public class ListPlantActivity extends BaseFragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(mContext, DetailPlantActivity.class);
+                intent.putExtra("img",list.get(position).getImg());
+                intent.putExtra("feature",list.get(position).getPlantFeature());
+                intent.putExtra("habit",list.get(position).getPlantHabit());
+                intent.putExtra("info",list.get(position).getPlantInfo());
+                intent.putExtra("name",list.get(position).getPlantName());
+                intent.putExtra("use",list.get(position).getPlantUse());
                 startActivity(intent);
             }
         });

@@ -25,14 +25,16 @@
                 android:padding="2dp">
 
                 <ImageView
-                    android:layout_width="220dp"
+                    android:id="@+id/imageView"
+                    android:layout_width="250dp"
                     android:layout_height="160dp"
                     android:layout_marginTop="10dp"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/molihua" />
 
 
                 <TextView
+                    android:id="@+id/text_plant_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -66,6 +68,8 @@
 
 
                 <TextView
+                    android:lineSpacingMultiplier="1.2"
+                    android:id="@+id/text_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="　　茉莉花（学名：Jasminum sambac (L.) Ait）为木樨科馨属花卉，别名：茉莉、香魂、莫利花、没丽、没利、抹厉、末莉、末利、木梨花等。\n　　茉莉花素洁、浓郁、清芬、久远，它的花语表示忠贞、尊敬、清纯、贞洁、质朴、玲珑、迷人。许多国家将其作为爱情之花，青年男女之间，互送茉莉花以表达坚贞爱情。它也作为友谊之花，在人们中间传递。把茉莉花环套在客人颈上使之垂到胸前，表示尊敬与友好，成为一种热情好客的礼节。"
@@ -98,7 +102,8 @@
 
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/text_feature"
+                    android:layout_width="match_parent"  android:lineSpacingMultiplier="1.2"
                     android:layout_height="wrap_content"
                     android:text="　　茉莉花常绿小灌木或藤本状灌木，高可达1米。枝条细长小枝有棱角，有时有毛，略呈藤本状。单叶对生，光亮，宽卵形或椭圆形，叶脉明显，叶面微皱，叶柄短而向上弯曲，有短柔毛。初夏由叶腋抽出新梢，顶生聚伞花序，顶生或腋生，有花3～9朵，通常三到四朵，花冠白色，很香，花冠管长0.7～1.5厘米，裂片长圆形至近圆形，宽5～9毫米，先端圆或钝。果球形，径约1厘米，呈紫黑色。大多数品种的花期6～10月，果期7～9月，由初夏至晚秋开花不绝，落叶型的冬天开花，花期11月～第二年3月。"
                     android:textColor="@color/color_black_secondary_text"
@@ -130,8 +135,9 @@
 
 
                 <TextView
+                    android:id="@+id/text_habit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="wrap_content"  android:lineSpacingMultiplier="1.2"
                     android:text="　　茉莉花性喜温暖湿润，在通风良好、半阴的环境生长最好；土壤以含有大量腐殖质的微酸性砂质土壤为最适合。大多数品种畏寒、畏旱，不耐霜冻、湿涝和碱土。冬季气温低于3℃时，枝叶易遭受冻害，如持续时间长就会死亡。而落叶藤本类就是很耐寒耐旱的了。"
                     android:textColor="@color/color_black_secondary_text"
                     android:textSize="@dimen/text_hint" />
@@ -150,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:layout_marginTop="2dp"
-                    android:text="分布区域"
+                    android:text="主要用途"
                     android:textColor="@color/color_main"
                     android:textSize="@dimen/text_button" />
 
@@ -162,8 +168,9 @@
 
 
                 <TextView
+                    android:id="@+id/text_use"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="wrap_content"  android:lineSpacingMultiplier="1.2"
                     android:text="　　茉莉花原产于中国江南地区以及西部地区、印度、阿拉伯一带，其中心产区在波斯湾附近，现广泛植栽于亚热带地区。主要分布在伊朗、埃及、土耳其、摩洛哥、阿尔及利亚、突尼斯，以及西班牙、法国、意大利等地中海沿岸国家，印度以及东南亚各国均有栽培。\n　　广西壮族自治区的东南部横县的茉莉花产量和质量都居全国之首。茉莉花每年暮春初夏开花，有单瓣、重瓣、单叶、复叶之分。花色有红白两种，以乳白色花为主。茉莉花花香清雅，可用于制作茉莉花茶、提炼香料等。福建福州市也有大面积的种植，而且福州茉莉花茶是海外福州人最思念的家乡味。"
                     android:textColor="@color/color_black_secondary_text"
                     android:textSize="@dimen/text_hint" />
