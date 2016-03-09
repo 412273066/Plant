@@ -74,6 +74,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/22.2.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.bigkoo/convenientbanner/2.0.5/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.github.nicolasjafelle/paginglistview/1.2/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.github.tosslife/pullloadview/1.1.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.shamanland/fab/0.0.8/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
@@ -94,9 +95,9 @@
     <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="gson-2.6.1" level="project" />
+    <orderEntry type="library" exported="" name="paginglistview-1.2" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.2.1" level="project" />
-    <orderEntry type="library" exported="" name="okhttp-3.1.2" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="pullloadview-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.2.1" level="project" />
@@ -105,5 +106,6 @@
     <orderEntry type="library" exported="" name="convenientbanner-2.0.5" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-21.0.2" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-3.1.2" level="project" />
   </component>
 </module>

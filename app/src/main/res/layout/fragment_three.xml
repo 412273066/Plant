@@ -9,5 +9,8 @@
     android:paddingRight="13dp"
     android:paddingTop="5dp">
 
-
+    <com.paging.listview.PagingListView
+        android:id="@+id/paging_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
