@@ -2,37 +2,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_background"
- >
+    android:background="@color/activity_background">
 
     <include
         android:id="@+id/layout_title"
         layout="@layout/layout_title_bar" />
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_below="@id/layout_title"
+    <com.srx.widget.PullToLoadView
+        android:id="@+id/pullToLoadView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/layout_title" />
+
+   <!-- <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_title"
+        android:cacheColorHint="@color/activity_background"
         android:divider="@null"
         android:listSelector="@drawable/selector_list_item"
         android:paddingBottom="5dp"
-        android:cacheColorHint="@color/activity_background"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
         android:paddingTop="5dp"
         android:scrollbars="none" />
+-->
 
     <com.shamanland.fab.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="16dp"
         android:src="@mipmap/search_btn"
         app:floatingActionButtonColor="@color/color_main"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="20dp"
         app:floatingActionButtonSize="mini" />
 </RelativeLayout>

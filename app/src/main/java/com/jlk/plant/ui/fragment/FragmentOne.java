@@ -57,7 +57,7 @@ public class FragmentOne extends BaseFragment {
     private boolean isHasLoadedAll = false;
 
     private int page = 1;
-    private int size = 8;
+    private int size = 10;
 
     @Override
     public void initData() {
@@ -245,6 +245,7 @@ public class FragmentOne extends BaseFragment {
             @Override
             public void onItemClick(int position, Category data) {
                 Intent intent = new Intent(mContext, ListPlantActivity.class);
+                intent.putExtra("categoryId", data.getCategoryId());
                 mContext.startActivity(intent);
 //                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
 

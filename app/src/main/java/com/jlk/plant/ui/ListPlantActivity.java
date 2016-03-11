@@ -1,14 +1,15 @@
 package com.jlk.plant.ui;
 
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jlk.plant.R;
-import com.jlk.plant.adapter.ListPlantAdapter;
+import com.jlk.plant.adapter.ListCateAdapter;
+import com.jlk.plant.adapter.ListPlantsAdapter;
 import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragmentActivity;
 import com.jlk.plant.models.Plant;
@@ -17,6 +18,8 @@ import com.jlk.plant.models.returnmodels.GetPlantListReturn;
 import com.jlk.plant.utils.L;
 import com.jlk.plant.utils.OkHttpUtils;
 import com.shamanland.fab.FloatingActionButton;
+import com.srx.widget.PullCallback;
+import com.srx.widget.PullToLoadView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,12 +32,17 @@ import okhttp3.Response;
 public class ListPlantActivity extends BaseFragmentActivity {
 
     private final String tag = "ListPlantActivity";
-    private ListView listView;
     List<Plant> list;
     private FloatingActionButton fab;
     private int page = 1;
-    private int size = 5;
-    ListPlantAdapter mAdapter;
+    private int size = 6;
+    ListPlantsAdapter mAdapter;
+    private PullToLoadView mPullToLoadView;
+    private RecyclerView mRecyclerView;
+    private boolean isLoading = false;
+    private boolean isRefreshing = false;
+    private boolean isHasLoadedAll = false;
+    private int categoryId;
 
     @Override
     public void setActivityContext() {
@@ -52,34 +60,76 @@ public class ListPlantActivity extends BaseFragmentActivity {
         findViewById(R.id.back).setVisibility(View.VISIBLE);
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        listView = (ListView) findViewById(R.id.listView);
-        mAdapter = new ListPlantAdapter(list, mContext);
-        listView.setAdapter(mAdapter);
         //下滑隐藏 上滑显示
 //        listView.setOnTouchListener(new ShowHideOnScroll(fab));
+        mPullToLoadView = (PullToLoadView) findViewById(R.id.pullToLoadView);
+        //创建默认的线性LayoutManager
+//        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerview);
+        mRecyclerView = mPullToLoadView.getRecyclerView();
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        mRecyclerView.setHasFixedSize(true);
+        // 设置item间隔
+//        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 0, 0, 0));
+        mPullToLoadView.isLoadMoreEnabled(true);
+
+        mPullToLoadView.setColorSchemeResources(R.color.color_main);
+//        mPullToLoadView.initLoad();
+        //隐藏底部加载时进度条
+//        ProgressBar progressBar = (ProgressBar) mPullToLoadView.findViewById(R.id.progressBar);
+//        progressBar.setIndeterminateDrawable(null);
     }
 
     @Override
     public void initListeners() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(mContext, DetailPlantActivity.class);
-                intent.putExtra("img",list.get(position).getImg());
-                intent.putExtra("feature",list.get(position).getPlantFeature());
-                intent.putExtra("habit",list.get(position).getPlantHabit());
-                intent.putExtra("info",list.get(position).getPlantInfo());
-                intent.putExtra("name",list.get(position).getPlantName());
-                intent.putExtra("use",list.get(position).getPlantUse());
-                startActivity(intent);
-            }
-        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, SearchActivity.class);
 
                 startActivity(intent);
+            }
+        });
+        mPullToLoadView.setPullCallback(new PullCallback() {
+            @Override
+            public void onLoadMore() {
+                isLoading = true;
+//                Toast.makeText(mContext, "拼命加载中...", Toast.LENGTH_SHORT).show();
+                L.i("onLoadMore");
+                loadMorePlant(categoryId);
+            }
+
+            @Override
+            public void onRefresh() {
+//                Toast.makeText(mContext, "拼命刷新中...", Toast.LENGTH_SHORT).show();
+                page = 1;
+                isRefreshing = true;
+                loadMorePlant(categoryId);
+                isHasLoadedAll = false;
+                L.i("onRefresh");
+            }
+
+            @Override
+            public boolean isLoading() {
+//                if (isLoading) {
+//                    L.i("isLoading true");
+//                } else {
+//
+//                    L.i("isLoading false");
+//                }
+                return isLoading;
+            }
+
+            @Override
+            public boolean hasLoadedAllItems() {
+//                if (isHasLoadedAll) {
+//                    L.i("isHasLoadedAll true");
+//                } else {
+//
+//                    L.i("isHasLoadedAll false");
+//                }
+                return isHasLoadedAll;
             }
         });
 
@@ -94,31 +144,37 @@ public class ListPlantActivity extends BaseFragmentActivity {
      */
     @Override
     public void initData() {
-        list = new ArrayList<Plant>();
-//        Plant item1 = new Plant("1", "绣球花", "虎耳草科绣球属", "", "", "", "", "", "", "http://map1.zw3e.com:8080/zw_news_map/200/2014081/1407913108727009516.jpg", "");
-//        Plant item2 = new Plant("2", "千日红", "石竹目苋科千日红属", "", "", "", "", "", "", "http://map1.zw3e.com:8080/zw_news_map/200/2014081/1407477746765221608.jpg", "");
-//        Plant item3 = new Plant("3", "三角梅", "叶子花属", "", "", "", "", "", "", "http://map1.zw3e.com:8080/zw_news_map/200/2015041/1428387772759935403.jpg", "");
-//        Plant item4 = new Plant("4", "丁香花", "紫丁香属", "", "", "", "", "", "", "http://map1.zw3e.com:8080/zw_news_map/200/2014081/1407725010132511030.jpg", "");
-//        Plant item5 = new Plant("5", "海棠", "苹果属", "", "", "", "", "", "", "http://map1.zw3e.com:8080/zw_news_map/200/2015052/1432044960527796629.jpg", "");
-//        list.add(item1);
-//        list.add(item2);
-//        list.add(item3);
-//        list.add(item4);
-//        list.add(item5);
-//        list.add(item1);
-//        list.add(item2);
-//        list.add(item3);
-//        list.add(item4);
-//        list.add(item5);
-//        list.add(item1);
-//        list.add(item2);
-//        list.add(item3);
-//        list.add(item4);
-//        list.add(item5);
 
-        String categoryId = getIntent().getStringExtra("categoryId");
+
+        try {
+            String id = getIntent().getStringExtra("categoryId");
+            categoryId = Integer.parseInt(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            categoryId = 1;
+        }
+
+
         L.i("categoryId:" + categoryId);
-        loadMorePlant(Integer.parseInt(categoryId));
+        //创建并设置Adapter
+        mAdapter = new ListPlantsAdapter();
+        mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Plant>() {
+
+            @Override
+            public void onItemClick(int position, Plant data) {
+                Intent intent = new Intent(mContext, DetailPlantActivity.class);
+                intent.putExtra("img", data.getImg());
+                intent.putExtra("feature", data.getPlantFeature());
+                intent.putExtra("habit", data.getPlantHabit());
+                intent.putExtra("info", data.getPlantInfo());
+                intent.putExtra("name", data.getPlantName());
+                intent.putExtra("use", data.getPlantUse());
+                startActivity(intent);
+
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
+        loadMorePlant(categoryId);
     }
 
     private void loadMorePlant(int categoryId) {
@@ -143,16 +199,25 @@ public class ListPlantActivity extends BaseFragmentActivity {
                             ArrayList<Plant> newData = (ArrayList<Plant>) result.getList();
                             if (newData == null || newData.size() == 0) {
                                 Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
-
+                                isHasLoadedAll = true;
                             } else {
-                                list.addAll(newData);
-                                mAdapter.notifyDataSetChanged();
+
+                                if (isRefreshing) {
+                                    L.i("清空adapter!");
+                                    mAdapter.removeAllData();
+                                    isRefreshing = false;
+                                }
+
+                                mAdapter.addDatas(newData);
                                 page++;
                                 L.i("page++");
-                            }
-                            if (newData.size() < size) {
 
                             }
+                            if (newData.size() < size) {
+                                isHasLoadedAll = true;
+                            }
+                            isLoading = false;
+                            mPullToLoadView.setComplete();
                         }
                     });
 
@@ -163,7 +228,9 @@ public class ListPlantActivity extends BaseFragmentActivity {
                         @Override
                         public void run() {
                             Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
-
+                            isLoading = false;
+                            isRefreshing = false;
+                            mPullToLoadView.setComplete();
                         }
                     });
                 } finally {
@@ -173,7 +240,13 @@ public class ListPlantActivity extends BaseFragmentActivity {
 
             @Override
             public void onPostFailListener(Call call, IOException e) {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        isLoading = false;
+                        mPullToLoadView.setComplete();
+                    }
+                });
             }
 
             @Override
