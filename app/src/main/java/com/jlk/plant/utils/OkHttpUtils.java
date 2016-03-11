@@ -45,6 +45,9 @@ public class OkHttpUtils {
 
     }
 
+    /**
+     * post方式提交
+     */
 
     public void doPost() {
         if (this.httpPostListener != null) {
@@ -62,9 +65,9 @@ public class OkHttpUtils {
 
         FormBody.Builder builder = new FormBody.Builder();
 
-        if (json != null) {
+        if (!StringUtils.isEmpty(json)) {
             builder.add("json", json);
-            L.i("请求"+url + ":" + json);
+            L.i("请求" + url + ":" + json);
         }
 
         FormBody formBody = builder.build();
@@ -79,7 +82,9 @@ public class OkHttpUtils {
 
     }
 
-
+    /**
+     * get方式提交
+     */
     public void doGet() {
 
         if (this.httpPostListener != null) {

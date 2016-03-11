@@ -17,8 +17,7 @@ import com.jlk.plant.adapter.ListCateAdapter;
 import com.jlk.plant.adapter.NetworkImageHolderView;
 import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragment;
-import com.jlk.plant.db.dao.BannerDao;
-import com.jlk.plant.db.dao.CategoryDao;
+import com.jlk.plant.db.Cache.CacheUtils;
 import com.jlk.plant.models.Banner;
 import com.jlk.plant.models.Category;
 import com.jlk.plant.models.requestmodels.GetCategoryListRequest;
@@ -58,6 +57,8 @@ public class FragmentOne extends BaseFragment {
 
     private int page = 1;
     private int size = 10;
+
+    private CacheUtils cache;
 
     @Override
     public void initData() {
@@ -113,7 +114,7 @@ public class FragmentOne extends BaseFragment {
 
     @Override
     public void initViews() {
-
+        cache = new CacheUtils(mContext);
 
         headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
 
@@ -137,6 +138,21 @@ public class FragmentOne extends BaseFragment {
         //隐藏底部加载时进度条
 //        ProgressBar progressBar = (ProgressBar) mPullToLoadView.findViewById(R.id.progressBar);
 //        progressBar.setIndeterminateDrawable(null);
+
+        //创建并设置Adapter
+        mAdapter = new ListCateAdapter();
+        mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Category>() {
+
+            @Override
+            public void onItemClick(int position, Category data) {
+                Intent intent = new Intent(mContext, ListPlantActivity.class);
+                intent.putExtra("categoryId", data.getCategoryId());
+                mContext.startActivity(intent);
+//                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
 
         loadBanner();
 
@@ -211,7 +227,7 @@ public class FragmentOne extends BaseFragment {
      * 进入界面加载banner
      */
     private void loadBanner() {
-        List<Banner> list = loadBannerFromDatabase();
+        List<Banner> list = cache.loadBannerFromDatabase();
         //数据库没有数据显示3张暂无图片
         if (list == null || list.size() == 0) {
             list = new ArrayList<>();
@@ -230,28 +246,14 @@ public class FragmentOne extends BaseFragment {
      * 进入界面加载category
      */
     private void loadCategory() {
-        data = (ArrayList<Category>) loadCategoryFromDatabase();
+        data = (ArrayList<Category>) cache.loadCategoryFromDatabase();
 
         if (data == null || data.size() == 0) {
             data = new ArrayList<Category>();
         }
 
-        //创建并设置Adapter
-        mAdapter = new ListCateAdapter();
         mAdapter.addDatas(data);
         mAdapter.setHeaderView(headerView);
-        mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Category>() {
-
-            @Override
-            public void onItemClick(int position, Category data) {
-                Intent intent = new Intent(mContext, ListPlantActivity.class);
-                intent.putExtra("categoryId", data.getCategoryId());
-                mContext.startActivity(intent);
-//                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -278,7 +280,7 @@ public class FragmentOne extends BaseFragment {
                 }
             });
             //在子线程缓存数据
-            CacheToDatabase(list);
+            cache.CacheBannerToDatabase(list);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -308,65 +310,6 @@ public class FragmentOne extends BaseFragment {
 
     }
 
-    /**
-     * 缓存到数据库
-     *
-     * @param list
-     */
-    private void CacheToDatabase(List list) {
-        if (list == null || list.size() == 0) {
-            return;
-        }
-        BannerDao dao = new BannerDao(mContext);
-        if (dao.delAll("banner")) {
-            L.i("banner清除成功");
-        }
-        if (dao.addList(list)) {
-            L.i("banner添加成功");
-        }
-    }
-
-    /**
-     * 缓存到数据库
-     *
-     * @param list
-     */
-    private void CacheCategoryToDatabase(List list) {
-        if (list == null || list.size() == 0) {
-            return;
-        }
-        CategoryDao dao = new CategoryDao(mContext);
-        if (dao.delAll("category")) {
-            L.i("清除成功");
-        }
-        if (dao.addList(list)) {
-            L.i("添加成功");
-        }
-    }
-
-    /**
-     * 从数据库加载
-     *
-     * @return
-     */
-    private List loadBannerFromDatabase() {
-
-        BannerDao dao = new BannerDao(mContext);
-
-        return dao.queryAll();
-    }
-
-    /**
-     * 从数据库加载
-     *
-     * @return
-     */
-    private List loadCategoryFromDatabase() {
-
-        CategoryDao dao = new CategoryDao(mContext);
-
-        return dao.queryAll();
-    }
 
     /**
      * 获取服务器中种类的数据
@@ -389,7 +332,6 @@ public class FragmentOne extends BaseFragment {
 
                     data = (ArrayList<Category>) result.getList();
 
-//                    CacheToDatabase(list);
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -399,33 +341,19 @@ public class FragmentOne extends BaseFragment {
                             }
 
                             //创建并设置Adapter
-                            mAdapter = new ListCateAdapter();
-                            mAdapter.addDatas(
-                                    data);
-                            mAdapter.setHeaderView(headerView);
+                            mAdapter.removeAllData();
+                            mAdapter.addDatas(data);
 
-                            mRecyclerView.setAdapter(mAdapter);
                             page = 1;
                             isHasLoadedAll = false;
 
-                            mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Category>() {
-
-                                @Override
-                                public void onItemClick(int position, Category item) {
-                                    Intent intent = new Intent(mContext, ListPlantActivity.class);
-                                    intent.putExtra("categoryId", item.getCategoryId());
-                                    mContext.startActivity(intent);
-//                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
-
-                                }
-                            });
 
                             isLoading = false;
                             mPullToLoadView.setComplete();
                         }
                     });
                     //在子线程缓存数据
-                    CacheCategoryToDatabase(data);
+                    cache.CacheCategoryToDatabase(data);
 
                 } catch (Exception e) {
                     e.printStackTrace();
