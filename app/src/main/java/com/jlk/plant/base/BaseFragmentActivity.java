@@ -7,7 +7,11 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.jlk.plant.R;
+import com.jlk.plant.utils.StringUtils;
 
 public abstract class BaseFragmentActivity extends FragmentActivity {
     private final String TAG = "BaseFragmentActivity";
@@ -24,6 +28,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
 
     public abstract void initData();
 
+    public abstract String getTitleName();
+
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         Log.i(TAG, "onCreate");
@@ -31,10 +37,17 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         setActivityContext();
         setContentView();
 
+        if(!StringUtils.isEmpty(getTitleName())){
+            TextView title= (TextView) findViewById(R.id.title);
+            title.setText(getTitleName());
+        }
+
         initViews();
         initListeners();
         initData();
     }
+
+
 
     protected Toast mToast;
 

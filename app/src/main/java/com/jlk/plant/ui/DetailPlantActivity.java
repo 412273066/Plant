@@ -2,11 +2,14 @@ package com.jlk.plant.ui;
 
 import android.content.Intent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jlk.plant.R;
 import com.jlk.plant.base.BaseFragmentActivity;
+import com.jlk.plant.custom.view.ObservableScrollView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 
@@ -18,7 +21,11 @@ public class DetailPlantActivity extends BaseFragmentActivity {
     private TextView text_feature;
     private TextView text_habit;
     private TextView text_use;
+    private TextView title;
     private ImageView imageView;
+    private ObservableScrollView scrollView;
+    private LinearLayout topLayout;
+    String plantName;
 
     @Override
     public void setActivityContext() {
@@ -32,18 +39,22 @@ public class DetailPlantActivity extends BaseFragmentActivity {
 
     @Override
     public void initViews() {
-
+        title = (TextView) findViewById(R.id.title);
         findViewById(R.id.back).setVisibility(View.VISIBLE);
+        scrollView = (ObservableScrollView) findViewById(R.id.scrollView);
         text_plant_name = (TextView) findViewById(R.id.text_plant_name);
         text_info = (TextView) findViewById(R.id.text_info);
         text_feature = (TextView) findViewById(R.id.text_feature);
         text_habit = (TextView) findViewById(R.id.text_habit);
         text_use = (TextView) findViewById(R.id.text_use);
         imageView = (ImageView) findViewById(R.id.imageView);
+        topLayout = (LinearLayout) findViewById(R.id.topLayout);
 
         Intent intent = getIntent();
         String img = intent.getStringExtra("img");
-        text_plant_name.setText(intent.getStringExtra("name"));
+        plantName = intent.getStringExtra("name");
+
+        text_plant_name.setText(plantName);
         text_info.setText(intent.getStringExtra("info"));
         text_feature.setText(intent.getStringExtra("feature"));
         text_habit.setText(intent.getStringExtra("habit"));
@@ -54,7 +65,28 @@ public class DetailPlantActivity extends BaseFragmentActivity {
 
     @Override
     public void initListeners() {
+        ViewTreeObserver vto = topLayout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                topLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 
+                final int height = topLayout.getHeight();
+//                L.i("height=" + topLayout.getHeight() + "    width=" + topLayout.getWidth());
+
+                scrollView.setScrollViewListener(new ObservableScrollView.ScrollViewListener() {
+                    @Override
+                    public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
+                        if (y > height) {
+                            title.setText(plantName);
+                        } else {
+                            title.setText(getString(R.string.app_name));
+                        }
+                    }
+                });
+
+            }
+        });
     }
 
 
@@ -62,6 +94,11 @@ public class DetailPlantActivity extends BaseFragmentActivity {
     public void initData() {
 
 
+    }
+
+    @Override
+    public String getTitleName() {
+        return null;
     }
 
 

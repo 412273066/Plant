@@ -147,6 +147,7 @@ public class FragmentOne extends BaseFragment {
             public void onItemClick(int position, Category data) {
                 Intent intent = new Intent(mContext, ListPlantActivity.class);
                 intent.putExtra("categoryId", data.getCategoryId());
+                intent.putExtra("categoryName", data.getCategoryName());
                 mContext.startActivity(intent);
 //                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
 

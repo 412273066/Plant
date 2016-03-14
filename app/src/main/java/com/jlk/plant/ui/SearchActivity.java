@@ -37,5 +37,10 @@ public class SearchActivity extends BaseFragmentActivity {
 
     }
 
+    @Override
+    public String getTitleName() {
+        return null;
+    }
+
 
 }

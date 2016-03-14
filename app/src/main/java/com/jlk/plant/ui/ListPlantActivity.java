@@ -23,7 +23,6 @@ import com.srx.widget.PullToLoadView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -32,7 +31,6 @@ import okhttp3.Response;
 public class ListPlantActivity extends BaseFragmentActivity {
 
     private final String tag = "ListPlantActivity";
-    List<Plant> list;
     private FloatingActionButton fab;
     private int page = 1;
     private int size = 6;
@@ -136,11 +134,7 @@ public class ListPlantActivity extends BaseFragmentActivity {
     }
 
     /**
-     * 绣球花
-     * 千日红
-     * 三角梅
-     * 丁香花
-     * 海棠
+     *
      */
     @Override
     public void initData() {
@@ -177,6 +171,14 @@ public class ListPlantActivity extends BaseFragmentActivity {
         loadMorePlant(categoryId);
     }
 
+    @Override
+    public String getTitleName() {
+
+        String title = getIntent().getStringExtra("categoryName");
+
+        return title;
+    }
+
     private void loadMorePlant(int categoryId) {
         GetPlantListRequest request = new GetPlantListRequest(categoryId, page, size);
         String json = new Gson().toJson(request);
@@ -203,7 +205,7 @@ public class ListPlantActivity extends BaseFragmentActivity {
                             } else {
 
                                 if (isRefreshing) {
-                                    L.i("清空adapter!");
+                                    L.i("刷新时清空adapter!");
                                     mAdapter.removeAllData();
                                     isRefreshing = false;
                                 }
