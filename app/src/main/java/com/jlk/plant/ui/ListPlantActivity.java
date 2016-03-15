@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.jlk.plant.R;
 import com.jlk.plant.adapter.ListCateAdapter;
-import com.jlk.plant.adapter.ListPlantsAdapter;
+import com.jlk.plant.adapter.ListPlantAdapter;
 import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragmentActivity;
 import com.jlk.plant.models.Plant;
@@ -33,8 +33,8 @@ public class ListPlantActivity extends BaseFragmentActivity {
     private final String tag = "ListPlantActivity";
     private FloatingActionButton fab;
     private int page = 1;
-    private int size = 6;
-    ListPlantsAdapter mAdapter;
+    private int size = 8;
+    ListPlantAdapter mAdapter;
     private PullToLoadView mPullToLoadView;
     private RecyclerView mRecyclerView;
     private boolean isLoading = false;
@@ -71,8 +71,9 @@ public class ListPlantActivity extends BaseFragmentActivity {
         // 设置item间隔
 //        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 0, 0, 0));
         mPullToLoadView.isLoadMoreEnabled(true);
-
+        //设置加载圈颜色
         mPullToLoadView.setColorSchemeResources(R.color.color_main);
+
 //        mPullToLoadView.initLoad();
         //隐藏底部加载时进度条
 //        ProgressBar progressBar = (ProgressBar) mPullToLoadView.findViewById(R.id.progressBar);
@@ -151,7 +152,7 @@ public class ListPlantActivity extends BaseFragmentActivity {
 
         L.i("categoryId:" + categoryId);
         //创建并设置Adapter
-        mAdapter = new ListPlantsAdapter();
+        mAdapter = new ListPlantAdapter();
         mAdapter.setOnItemClickListener(new ListCateAdapter.OnItemClickListener<Plant>() {
 
             @Override

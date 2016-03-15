@@ -1,10 +1,13 @@
 package com.jlk.plant.adapter;
 
-import android.content.Context;
+/**
+ * Created by test on 2016/2/4.
+ */
+
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,78 +17,44 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
-import java.util.List;
-
 /**
- * Created by test on 2016/2/16.
+ * Created by qibin on 2015/11/7.
  */
-public class ListPlantAdapter extends BaseAdapter {
-    List<Plant> list;
-    Context mContext;
-    private LayoutInflater mInflater;
-    protected ViewHolder holder;
-    DisplayImageOptions options;
+public class ListPlantAdapter extends BaseRecyclerAdapter<Plant> {
 
-    public ListPlantAdapter(List<Plant> list, Context mContext) {
-        this.list = list;
-        this.mContext = mContext;
-        mInflater = LayoutInflater.from(mContext);
+    //Õ¯¬ÁÕº∆¨¿˝◊”,Ω·∫œ≥£”√µƒÕº∆¨ª∫¥Êø‚UIL,ƒ„ø…“‘∏˘æ›◊‘º∫–Ë«Û◊‘º∫ªª∆‰À˚Õ¯¬ÁÕº∆¨ø‚
+    DisplayImageOptions options = new DisplayImageOptions.Builder().
+            showImageForEmptyUri(R.mipmap.ic_default_not_found)
+            .displayer(new RoundedBitmapDisplayer(90))// «∑Ò…Ë÷√Œ™‘≤Ω«£¨ª°∂»Œ™∂‡…Ÿ
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .build();
 
-        options = new DisplayImageOptions.Builder().displayer(new RoundedBitmapDisplayer(90))//ÊòØÂê¶ËÆæÁΩÆ‰∏∫ÂúÜËßíÔºåÂºßÂ∫¶‰∏∫Â§öÂ∞ë
-                .build();
+    @Override
+    public RecyclerView.ViewHolder onCreate(ViewGroup parent, int viewType) {
+        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_plant, parent, false);
+        return new MyHolder(layout);
     }
 
     @Override
-    public int getCount() {
-        return list.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.item_list_plant,
-                    null);
-            holder = new ViewHolder();
-            holder.text_plant_name = (TextView) convertView
-                    .findViewById(R.id.text_plant_name);
-            holder.text_plant_type = (TextView) convertView
-                    .findViewById(R.id.text_plant_type);
-            holder.imageView = (ImageView) convertView
-                    .findViewById(R.id.imageView);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
+    public void onBind(RecyclerView.ViewHolder viewHolder, int RealPosition, Plant data) {
+        if (viewHolder instanceof MyHolder) {
+            ((MyHolder) viewHolder).text_plant_name.setText(data.getPlantName());
+            ((MyHolder) viewHolder).text_plant_type.setText(data.getPlantType());
+            ImageLoader.getInstance().displayImage(data.getImg(), ((MyHolder) viewHolder).imageView, options);
         }
-        try {
-            holder.text_plant_name
-                    .setText(list.get(position).getPlantName());
-            holder.text_plant_type.setText(list.get(position).getPlantType());
-
-            ImageLoader.getInstance().displayImage(list.get(position).getImg(), holder.imageView, options);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return convertView;
     }
 
-
-    private class ViewHolder {
+    class MyHolder extends Holder {
         TextView text_plant_name;
         TextView text_plant_type;
         ImageView imageView;
-    }
 
+        public MyHolder(View itemView) {
+            super(itemView);
+            text_plant_name = (TextView) itemView.findViewById(R.id.text_plant_name);
+            text_plant_type = (TextView) itemView.findViewById(R.id.text_plant_type);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+        }
+    }
 }
