@@ -28,6 +28,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.1'
     compile 'com.shamanland:fab:0.0.8'
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
+    compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile files('libs/universal-image-loader-1.9.5.jar')
     compile files('libs/gson-2.6.1.jar')
 }

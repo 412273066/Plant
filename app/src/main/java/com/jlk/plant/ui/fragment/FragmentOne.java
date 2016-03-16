@@ -1,6 +1,7 @@
 package com.jlk.plant.ui.fragment;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,6 +61,8 @@ public class FragmentOne extends BaseFragment {
 
     private CacheUtils cache;
 
+    Handler mHandler;
+
     @Override
     public void initData() {
 
@@ -114,6 +117,8 @@ public class FragmentOne extends BaseFragment {
 
     @Override
     public void initViews() {
+        mHandler = new Handler();
+
         cache = new CacheUtils(mContext);
 
         headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
@@ -272,7 +277,7 @@ public class FragmentOne extends BaseFragment {
             GetBannerListReturn result = gson.fromJson(json, GetBannerListReturn.class);
             final List<Banner> list = result.getList();
 
-            getActivity().runOnUiThread(new Runnable() {
+            mHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     setupBanner(list);
@@ -285,7 +290,7 @@ public class FragmentOne extends BaseFragment {
 
         } catch (Exception e) {
             e.printStackTrace();
-            getActivity().runOnUiThread(new Runnable() {
+            mHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
@@ -333,7 +338,7 @@ public class FragmentOne extends BaseFragment {
 
                     data = (ArrayList<Category>) result.getList();
 
-                    getActivity().runOnUiThread(new Runnable() {
+                    mHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             if (data == null || data.size() == 0) {
@@ -358,7 +363,7 @@ public class FragmentOne extends BaseFragment {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    getActivity().runOnUiThread(new Runnable() {
+                    mHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
@@ -375,7 +380,7 @@ public class FragmentOne extends BaseFragment {
             public void onPostFailListener(Call call, IOException e) {
                 e.printStackTrace();
                 isLoading = false;
-                getActivity().runOnUiThread(new Runnable() {
+                mHandler.post(new Runnable() {
                     @Override
                     public void run() {
 //                        loadCategory();
@@ -445,7 +450,7 @@ public class FragmentOne extends BaseFragment {
                     final GetCategoryListReturn result = gson.fromJson(json, GetCategoryListReturn.class);
 
 
-                    getActivity().runOnUiThread(new Runnable() {
+                    mHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             ArrayList<Category> newData = (ArrayList<Category>) result.getList();
@@ -469,7 +474,7 @@ public class FragmentOne extends BaseFragment {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    getActivity().runOnUiThread(new Runnable() {
+                    mHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
@@ -484,7 +489,7 @@ public class FragmentOne extends BaseFragment {
 
             @Override
             public void onPostFailListener(Call call, IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
+                mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         isLoading = false;

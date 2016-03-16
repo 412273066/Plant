@@ -3,17 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_background"
-    android:paddingLeft="13dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:paddingRight="13dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
 
-   <ListView
-       android:id="@+id/listView"
-       android:scrollbars="none"
-       android:dividerHeight="5dp"
-       android:divider="@null"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"/>
+ >
+
+    <!--<ListView-->
+    <!--android:id="@+id/listView"-->
+    <!--android:scrollbars="none"-->
+    <!--android:dividerHeight="5dp"-->
+    <!--android:divider="@null"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"/>-->
+    <com.viewpagerindicator.TabPageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
 </LinearLayout>
