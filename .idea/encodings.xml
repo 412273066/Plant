@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/jlk/plant/adapter/ListCateAdapter.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/jlk/plant/adapter/ListCateAdapter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/jlk/plant/adapter/ListPlantAdapter.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/jlk/plant/app/AppConfig.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/jlk/plant/app/AppConfig.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/jlk/plant/app/AppSetting.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/jlk/plant/utils/ViewUtils.java" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />

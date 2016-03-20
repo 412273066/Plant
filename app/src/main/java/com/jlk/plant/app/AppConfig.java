@@ -17,16 +17,16 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
  */
 public class AppConfig {
     /**
-     * 初始化网络图片缓存库
+     * ????????????????
      */
 
     public static void initImageLoader(Context mContext) {
-        //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
+        //??????????,??????????????UIL,????????????????????????????????
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.mipmap.ic_default_not_found)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
-                .displayer(new FadeInBitmapDisplayer(300))//是否图片加载好后渐入的动画时间
+                .displayer(new FadeInBitmapDisplayer(300))//?????????煤??????????
                 .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
@@ -39,7 +39,7 @@ public class AppConfig {
     }
 
     /**
-     * 初始化数据库
+     * ??????????
      */
     public static void initDatabase(Context mContext) {
         SharedPreferences sp = mContext.getSharedPreferences(AppSetting.spfile, mContext.MODE_PRIVATE);
@@ -48,7 +48,7 @@ public class AppConfig {
         if (!isDBCreated) {
             DBhelper openHelper = new DBhelper(mContext);
 
-            // 第一次连接数据库时创建数据库文件. onCreate会被调用
+            // ???????????????????????????. onCreate??????
             openHelper.getReadableDatabase();
             openHelper.close();
         }
