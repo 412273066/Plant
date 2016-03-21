@@ -78,7 +78,7 @@ public class FragmentOne extends BaseFragment {
             public void onLoadMore() {
                 isLoading = true;
 //                Toast.makeText(mContext, "拼命加载中...", Toast.LENGTH_SHORT).show();
-                LoadMoreCategoryData();
+                loadMoreCategoryData();
                 L.i("onLoadMore");
 
             }
@@ -433,7 +433,7 @@ public class FragmentOne extends BaseFragment {
     /**
      * 获取服务器中种类的数据
      */
-    private void LoadMoreCategoryData() {
+    private void loadMoreCategoryData() {
 
         GetCategoryListRequest request = new GetCategoryListRequest(page + 1, size);
         String json = new Gson().toJson(request);

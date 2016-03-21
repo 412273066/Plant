@@ -14,6 +14,7 @@ import com.jlk.plant.models.requestmodels.GetArticleListRequest;
 import com.jlk.plant.models.returnmodels.GetArticleListReturn;
 import com.jlk.plant.utils.L;
 import com.jlk.plant.utils.OkHttpUtils;
+import com.srx.widget.PullCallback;
 import com.srx.widget.PullToLoadView;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class FragmentArticleList extends BaseFragment {
     private String tag = "FragmentArticleList";
     private PullToLoadView mPullToLoadView;
 
-    private int typeId = 0;
+    private int typeId = -1000;
     private String typeName;
 
     private ListArticleAdapter mAdapter;
@@ -63,8 +64,9 @@ public class FragmentArticleList extends BaseFragment {
         });
         mPullToLoadView.getRecyclerView().setAdapter(mAdapter);
         mPullToLoadView.getRecyclerView().setLayoutManager(new LinearLayoutManager(mContext));
-
-        loadMoreArticle();
+        mPullToLoadView.isLoadMoreEnabled(true);
+        mPullToLoadView.initLoad();
+//        loadMoreArticle();
 
     }
 
@@ -108,7 +110,7 @@ public class FragmentArticleList extends BaseFragment {
 
                                 mAdapter.addDatas(newData);
                                 page++;
-                                L.i("page++");
+                                L.i("page-----" + page);
 
                             }
                             if (newData.size() < size) {
@@ -142,6 +144,7 @@ public class FragmentArticleList extends BaseFragment {
                     @Override
                     public void run() {
                         isLoading = false;
+                        isRefreshing = false;
                         mPullToLoadView.setComplete();
                     }
                 });
@@ -161,7 +164,47 @@ public class FragmentArticleList extends BaseFragment {
 
     @Override
     public void initListeners() {
+        mPullToLoadView.setPullCallback(new PullCallback() {
+            @Override
+            public void onLoadMore() {
+                isLoading = true;
+//                Toast.makeText(mContext, "拼命加载中...", Toast.LENGTH_SHORT).show();
+                loadMoreArticle();
+                L.i("onLoadMore");
 
+            }
+
+            @Override
+            public void onRefresh() {
+                page = 1;
+                isRefreshing = true;
+                loadMoreArticle();
+                isHasLoadedAll = false;
+                L.i("onRefresh");
+            }
+
+            @Override
+            public boolean isLoading() {
+                if (isLoading) {
+                    L.i("isLoading true");
+                } else {
+
+                    L.i("isLoading false");
+                }
+                return isLoading;
+            }
+
+            @Override
+            public boolean hasLoadedAllItems() {
+                if (isHasLoadedAll) {
+                    L.i("isHasLoadedAll true");
+                } else {
+
+                    L.i("isHasLoadedAll false");
+                }
+                return isHasLoadedAll;
+            }
+        });
     }
 
     @Override
@@ -171,7 +214,7 @@ public class FragmentArticleList extends BaseFragment {
 
         mPullToLoadView = (PullToLoadView) mRootView.findViewById(R.id.pullToLoadView);
 
-
+        mPullToLoadView.setColorSchemeResources(R.color.color_main);
     }
 
     @Override
