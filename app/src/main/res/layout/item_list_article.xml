@@ -1,9 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/activity_background"
     android:orientation="vertical"
-    android:paddingBottom="5dp"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
     android:paddingTop="5dp">
@@ -16,7 +15,7 @@
         android:maxLines="2"
         android:text="植物茎部粗细的决定因素！"
         android:textColor="@color/color_black_normal_text"
-        android:textSize="@dimen/text_title_small" />
+        android:textSize="@dimen/text_button" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,8 +48,8 @@
             android:id="@+id/imageView"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:scaleType="fitCenter"
             android:layout_alignParentRight="true"
+            android:scaleType="centerCrop"
             android:src="@mipmap/ic_default_not_found" />
 
         <TextView
@@ -69,5 +68,10 @@
 
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/color_black_dividers" />
 </LinearLayout>
 

@@ -1,10 +1,9 @@
 package com.jlk.plant.adapter;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,77 +11,46 @@ import com.jlk.plant.R;
 import com.jlk.plant.models.Article;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.List;
-
 /**
  * Created by test on 2016/2/16.
  */
-public class ListArticleAdapter extends BaseAdapter {
-    List<Article> list;
-    Context mContext;
-    private LayoutInflater mInflater;
-    protected ViewHolder holder;
+public class ListArticleAdapter extends BaseRecyclerAdapter<Article> {
+    //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
+//    DisplayImageOptions options = new DisplayImageOptions.Builder().
+//            showImageForEmptyUri(R.mipmap.ic_default_not_found)
+//            .displayer(new RoundedBitmapDisplayer(90))//是否设置为圆角，弧度为多少
+//            .cacheInMemory(true)
+//            .cacheOnDisk(true)
+//            .build();
 
-    public ListArticleAdapter(List<Article> list, Context mContext) {
-        this.list = list;
-        this.mContext = mContext;
-        mInflater = LayoutInflater.from(mContext);
+    @Override
+    public RecyclerView.ViewHolder onCreate(ViewGroup parent, int viewType) {
+        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_article, parent, false);
+        return new MyHolder(layout);
     }
 
     @Override
-    public int getCount() {
-        return list.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.item_list_article,
-                    null);
-            holder = new ViewHolder();
-            holder.text_title = (TextView) convertView
-                    .findViewById(R.id.text_title);
-            holder.text_time = (TextView) convertView
-                    .findViewById(R.id.text_time);
-            holder.text_summary = (TextView) convertView
-                    .findViewById(R.id.text_summary);
-            holder.imageView = (ImageView) convertView
-                    .findViewById(R.id.imageView);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
+    public void onBind(RecyclerView.ViewHolder viewHolder, int RealPosition, Article data) {
+        if (viewHolder instanceof MyHolder) {
+            ((MyHolder) viewHolder).text_title.setText(data.getArcticleTitle());
+            ((MyHolder) viewHolder).text_time.setText(data.getArticleCreateTime());
+            ((MyHolder) viewHolder).text_summary.setText(data.getArticleSummary());
+            ImageLoader.getInstance().displayImage(data.getImg(), ((MyHolder) viewHolder).imageView);
         }
-        try {
-            holder.text_title
-                    .setText(list.get(position).getArcticleTitle());
-            holder.text_time.setText(list.get(position).getArticleCreateTime());
-            holder.text_summary.setText(list.get(position).getArticleSummary());
-            ImageLoader.getInstance().displayImage(list.get(position).getImg(), holder.imageView);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return convertView;
     }
 
-
-    private class ViewHolder {
+    class MyHolder extends BaseRecyclerAdapter.Holder {
         TextView text_title;
         TextView text_time;
         TextView text_summary;
         ImageView imageView;
-    }
 
+        public MyHolder(View itemView) {
+            super(itemView);
+            text_title = (TextView) itemView.findViewById(R.id.text_title);
+            text_time = (TextView) itemView.findViewById(R.id.text_time);
+            text_summary = (TextView) itemView.findViewById(R.id.text_summary);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+        }
+    }
 }

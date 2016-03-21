@@ -20,7 +20,7 @@ public class ArticleTypeAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
-    public ArticleTypeAdapter(FragmentManager fm,  List<ArticleType> list) {
+    public ArticleTypeAdapter(FragmentManager fm, List<ArticleType> list) {
         super(fm);
         this.list = list;
     }
@@ -30,7 +30,7 @@ public class ArticleTypeAdapter extends FragmentPagerAdapter {
         FragmentArticleList fragment = new FragmentArticleList();
         Bundle bundle = new Bundle();
         bundle.putInt("typeId", Integer.parseInt(list.get(position).getTypeId()));
-
+        bundle.putString("typeName", list.get(position).getTypeName());
         fragment.setArguments(bundle);
 
         return fragment;

@@ -1,18 +1,32 @@
 package com.jlk.plant.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by test on 2016/2/5.
  */
 public class Article {
+    @Expose
+    @SerializedName("article_id")
     private String articleId;
+    @Expose
+    @SerializedName("title")
     private String arcticleTitle;
+    @Expose
+    @SerializedName("create_time")
     private String articleCreateTime;
+    @Expose
+    @SerializedName("content")
     private String articleContent;
-    private String articleAuthor;
-    private String articleType;
-    private String articleKeywords;
-    private String articleClick;
+    @Expose
+    @SerializedName("type_id")
+    private String typeId;
+    @Expose
+    @SerializedName("summary")
     private String articleSummary;
+    @Expose
+    @SerializedName("img")
     private String img;
 
     public String getArticleId() {
@@ -47,36 +61,12 @@ public class Article {
         this.articleContent = articleContent;
     }
 
-    public String getArticleAuthor() {
-        return articleAuthor;
+    public String getTypeId() {
+        return typeId;
     }
 
-    public void setArticleAuthor(String articleAuthor) {
-        this.articleAuthor = articleAuthor;
-    }
-
-    public String getArticleType() {
-        return articleType;
-    }
-
-    public void setArticleType(String articleType) {
-        this.articleType = articleType;
-    }
-
-    public String getArticleKeywords() {
-        return articleKeywords;
-    }
-
-    public void setArticleKeywords(String articleKeywords) {
-        this.articleKeywords = articleKeywords;
-    }
-
-    public String getArticleClick() {
-        return articleClick;
-    }
-
-    public void setArticleClick(String articleClick) {
-        this.articleClick = articleClick;
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
     }
 
     public String getArticleSummary() {
@@ -95,15 +85,12 @@ public class Article {
         this.img = img;
     }
 
-    public Article(String articleId, String arcticleTitle, String articleCreateTime, String articleContent, String articleAuthor, String articleType, String articleKeywords, String articleClick, String articleSummary, String img) {
+    public Article(String articleId, String arcticleTitle, String articleCreateTime, String articleContent, String typeId, String articleSummary, String img) {
         this.articleId = articleId;
         this.arcticleTitle = arcticleTitle;
         this.articleCreateTime = articleCreateTime;
         this.articleContent = articleContent;
-        this.articleAuthor = articleAuthor;
-        this.articleType = articleType;
-        this.articleKeywords = articleKeywords;
-        this.articleClick = articleClick;
+        this.typeId = typeId;
         this.articleSummary = articleSummary;
         this.img = img;
     }
