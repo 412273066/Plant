@@ -1,5 +1,6 @@
 package com.jlk.plant.ui.fragment;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.jlk.plant.base.BaseFragment;
 import com.jlk.plant.models.Article;
 import com.jlk.plant.models.requestmodels.GetArticleListRequest;
 import com.jlk.plant.models.returnmodels.GetArticleListReturn;
+import com.jlk.plant.ui.ArticleDetailActivity;
 import com.jlk.plant.utils.L;
 import com.jlk.plant.utils.OkHttpUtils;
 import com.srx.widget.PullCallback;
@@ -58,7 +60,9 @@ public class FragmentArticleList extends BaseFragment {
 
             @Override
             public void onItemClick(int position, Article data) {
-
+                Intent intent = new Intent(mContext, ArticleDetailActivity.class);
+                intent.putExtra("url", data.getArticleContent());
+                startActivity(intent);
             }
 
         });
