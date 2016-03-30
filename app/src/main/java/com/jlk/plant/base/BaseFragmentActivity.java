@@ -2,6 +2,7 @@ package com.jlk.plant.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -37,8 +38,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         setActivityContext();
         setContentView();
 
-        if(!StringUtils.isEmpty(getTitleName())){
-            TextView title= (TextView) findViewById(R.id.title);
+        if (!StringUtils.isEmpty(getTitleName())) {
+            TextView title = (TextView) findViewById(R.id.title);
             title.setText(getTitleName());
         }
 
@@ -46,7 +47,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         initListeners();
         initData();
     }
-
 
 
     protected Toast mToast;
@@ -62,11 +62,32 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         }
     }
 
+    /**
+     * 关闭当前页面
+     */
     public void finishActivityAnim() {
         ((Activity) mContext).finish();
 //        ((Activity) mContext).overridePendingTransition(
 //                R.anim.activity_anim_default, R.anim.slide_out_right);
     }
+
+    /**
+     * 跳转页面
+     *
+     * @param bundle
+     * @param target
+     */
+    public void startActivityAnim(Bundle bundle, Class<?> target) {
+        Intent intent = new Intent(mContext, target);
+
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+//        ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right,
+//                R.anim.activity_anim_default);
+    }
+
 
     @Override
     protected void onResume() {

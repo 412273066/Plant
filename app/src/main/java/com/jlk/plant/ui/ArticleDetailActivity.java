@@ -1,7 +1,9 @@
 package com.jlk.plant.ui;
 
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.jlk.plant.R;
 import com.jlk.plant.base.BaseFragmentActivity;
@@ -28,6 +30,19 @@ public class ArticleDetailActivity extends BaseFragmentActivity {
 
         findViewById(R.id.back).setVisibility(View.VISIBLE);
         webView = (WebView) findViewById(R.id.webView);
+
+        // 启用支持javascript
+        webView.getSettings().setJavaScriptEnabled(true);
+        // 覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // TODO Auto-generated method stub
+                // 返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                view.loadUrl(url);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -49,4 +64,18 @@ public class ArticleDetailActivity extends BaseFragmentActivity {
     }
 
 
+    @Override
+    //设置回退
+    //覆盖Activity类的onKeyDown(int keyCoder,KeyEvent event)方法
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            if (webView.canGoBack()) {
+                webView.goBack(); //goBack()表示返回WebView的上一页面
+                return true;
+            } else {
+                finishActivityAnim();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
