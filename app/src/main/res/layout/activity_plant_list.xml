@@ -38,7 +38,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="16dp"
-        android:src="@mipmap/search_btn"
+        android:src="@mipmap/ic_search_btn"
         app:floatingActionButtonColor="@color/color_main"
         app:floatingActionButtonSize="mini" />
 </RelativeLayout>

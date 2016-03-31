@@ -98,7 +98,8 @@ public class DetailPlantActivity extends BaseFragmentActivity {
 
     @Override
     public String getTitleName() {
-        return null;
+        String title=getString(R.string.app_name);
+        return title;
     }
 
 

@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/title_bar_height"
     android:background="@color/color_main">
@@ -25,19 +24,21 @@
         android:paddingRight="8dp">
 
         <ImageView
-            android:id="@+id/search_btn"
-            android:layout_width="20dp"
-            android:layout_height="21dp"
+            android:id="@+id/img_search"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/search_btn" />
+            android:src="@mipmap/ic_search_btn" />
 
         <EditText
-            android:id="@+id/edit_search"
+            android:id="@+id/edit_keyword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/search_btn"
+            android:layout_toLeftOf="@id/img_search"
             android:background="@null"
+            android:textColorHint="@color/color_black_disable_text"
+            android:textSize="13sp"
             android:hint="请输入植物名字"
             android:singleLine="true" />
 

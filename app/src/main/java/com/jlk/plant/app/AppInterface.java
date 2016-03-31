@@ -28,5 +28,8 @@ public class AppInterface {
      * 文章列表接口
      */
     public static final String GETARTICLTLIST = SERVER_URL + "articleList/";
-
+    /**
+     * 关键字搜索接口
+     */
+    public static final String SEARCHPLANT = SERVER_URL + "searchPlant/";
 }

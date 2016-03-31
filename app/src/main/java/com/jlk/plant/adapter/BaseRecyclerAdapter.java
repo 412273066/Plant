@@ -41,7 +41,15 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
     }
 
     public void removeAllData() {
-        mDatas.removeAll(mDatas);
+//        mDatas.removeAll(mDatas);
+        mDatas.clear();
+        notifyDataSetChanged();
+    }
+
+    public void resetData(ArrayList<T> datas) {
+//        mDatas.removeAll(mDatas);
+        mDatas.clear();
+        mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 

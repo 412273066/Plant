@@ -1,29 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!--程序主色调-->
     <color name="color_main">#FF99cc66</color>
+    <!--程序辅助色-->
     <color name="color_assist">#ffa6dc7c</color>
+    <!--程序背景色-->
     <color name="activity_background">#fffafafa</color>
+    <!--状态栏颜色-->
     <color name="color_status_bar">#ff95c771</color>
-    <color name="color_light_gray">#ffe7e7e7</color>
+
+    
     <!-- 白色 -->
+    <!--普通文字-->
     <color name="color_white_normal_text">#FFFFFFFF</color>
+    <!--减淡文字-->
     <color name="color_white_secondary_text">#b3ffffff</color>
+    <!--禁用状态/提示文字-->
     <color name="color_white_disable_text">#4dffffff</color>
+    <!--分割线-->
     <color name="color_white_dividers">#1fffffff</color>
 
 
     <!-- 黑色 -->
+    <!--普通文字-->
     <color name="color_black_normal_text">#de000000</color>
+    <!--减淡文字-->
     <color name="color_black_secondary_text">#8a000000</color>
+    <!--禁用状态/提示文字-->
     <color name="color_black_disable_text">#42000000</color>
+    <!--分割线-->
     <color name="color_black_dividers">#1f000000</color>
 
     <!-- 灰色 -->
     <color name="grey">#808080</color>
+    <!--浅灰色-->
+    <color name="color_light_gray">#ffe7e7e7</color>
     <!--白色-->
     <color name="white">#FFFFFF</color>
-
 
 
 </resources>
