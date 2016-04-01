@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.jlk.plant.R;
 import com.jlk.plant.app.AppConfig;
@@ -23,6 +24,8 @@ public class MainActivity extends BaseFragmentActivity {
     private FragmentTwo fragmentTwo;
     private FragmentThree fragmentThree;
     private final String tag = "MainActivity";
+
+    private TextView text_title;
 
     @Override
     public void setActivityContext() {
@@ -44,6 +47,7 @@ public class MainActivity extends BaseFragmentActivity {
         if (mBottomTab == null)
             mBottomTab = (RadioGroup) findViewById(R.id.layout_tab);
 
+        text_title = (TextView) findViewById(R.id.title);
 
     }
 
@@ -58,12 +62,15 @@ public class MainActivity extends BaseFragmentActivity {
                 switch (checkedId) {
                     case R.id.one:
                         newFragment = fragmentOne;
+                        text_title.setText(getString(R.string.app_name));
                         break;
                     case R.id.two:
                         newFragment = fragmentTwo;
+                        text_title.setText("发现");
                         break;
                     case R.id.three:
                         newFragment = fragmentThree;
+                        text_title.setText("我的");
                         break;
                     default:
                         break;
@@ -91,7 +98,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     public String getTitleName() {
-        String title=getString(R.string.app_name);
+        String title = getString(R.string.app_name);
         return title;
     }
 
@@ -103,7 +110,7 @@ public class MainActivity extends BaseFragmentActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getAction() == KeyEvent.ACTION_DOWN) {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
-                showToast("再按一次退出"+getString(R.string.app_name));
+                showToast("再按一次退出" + getString(R.string.app_name));
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();

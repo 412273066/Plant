@@ -18,7 +18,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/back"
-        android:background="@drawable/bg_organe_6radius"
+        android:background="@drawable/bg_white_6radius"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="8dp">
