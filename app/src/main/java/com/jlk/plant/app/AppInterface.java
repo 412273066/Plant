@@ -7,7 +7,7 @@ public class AppInterface {
     /**
      * 服务器地址
      */
-    public static final String SERVER_URL = "http://192.168.3.133/plant_server/app/";
+    public static final String SERVER_URL = "http://192.168.1.104/plant_server/app/";
     /**
      * 广告栏借口
      */

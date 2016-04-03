@@ -28,6 +28,9 @@ public class Article {
     @Expose
     @SerializedName("img")
     private String img;
+    @Expose
+    @SerializedName("type_name")
+    private String typeName;
 
     public String getArticleId() {
         return articleId;
@@ -85,13 +88,11 @@ public class Article {
         this.img = img;
     }
 
-    public Article(String articleId, String arcticleTitle, String articleCreateTime, String articleContent, String typeId, String articleSummary, String img) {
-        this.articleId = articleId;
-        this.arcticleTitle = arcticleTitle;
-        this.articleCreateTime = articleCreateTime;
-        this.articleContent = articleContent;
-        this.typeId = typeId;
-        this.articleSummary = articleSummary;
-        this.img = img;
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

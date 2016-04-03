@@ -77,17 +77,49 @@ public class TimeUtils {
      * @return
      */
     public static String timestamp2date(long timestamp) {
+        String seconds = String.valueOf(timestamp);
+        return timeStamp2Date(seconds, null);
+    }
 
-        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    /**
+     * 时间戳转换成日期格式字符串
+     *
+     * @param seconds
+     * @param format
+     * @return
+     */
+    public static String timeStamp2Date(String seconds, String format) {
+        if (seconds == null || seconds.isEmpty() || seconds.equals("null")) {
+            return "";
+        }
+        if (format == null || format.isEmpty()) {
+            format = "yyyy-MM-dd HH:mm:ss";
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+
         //设置时区否则获得的时间少8小时
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
 
-        Long time = new Long(timestamp * 1000L);
+        Date date = new Date(Long.valueOf(seconds + "000"));
 
-        Date date = new Date(time);
+        return sdf.format(date);
+    }
 
-        String str = sdf.format(date);
-
-        return str;
+    /**
+     * 日期格式字符串转换成时间戳
+     *
+     * @param date_str
+     * @param format
+     * @return
+     */
+    public static String date2TimeStamp(String date_str, String format) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            return String.valueOf(sdf.parse(date_str).getTime() / 1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
