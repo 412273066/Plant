@@ -1,0 +1,111 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/layout_title_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <View style="@style/LineHorizontalStyle" />
+
+        <RelativeLayout
+            android:id="@+id/relative_clear_cache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_list_item"
+            android:padding="10dp">
+
+
+            <TextView
+                android:id="@+id/label_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="3dp"
+                android:text="清理缓存"
+                android:textColor="@color/color_black_secondary_text"
+                android:textSize="@dimen/text_title_small" />
+
+            <TextView
+                android:id="@+id/text_cacheSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="0K"
+                android:textColor="@color/color_black_disable_text"
+                android:textSize="@dimen/text_title_small" />
+
+        </RelativeLayout>
+
+        <View style="@style/LineHorizontalStyle" />
+
+        <RelativeLayout
+            android:id="@+id/relative_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_list_item"
+            android:padding="10dp">
+
+
+            <TextView
+                android:id="@+id/label_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="3dp"
+                android:text="检查更新"
+                android:textColor="@color/color_black_secondary_text"
+                android:textSize="@dimen/text_title_small" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_front_gray" />
+
+        </RelativeLayout>
+
+        <View style="@style/LineHorizontalStyle" />
+
+        <RelativeLayout
+            android:id="@+id/relative_about_us"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_list_item"
+            android:padding="10dp">
+
+
+            <TextView
+                android:id="@+id/label_about_us"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="3dp"
+                android:text="关于我们"
+                android:textColor="@color/color_black_secondary_text"
+                android:textSize="@dimen/text_title_small" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_front_gray" />
+
+        </RelativeLayout>
+
+        <View style="@style/LineHorizontalStyle" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,6 +1,6 @@
 package com.jlk.plant.ui.fragment;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Toast;
@@ -10,6 +10,7 @@ import com.jlk.plant.R;
 import com.jlk.plant.adapter.ListArticleAdapter;
 import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragment;
+import com.jlk.plant.base.BaseFragmentActivity;
 import com.jlk.plant.models.Article;
 import com.jlk.plant.models.requestmodels.GetArticleListRequest;
 import com.jlk.plant.models.returnmodels.GetArticleListReturn;
@@ -60,9 +61,11 @@ public class FragmentArticleList extends BaseFragment {
 
             @Override
             public void onItemClick(int position, Article data) {
-                Intent intent = new Intent(mContext, ArticleDetailActivity.class);
-                intent.putExtra("url", data.getArticleContent());
-                startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putString("url", data.getArticleContent());
+                ((BaseFragmentActivity) mContext).startActivityAnim(bundle, ArticleDetailActivity.class);
+
+
             }
 
         });

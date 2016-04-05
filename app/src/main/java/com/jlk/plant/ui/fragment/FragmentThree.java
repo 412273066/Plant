@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import com.jlk.plant.R;
 import com.jlk.plant.base.BaseFragment;
+import com.jlk.plant.base.BaseFragmentActivity;
+import com.jlk.plant.ui.SettingActivity;
 
 
 /**
@@ -49,17 +51,18 @@ public class FragmentThree extends BaseFragment {
         relative_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+                activity.startActivityAnim(null, SettingActivity.class);
             }
         });
     }
 
     @Override
     public void initViews() {
-        relative_collection= (RelativeLayout) mRootView.findViewById(R.id.relative_collection);
-        relative_feedback= (RelativeLayout) mRootView.findViewById(R.id.relative_feedback);
-        relative_share= (RelativeLayout) mRootView.findViewById(R.id.relative_share);
-        relative_setting= (RelativeLayout) mRootView.findViewById(R.id.relative_setting);
+        relative_collection = (RelativeLayout) mRootView.findViewById(R.id.relative_collection);
+        relative_feedback = (RelativeLayout) mRootView.findViewById(R.id.relative_feedback);
+        relative_share = (RelativeLayout) mRootView.findViewById(R.id.relative_share);
+        relative_setting = (RelativeLayout) mRootView.findViewById(R.id.relative_setting);
 
     }
 

@@ -1,6 +1,6 @@
 package com.jlk.plant.ui;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -70,14 +70,15 @@ public class SearchActivity extends BaseFragmentActivity {
 
             @Override
             public void onItemClick(int position, Plant data) {
-                Intent intent = new Intent(mContext, DetailPlantActivity.class);
-                intent.putExtra("img", data.getImg());
-                intent.putExtra("feature", data.getPlantFeature());
-                intent.putExtra("habit", data.getPlantHabit());
-                intent.putExtra("info", data.getPlantInfo());
-                intent.putExtra("name", data.getPlantName());
-                intent.putExtra("use", data.getPlantUse());
-                startActivity(intent);
+                Bundle mBundle = new Bundle();
+                mBundle.putString("img", data.getImg());
+                mBundle.putString("feature", data.getPlantFeature());
+                mBundle.putString("habit", data.getPlantHabit());
+                mBundle.putString("info", data.getPlantInfo());
+                mBundle.putString("name", data.getPlantName());
+                mBundle.putString("use", data.getPlantUse());
+
+                startActivityAnim(mBundle, DetailPlantActivity.class);
 
             }
         });

@@ -1,6 +1,6 @@
 package com.jlk.plant.ui.fragment;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +18,7 @@ import com.jlk.plant.adapter.ListCateAdapter;
 import com.jlk.plant.adapter.NetworkImageHolderView;
 import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragment;
+import com.jlk.plant.base.BaseFragmentActivity;
 import com.jlk.plant.db.Cache.CacheUtils;
 import com.jlk.plant.models.Banner;
 import com.jlk.plant.models.Category;
@@ -150,10 +151,13 @@ public class FragmentOne extends BaseFragment {
 
             @Override
             public void onItemClick(int position, Category data) {
-                Intent intent = new Intent(mContext, ListPlantActivity.class);
-                intent.putExtra("categoryId", data.getCategoryId());
-                intent.putExtra("categoryName", data.getCategoryName());
-                mContext.startActivity(intent);
+                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("categoryId", data.getCategoryId());
+                bundle.putString("categoryName", data.getCategoryName());
+
+                activity.startActivityAnim(bundle, ListPlantActivity.class);
 //                Toast.makeText(mContext, data.getCategoryName() + "被点击!", Toast.LENGTH_SHORT).show();
 
             }

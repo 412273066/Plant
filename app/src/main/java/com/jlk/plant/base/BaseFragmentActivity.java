@@ -67,8 +67,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
      */
     public void finishActivityAnim() {
         ((Activity) mContext).finish();
-//        ((Activity) mContext).overridePendingTransition(
-//                R.anim.activity_anim_default, R.anim.slide_out_right);
+        ((Activity) mContext).overridePendingTransition(
+                R.anim.activity_anim_default, R.anim.slide_out_right);
     }
 
     /**
@@ -84,8 +84,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
             intent.putExtras(bundle);
         }
         startActivity(intent);
-//        ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right,
-//                R.anim.activity_anim_default);
+        ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right,
+                R.anim.activity_anim_default);
     }
 
 

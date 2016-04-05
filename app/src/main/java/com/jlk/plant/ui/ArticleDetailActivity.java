@@ -53,7 +53,7 @@ public class ArticleDetailActivity extends BaseFragmentActivity {
 
     @Override
     public void initData() {
-        String url = getIntent().getStringExtra("url");
+        String url = getIntent().getExtras().getString("url");
         L.i("url:" + url);
         webView.loadUrl(url);
     }

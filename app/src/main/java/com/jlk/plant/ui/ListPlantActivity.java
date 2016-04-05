@@ -1,6 +1,6 @@
 package com.jlk.plant.ui;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -85,9 +85,7 @@ public class ListPlantActivity extends BaseFragmentActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, SearchActivity.class);
-
-                startActivity(intent);
+                startActivityAnim(null, SearchActivity.class);
             }
         });
         mPullToLoadView.setPullCallback(new PullCallback() {
@@ -139,10 +137,10 @@ public class ListPlantActivity extends BaseFragmentActivity {
      */
     @Override
     public void initData() {
-
+        Bundle bundle = getIntent().getExtras();
 
         try {
-            String id = getIntent().getStringExtra("categoryId");
+            String id = bundle.getString("categoryId");
             categoryId = Integer.parseInt(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,14 +155,16 @@ public class ListPlantActivity extends BaseFragmentActivity {
 
             @Override
             public void onItemClick(int position, Plant data) {
-                Intent intent = new Intent(mContext, DetailPlantActivity.class);
-                intent.putExtra("img", data.getImg());
-                intent.putExtra("feature", data.getPlantFeature());
-                intent.putExtra("habit", data.getPlantHabit());
-                intent.putExtra("info", data.getPlantInfo());
-                intent.putExtra("name", data.getPlantName());
-                intent.putExtra("use", data.getPlantUse());
-                startActivity(intent);
+
+                Bundle mBundle = new Bundle();
+                mBundle.putString("img", data.getImg());
+                mBundle.putString("feature", data.getPlantFeature());
+                mBundle.putString("habit", data.getPlantHabit());
+                mBundle.putString("info", data.getPlantInfo());
+                mBundle.putString("name", data.getPlantName());
+                mBundle.putString("use", data.getPlantUse());
+
+                startActivityAnim(mBundle, DetailPlantActivity.class);
 
             }
         });
@@ -174,8 +174,9 @@ public class ListPlantActivity extends BaseFragmentActivity {
 
     @Override
     public String getTitleName() {
+        Bundle bundle = getIntent().getExtras();
 
-        String title = getIntent().getStringExtra("categoryName");
+        String title = bundle.getString("categoryName");
 
         return title;
     }

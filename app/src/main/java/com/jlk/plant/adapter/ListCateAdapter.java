@@ -20,9 +20,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public class ListCateAdapter extends BaseRecyclerAdapter<Category> {
 
-    //ÍøÂçÍ¼Æ¬Àý×Ó,½áºÏ³£ÓÃµÄÍ¼Æ¬»º´æ¿âUIL,Äã¿ÉÒÔ¸ù¾Ý×Ô¼ºÐèÇó×Ô¼º»»ÆäËûÍøÂçÍ¼Æ¬¿â
+    //ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½Ï³ï¿½ï¿½Ãµï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½UIL,ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½
 //    DisplayImageOptions options = new DisplayImageOptions.Builder().
-//            showImageForEmptyUri(R.mipmap.ic_default_not_found).displayer(new RoundedBitmapDisplayer(13))//ÊÇ·ñÉèÖÃÎªÔ²½Ç£¬»¡¶ÈÎª¶àÉÙ
+//            showImageForEmptyUri(R.mipmap.ic_default_not_found).displayer(new RoundedBitmapDisplayer(13))//ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÔ²ï¿½Ç£ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½
 //            .cacheInMemory(true).cacheOnDisk(true).build();
 
     @Override
@@ -32,6 +32,11 @@ public class ListCateAdapter extends BaseRecyclerAdapter<Category> {
     }
 
     @Override
+
+
+
+
+
     public void onBind(RecyclerView.ViewHolder viewHolder, int RealPosition, Category data) {
         if (viewHolder instanceof MyHolder) {
             ((MyHolder) viewHolder).text_cate_name.setText(data.getCategoryName());

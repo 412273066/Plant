@@ -21,6 +21,7 @@
         <activity android:name=".ui.DetailPlantActivity" />
         <activity android:name=".ui.SearchActivity" />
         <activity android:name=".ui.ArticleDetailActivity" />
+        <activity android:name=".ui.SettingActivity" />
     </application>
 
 </manifest>
