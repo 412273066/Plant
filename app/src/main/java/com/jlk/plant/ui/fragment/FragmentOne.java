@@ -64,6 +64,8 @@ public class FragmentOne extends BaseFragment {
 
     Handler mHandler;
 
+    TextView text_share, text_shop, text_identify;
+
     @Override
     public void initData() {
 
@@ -114,6 +116,15 @@ public class FragmentOne extends BaseFragment {
                 return isHasLoadedAll;
             }
         });
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "该功能暂未开放,敬请期待!", Toast.LENGTH_SHORT).show();
+            }
+        };
+        text_identify.setOnClickListener(listener);
+        text_shop.setOnClickListener(listener);
+        text_share.setOnClickListener(listener);
     }
 
     @Override
@@ -125,6 +136,10 @@ public class FragmentOne extends BaseFragment {
         headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
 
         convenientBanner = (ConvenientBanner) headerView.findViewById(R.id.convenientBanner);
+
+        text_share = (TextView) headerView.findViewById(R.id.text_share);
+        text_shop = (TextView) headerView.findViewById(R.id.text_shop);
+        text_identify = (TextView) headerView.findViewById(R.id.text_identify);
 
         mPullToLoadView = (PullToLoadView) mRootView.findViewById(R.id.pullToLoadView);
         //创建默认的线性LayoutManager
