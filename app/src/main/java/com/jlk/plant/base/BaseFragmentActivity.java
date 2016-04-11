@@ -116,4 +116,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
     public void onLeftButtonPressed(View view) {
         finishActivityAnim();
     }
+
+    public void onBackPressed() {
+        finishActivityAnim();
+    }
 }
