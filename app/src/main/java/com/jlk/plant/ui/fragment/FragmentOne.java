@@ -25,6 +25,7 @@ import com.jlk.plant.models.Category;
 import com.jlk.plant.models.requestmodels.GetCategoryListRequest;
 import com.jlk.plant.models.returnmodels.GetBannerListReturn;
 import com.jlk.plant.models.returnmodels.GetCategoryListReturn;
+import com.jlk.plant.ui.IdentifyActivity;
 import com.jlk.plant.ui.ListPlantActivity;
 import com.jlk.plant.utils.L;
 import com.jlk.plant.utils.OkHttpUtils;
@@ -122,7 +123,12 @@ public class FragmentOne extends BaseFragment {
                 Toast.makeText(mContext, "该功能暂未开放,敬请期待!", Toast.LENGTH_SHORT).show();
             }
         };
-        text_identify.setOnClickListener(listener);
+        text_identify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((BaseFragmentActivity) getActivity()).startActivityAnim(null, IdentifyActivity.class);
+            }
+        });
         text_shop.setOnClickListener(listener);
         text_share.setOnClickListener(listener);
     }

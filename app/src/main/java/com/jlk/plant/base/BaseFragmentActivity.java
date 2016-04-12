@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jlk.plant.R;
+import com.jlk.plant.utils.L;
 import com.jlk.plant.utils.StringUtils;
 
 public abstract class BaseFragmentActivity extends FragmentActivity {
@@ -33,7 +33,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
 
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
-        Log.i(TAG, "onCreate");
+        L.i("onCreate");
         this.mAppContext = getApplicationContext();
         setActivityContext();
         setContentView();
