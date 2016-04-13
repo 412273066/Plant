@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jlk.plant.R;
 import com.jlk.plant.app.AppSetting;
@@ -43,6 +44,8 @@ public class IdentifyActivity extends BaseFragmentActivity {
     public static final int PHOTOZOOM = 2; // 缩放
     public static final int PHOTORESOULT = 3;// 结果
     public static final String IMAGE_UNSPECIFIED = "image/*";
+
+    private String saveName = "img_identified.png";
 
     @Override
     public void setActivityContext() {
@@ -80,26 +83,35 @@ public class IdentifyActivity extends BaseFragmentActivity {
             @Override
             public void onClick(View v) {
                 if (file == null) {
+                    Toast.makeText(mContext, "请选择图片!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                if (!file.exists()) {
+                    Toast.makeText(mContext, "文件不存在!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 OkHttpClient client = new OkHttpClient();
 
                 RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
 
                 RequestBody requestBody = new MultipartBody.Builder()
-                        .addFormDataPart("image", "img_identified.png", fileBody)
+//                        .addPart(Headers.of("Content-Disposition", "form-data; name=\"Filedata\";filename =\"img_identified.png+\""), fileBody)
+                        .addFormDataPart("image", saveName, fileBody)
+                        .setType(MediaType.parse("multipart/form-data"))
                         .build();
 
 //                Request request = new Request.Builder()
 //                        .url("http://image.baidu.com/pictureup/uploadshitu?objurl=http://map1.zw3e.com:8080/zw_news_map/150/2014073/1405906118712531720.jpg")
 //                        .get()
 //                        .build();
+
+
                 Request request = new Request.Builder()
                         .url("http://image.baidu.com/pictureup/uploadshitu")
                         .post(requestBody)
                         .build();
+
 
                 Call call = client.newCall(request);
                 call.enqueue(new Callback() {
@@ -169,7 +181,7 @@ public class IdentifyActivity extends BaseFragmentActivity {
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                file = new File(dir, "img_identified.png");
+                file = new File(dir, saveName);
                 try {
                     // 保存截图
                     FileOutputStream output = new FileOutputStream(file);

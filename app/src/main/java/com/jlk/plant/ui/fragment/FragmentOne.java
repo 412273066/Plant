@@ -158,7 +158,7 @@ public class FragmentOne extends BaseFragment {
         mRecyclerView.setHasFixedSize(true);
         // 设置item间隔
 //        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 0, 0, 0));
-        mPullToLoadView.isLoadMoreEnabled(true);
+        mPullToLoadView.isLoadMoreEnabled(false);
 
         mPullToLoadView.setColorSchemeResources(R.color.color_main);
 //        mPullToLoadView.initLoad();
