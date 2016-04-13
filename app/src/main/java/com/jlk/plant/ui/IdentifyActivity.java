@@ -17,11 +17,14 @@ import android.widget.Toast;
 import com.jlk.plant.R;
 import com.jlk.plant.app.AppSetting;
 import com.jlk.plant.base.BaseFragmentActivity;
+import com.jlk.plant.utils.L;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -82,6 +85,9 @@ public class IdentifyActivity extends BaseFragmentActivity {
         btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                L.i("上传上传!");
+
                 if (file == null) {
                     Toast.makeText(mContext, "请选择图片!", Toast.LENGTH_SHORT).show();
                     return;
@@ -96,7 +102,6 @@ public class IdentifyActivity extends BaseFragmentActivity {
                 RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
 
                 RequestBody requestBody = new MultipartBody.Builder()
-//                        .addPart(Headers.of("Content-Disposition", "form-data; name=\"Filedata\";filename =\"img_identified.png+\""), fileBody)
                         .addFormDataPart("image", saveName, fileBody)
                         .setType(MediaType.parse("multipart/form-data"))
                         .build();
@@ -105,7 +110,6 @@ public class IdentifyActivity extends BaseFragmentActivity {
 //                        .url("http://image.baidu.com/pictureup/uploadshitu?objurl=http://map1.zw3e.com:8080/zw_news_map/150/2014073/1405906118712531720.jpg")
 //                        .get()
 //                        .build();
-
 
                 Request request = new Request.Builder()
                         .url("http://image.baidu.com/pictureup/uploadshitu")
@@ -122,15 +126,29 @@ public class IdentifyActivity extends BaseFragmentActivity {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        final String result = response.body().string();
+                        String result = response.body().string();
+
+                        Pattern p = Pattern
+                                .compile("data-word-index=\"0\" target=\"_blank\">[\\u4e00-\\u9fa5]{1,}</a>");
+
+                        Matcher m = p.matcher(result);
+
+                        String data = "未找到结果！";
+                        if (m.find()) {
+                            data = m.group(0);
+                            int start = data.indexOf(">") + 1;
+                            int end = data.indexOf("<");
+                            data = data.substring(start, end);
+                        } else {
+                            L.i("找不到");
+                        }
+
+                        final String finalData = data;
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                text_result.setText(Html.fromHtml(result));
-                                SharedPreferences sp = getSharedPreferences(AppSetting.spfile, Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sp.edit();
-                                editor.putString("html", result);
-                                editor.commit();
+                                text_result.setText("最佳猜测:" + finalData);
 
                             }
                         });

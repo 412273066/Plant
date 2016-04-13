@@ -41,7 +41,6 @@
             android:layout_below="@id/label_tip"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text=""
             android:textColor="@color/color_black_secondary_text"
             android:textSize="@dimen/text_title_large" />
 
