@@ -114,7 +114,6 @@ public class IdentifyActivity extends BaseFragmentActivity {
                                         @Override
                                         public void run() {
                                             text_result.setText("最佳猜测:" + finalData);
-
                                         }
                                     });
                                 } catch (IOException e) {
