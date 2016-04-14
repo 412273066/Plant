@@ -4,14 +4,18 @@ import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -103,6 +107,47 @@ public class OkHttpUtils {
         MyCallback callback = new MyCallback();
 
         call.enqueue(callback);
+
+    }
+
+    /**
+     * 上传单个文件
+     *
+     * @param key       表单中input标签 name的值
+     * @param fileName  文件名
+     * @param mediaType 媒体类型
+     * @param file      上传的文件
+     */
+    public void doUpload(String key, String fileName, String mediaType, File file) {
+
+        if (this.httpPostListener != null) {
+            httpPostListener.onPrePostListener();
+        }
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(timeout, TimeUnit.SECONDS)
+                .writeTimeout(timeout, TimeUnit.SECONDS)
+                .readTimeout(timeout, TimeUnit.SECONDS).build();
+
+        RequestBody fileBody = RequestBody.create(MediaType.parse(mediaType), file);
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .addFormDataPart(key, fileName, fileBody)
+                .setType(MediaType.parse("multipart/form-data"))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        Call call = client.newCall(request);
+
+        //请求加入调度
+        MyCallback callback = new MyCallback();
+
+        call.enqueue(callback);
+
 
     }
 

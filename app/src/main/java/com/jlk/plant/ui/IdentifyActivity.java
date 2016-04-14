@@ -1,13 +1,11 @@
 package com.jlk.plant.ui;
 
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,24 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jlk.plant.R;
+import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.app.AppSetting;
 import com.jlk.plant.base.BaseFragmentActivity;
-import com.jlk.plant.utils.L;
+import com.jlk.plant.utils.OkHttpUtils;
+import com.jlk.plant.utils.RegexUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
@@ -49,6 +41,8 @@ public class IdentifyActivity extends BaseFragmentActivity {
     public static final String IMAGE_UNSPECIFIED = "image/*";
 
     private String saveName = "img_identified.png";
+
+    private ProgressDialog loadingDialog;
 
     @Override
     public void setActivityContext() {
@@ -82,81 +76,80 @@ public class IdentifyActivity extends BaseFragmentActivity {
                 startActivityForResult(intent, PHOTOZOOM);
             }
         });
-        btn_upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                L.i("上传上传!");
-
-                if (file == null) {
-                    Toast.makeText(mContext, "请选择图片!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!file.exists()) {
-                    Toast.makeText(mContext, "文件不存在!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                OkHttpClient client = new OkHttpClient();
-
-                RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
-
-                RequestBody requestBody = new MultipartBody.Builder()
-                        .addFormDataPart("image", saveName, fileBody)
-                        .setType(MediaType.parse("multipart/form-data"))
-                        .build();
-
-//                Request request = new Request.Builder()
-//                        .url("http://image.baidu.com/pictureup/uploadshitu?objurl=http://map1.zw3e.com:8080/zw_news_map/150/2014073/1405906118712531720.jpg")
-//                        .get()
-//                        .build();
-
-                Request request = new Request.Builder()
-                        .url("http://image.baidu.com/pictureup/uploadshitu")
-                        .post(requestBody)
-                        .build();
-
-
-                Call call = client.newCall(request);
-                call.enqueue(new Callback() {
+        btn_upload.setOnClickListener(
+                new View.OnClickListener() {
                     @Override
-                    public void onFailure(Call call, IOException e) {
-                        e.printStackTrace();
-                    }
+                    public void onClick(View v) {
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String result = response.body().string();
-
-                        Pattern p = Pattern
-                                .compile("data-word-index=\"0\" target=\"_blank\">[\\u4e00-\\u9fa5]{1,}</a>");
-
-                        Matcher m = p.matcher(result);
-
-                        String data = "未找到结果！";
-                        if (m.find()) {
-                            data = m.group(0);
-                            int start = data.indexOf(">") + 1;
-                            int end = data.indexOf("<");
-                            data = data.substring(start, end);
-                        } else {
-                            L.i("找不到");
+                        if (file == null) {
+                            Toast.makeText(mContext, "请选择图片!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (!file.exists()) {
+                            Toast.makeText(mContext, "文件不存在!", Toast.LENGTH_SHORT).show();
+                            return;
                         }
 
-                        final String finalData = data;
+                        OkHttpUtils client = new OkHttpUtils(mContext, null, AppInterface.BAIDUSHITU);
 
-                        runOnUiThread(new Runnable() {
+                        client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
                             @Override
-                            public void run() {
-                                text_result.setText("最佳猜测:" + finalData);
+                            public void onPostSuccessListener(Call call, Response response) {
+                                try {
+                                    String result = response.body().string();
+
+                                    String data = RegexUtil.getString(result, "data-word-index=\"0\" target=\"_blank\">[\\u4e00-\\u9fa5]{1,}</a>");
+
+                                    if (data != null) {
+                                        int start = data.indexOf(">") + 1;
+                                        int end = data.indexOf("<");
+                                        data = data.substring(start, end);
+                                    } else {
+                                        data = "未找到结果";
+                                    }
+
+                                    final String finalData = data;
+
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            text_result.setText("最佳猜测:" + finalData);
+
+                                        }
+                                    });
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    if (loadingDialog != null) {
+                                        loadingDialog.dismiss();
+                                    }
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onPostFailListener(Call call, IOException e) {
+                                if (loadingDialog != null) {
+                                    loadingDialog.dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onPrePostListener() {
+                                loadingDialog = new ProgressDialog(mContext);
+                                loadingDialog.setCanceledOnTouchOutside(false);
+                                loadingDialog.setMessage("上传分析中,请稍后");
+                                loadingDialog.show();
 
                             }
                         });
+                        client.doUpload("image", saveName, "image/png", file);
+
                     }
-                    //...
-                });
-            }
-        });
+                }
+
+        );
     }
 
 
@@ -220,6 +213,7 @@ public class IdentifyActivity extends BaseFragmentActivity {
      *
      * @param uri 需要裁剪的照片的URI值
      */
+
     public void startPhotoZoom(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, IMAGE_UNSPECIFIED);

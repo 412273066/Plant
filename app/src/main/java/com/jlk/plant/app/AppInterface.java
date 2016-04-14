@@ -32,4 +32,8 @@ public class AppInterface {
      * 关键字搜索接口
      */
     public static final String SEARCHPLANT = SERVER_URL + "searchPlant/";
+    /**
+     * 百度识图接口
+     */
+    public static final String BAIDUSHITU = "http://image.baidu.com/pictureup/uploadshitu";
 }
