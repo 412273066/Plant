@@ -1,5 +1,6 @@
 package com.jlk.plant.ui.fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,6 +28,7 @@ import com.jlk.plant.models.returnmodels.GetBannerListReturn;
 import com.jlk.plant.models.returnmodels.GetCategoryListReturn;
 import com.jlk.plant.ui.IdentifyActivity;
 import com.jlk.plant.ui.ListPlantActivity;
+import com.jlk.plant.utils.DialogUtil;
 import com.jlk.plant.utils.L;
 import com.jlk.plant.utils.OkHttpUtils;
 import com.srx.widget.PullCallback;
@@ -130,7 +132,17 @@ public class FragmentOne extends BaseFragment {
             }
         });
         text_shop.setOnClickListener(listener);
-        text_share.setOnClickListener(listener);
+        text_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogUtil dialogUtil = DialogUtil.getInstance();
+
+//                Dialog dialog = dialogUtil.createDialog(mContext, "标题", "内容内容第三方打算放空间倒垃圾");
+                Dialog dialog = dialogUtil.createDialog(mContext, "标题", "内容内容第三方打算放空间倒垃圾", "ok", "cancel");
+
+                dialog.show();
+            }
+        });
     }
 
     @Override

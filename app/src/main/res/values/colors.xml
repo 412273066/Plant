@@ -9,7 +9,7 @@
     <!--状态栏颜色-->
     <color name="color_status_bar">#ff95c771</color>
 
-    
+
     <!-- 白色 -->
     <!--普通文字-->
     <color name="color_white_normal_text">#FFFFFFFF</color>
@@ -37,6 +37,8 @@
     <color name="color_light_gray">#ffe7e7e7</color>
     <!--白色-->
     <color name="white">#FFFFFF</color>
+    <!--黑色-->
+    <color name="black">#000000</color>
 
 
 </resources>

@@ -7,6 +7,7 @@
         <item name="windowNoTitle">true</item>
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
     </style>
+
     <style name="TitleBarLeftButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">fill_parent</item>
@@ -38,4 +39,22 @@
         <item name="android:background">@color/color_black_dividers</item>
     </style>
 
+    <style name="loading_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/bg_custom_dialog</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="BaseListView" parent="BaseScollerView">
+        <item name="android:listSelector">@drawable/selector_list_item</item>
+        <item name="android:divider">#dddddd</item>
+        <item name="android:dividerHeight">0.5dp</item>
+    </style>
+
+    <style name="BaseScollerView">
+        <item name="android:scrollbarSize">4dp</item>
+        <item name="android:scrollbarThumbVertical">@drawable/scrollbar_vertical_thumb</item>
+    </style>
 </resources>
