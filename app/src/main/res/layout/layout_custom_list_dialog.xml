@@ -3,12 +3,13 @@
     android:id="@+id/dialog_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center"
     android:minHeight="70dp"
     android:minWidth="280dp"
     android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp" >
+    android:paddingBottom="8dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingTop="24dp">
 
     <TextView
         android:id="@+id/title_text"
@@ -16,39 +17,54 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8.0dip"
         android:padding="5.0dip"
-        android:textSize="19sp" />
-
-    <View style="@style/LineHorizontalStyle" />
+        android:text="标题"
+        android:textColor="@color/color_black_normal_text"
+        android:textSize="@dimen/text_title_small" />
 
     <ListView
         android:id="@+id/listview_dialog_content"
         style="@style/BaseListView"
         android:layout_width="match_parent"
         android:layout_height="0dip"
+        android:layout_weight="1"
         android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        android:layout_weight="1" >
-    </ListView>
+        android:paddingRight="3dp"></ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_marginTop="10.0dip"
-        android:orientation="horizontal" >
+        android:gravity="right"
+        android:orientation="horizontal">
+
 
         <TextView
             android:id="@+id/cancel_btn"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/selector_bg_blue_3radius"
             android:gravity="center"
-            android:padding="8.0dip"
+            android:paddingBottom="7dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="7dp"
             android:text="@string/label_cancel_button_text"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textColor="@color/color_main"
+            android:textSize="@dimen/text_button" />
+
+        <TextView
+            android:id="@+id/commit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/selector_bg_blue_3radius"
+            android:gravity="center"
+            android:paddingBottom="7dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="7dp"
+            android:text="@string/label_commit_button_text"
+            android:textColor="@color/color_main"
+            android:textSize="@dimen/text_button" />
     </LinearLayout>
 
 </LinearLayout>

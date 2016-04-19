@@ -10,15 +10,14 @@
     android:paddingBottom="8dp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
-    android:paddingTop="24dp"
-
-    >
+    android:paddingTop="24dp">
 
     <TextView
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8.0dip"
+        android:lineSpacingMultiplier="1.3"
         android:text="标题"
         android:textColor="@color/color_black_normal_text"
         android:textSize="@dimen/text_title_small" />
@@ -28,8 +27,8 @@
         android:id="@+id/tip_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4.0dip"
-        android:text="对话框可以是全屏式的，全屏对话框上方可以再层叠对话框。左图是一个普通界面，其中的任何改动立即生效。右图是全屏对话框，其中任何改动，要点击保存后才生效，点击X取消。"
+        android:lineSpacingMultiplier="1.3"
+        android:text="对话框可以是全屏式的，全屏对话框上方可以再层叠对话框。左图是一个普通界面，其中的任何改动立即生效。右图是全屏对话框，其中任何改动，要点击保存后才生效，点击X取消。对话框可以是全屏式的，全屏对话框上方可以再层叠对话框。左图是一个普通界面，其中的任何改动立即生效。右图是全屏对话框，其中任何改动，要点击保存后才生效，点击X取消。"
         android:textColor="@color/color_black_secondary_text"
         android:textSize="@dimen/text_button" />
 
@@ -40,22 +39,24 @@
         android:gravity="right"
         android:orientation="horizontal">
 
+
         <TextView
-            android:id="@+id/commit_btn"
+            android:id="@+id/cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:background="@drawable/selector_bg_blue_3radius"
             android:gravity="center"
             android:paddingBottom="7dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="7dp"
-            android:text="@string/label_commit_button_text"
+            android:text="@string/label_cancel_button_text"
             android:textColor="@color/color_main"
             android:textSize="@dimen/text_button" />
 
         <TextView
-            android:id="@+id/cancel_btn"
+            android:id="@+id/commit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -65,7 +66,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="7dp"
-            android:text="@string/label_cancel_button_text"
+            android:text="@string/label_commit_button_text"
             android:textColor="@color/color_main"
             android:textSize="@dimen/text_button" />
     </LinearLayout>

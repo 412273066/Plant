@@ -136,9 +136,7 @@ public class FragmentOne extends BaseFragment {
             @Override
             public void onClick(View v) {
                 DialogUtil dialogUtil = DialogUtil.getInstance();
-
-//                Dialog dialog = dialogUtil.createDialog(mContext, "标题", "内容内容第三方打算放空间倒垃圾");
-                Dialog dialog = dialogUtil.createDialog(mContext, "标题", "内容内容第三方打算放空间倒垃圾");
+                Dialog dialog = dialogUtil.createLoadingDialog(mContext);
 
                 dialog.show();
             }
