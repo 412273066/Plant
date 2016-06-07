@@ -55,23 +55,50 @@
             android:text="商家"
             android:textSize="@dimen/text_button" />
 
+        <TextView
+            android:id="@+id/text_weather"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector_list_item"
+            android:drawablePadding="3dp"
+            android:drawableTop="@mipmap/ic_weather"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:text="天气"
+            android:textSize="@dimen/text_button" />
+
 
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginLeft="10dp"
-        android:text="植物分类"
-        android:textColor="@color/color_main"
-        android:textSize="@dimen/text_title_small" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/ic_list" />
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:text="植物分类"
+            android:textColor="@color/color_main"
+            android:textSize="@dimen/text_title_small" />
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1.0dp"
-        android:background="@color/color_black_dividers" />
+        android:background="@color/color_main" />
 
 </LinearLayout>

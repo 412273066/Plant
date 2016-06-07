@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jlk.plant.R;
+import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.models.Plant;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -39,9 +40,14 @@ public class ListPlantAdapter extends BaseRecyclerAdapter<Plant> {
     @Override
     public void onBind(RecyclerView.ViewHolder viewHolder, int RealPosition, Plant data) {
         if (viewHolder instanceof MyHolder) {
+            String img = data.getImg();
+            if (!img.contains("http")) {
+                img = AppInterface.SERVER_IMG_URL + img;
+            }
+
             ((MyHolder) viewHolder).text_plant_name.setText(data.getPlantName());
             ((MyHolder) viewHolder).text_plant_type.setText(data.getPlantType());
-            ImageLoader.getInstance().displayImage(data.getImg(), ((MyHolder) viewHolder).imageView, options);
+            ImageLoader.getInstance().displayImage(img, ((MyHolder) viewHolder).imageView, options);
         }
     }
 

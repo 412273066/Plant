@@ -1,6 +1,5 @@
 package com.jlk.plant.ui.fragment;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,7 +27,6 @@ import com.jlk.plant.models.returnmodels.GetBannerListReturn;
 import com.jlk.plant.models.returnmodels.GetCategoryListReturn;
 import com.jlk.plant.ui.IdentifyActivity;
 import com.jlk.plant.ui.ListPlantActivity;
-import com.jlk.plant.utils.DialogUtil;
 import com.jlk.plant.utils.L;
 import com.jlk.plant.utils.OkHttpUtils;
 import com.srx.widget.PullCallback;
@@ -67,7 +65,7 @@ public class FragmentOne extends BaseFragment {
 
     Handler mHandler;
 
-    TextView text_share, text_shop, text_identify;
+    TextView text_share, text_shop, text_identify, text_weather;
 
     @Override
     public void initData() {
@@ -132,15 +130,8 @@ public class FragmentOne extends BaseFragment {
             }
         });
         text_shop.setOnClickListener(listener);
-        text_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogUtil dialogUtil = DialogUtil.getInstance();
-                Dialog dialog = dialogUtil.createLoadingDialog(mContext);
-
-                dialog.show();
-            }
-        });
+        text_share.setOnClickListener(listener);
+        text_weather.setOnClickListener(listener);
     }
 
     @Override
@@ -156,6 +147,7 @@ public class FragmentOne extends BaseFragment {
         text_share = (TextView) headerView.findViewById(R.id.text_share);
         text_shop = (TextView) headerView.findViewById(R.id.text_shop);
         text_identify = (TextView) headerView.findViewById(R.id.text_identify);
+        text_weather = (TextView) headerView.findViewById(R.id.text_weather);
 
         mPullToLoadView = (PullToLoadView) mRootView.findViewById(R.id.pullToLoadView);
         //创建默认的线性LayoutManager

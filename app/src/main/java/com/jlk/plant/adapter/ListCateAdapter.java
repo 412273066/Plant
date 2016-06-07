@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jlk.plant.R;
+import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.models.Category;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -34,14 +35,16 @@ public class ListCateAdapter extends BaseRecyclerAdapter<Category> {
     @Override
 
 
-
-
-
     public void onBind(RecyclerView.ViewHolder viewHolder, int RealPosition, Category data) {
         if (viewHolder instanceof MyHolder) {
-            ((MyHolder) viewHolder).text_cate_name.setText(data.getCategoryName());
 
-            ImageLoader.getInstance().displayImage(data.getImg(), ((MyHolder) viewHolder).imageView);
+            String img = data.getImg();
+            if (!img.contains("http")) {
+                img = AppInterface.SERVER_IMG_URL + img;
+            }
+
+            ((MyHolder) viewHolder).text_cate_name.setText(data.getCategoryName());
+            ImageLoader.getInstance().displayImage(img, ((MyHolder) viewHolder).imageView);
         }
     }
 

@@ -5,9 +5,13 @@ package com.jlk.plant.app;
  */
 public class AppInterface {
     /**
-     * 服务器地址
+     * 服务器接口地址
      */
-    public static final String SERVER_URL = "http://192.168.1.103/plant_server/app/";
+    public static final String SERVER_URL = "http://192.168.3.135/plant_server/app/";
+    /**
+     * 服务器ip地址
+     */
+    public static final String SERVER_IMG_URL = "http://192.168.3.135";
     /**
      * 广告栏借口
      */
