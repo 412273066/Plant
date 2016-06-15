@@ -1,6 +1,7 @@
 package com.jlk.plant.ui;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jlk.plant.R;
+import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.base.BaseFragmentActivity;
 import com.jlk.plant.custom.view.ObservableScrollView;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -54,11 +56,31 @@ public class DetailPlantActivity extends BaseFragmentActivity {
         String img = intent.getStringExtra("img");
         plantName = intent.getStringExtra("name");
 
+        if (!img.contains("http")) {
+            img = AppInterface.SERVER_IMG_URL + img;
+        }
+
         text_plant_name.setText(plantName);
-        text_info.setText(intent.getStringExtra("info"));
-        text_feature.setText(intent.getStringExtra("feature"));
-        text_habit.setText(intent.getStringExtra("habit"));
-        text_use.setText(intent.getStringExtra("use"));
+
+        String info = intent.getStringExtra("info");
+        if (!TextUtils.isEmpty(info)) {
+            text_info.setText(info);
+        }
+
+        String feature = intent.getStringExtra("feature");
+        if (!TextUtils.isEmpty(feature)) {
+            text_feature.setText(feature);
+        }
+
+        String habit = intent.getStringExtra("habit");
+        if (!TextUtils.isEmpty(habit)) {
+            text_habit.setText(habit);
+        }
+
+        String use = intent.getStringExtra("use");
+        if (!TextUtils.isEmpty(use)) {
+            text_use.setText(use);
+        }
         ImageLoader.getInstance().displayImage(img, imageView);
 
     }
@@ -98,7 +120,7 @@ public class DetailPlantActivity extends BaseFragmentActivity {
 
     @Override
     public String getTitleName() {
-        String title=getString(R.string.app_name);
+        String title = getString(R.string.app_name);
         return title;
     }
 

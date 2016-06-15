@@ -1,12 +1,14 @@
 package com.jlk.plant.ui.fragment;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jlk.plant.R;
 import com.jlk.plant.base.BaseFragment;
 import com.jlk.plant.base.BaseFragmentActivity;
+import com.jlk.plant.ui.LoginActivity;
 import com.jlk.plant.ui.SettingActivity;
 
 
@@ -19,10 +21,9 @@ public class FragmentThree extends BaseFragment {
     private String tag = "FragmentThree";
     private TextView title;// 标题
 
-    private int pager = 0;
 
     private RelativeLayout relative_collection, relative_feedback, relative_share, relative_setting;
-
+    private Button btn_login;
 
     @Override
     public void initData() {
@@ -55,6 +56,13 @@ public class FragmentThree extends BaseFragment {
                 activity.startActivityAnim(null, SettingActivity.class);
             }
         });
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+                activity.startActivityAnim(null, LoginActivity.class);
+            }
+        });
     }
 
     @Override
@@ -63,7 +71,7 @@ public class FragmentThree extends BaseFragment {
         relative_feedback = (RelativeLayout) mRootView.findViewById(R.id.relative_feedback);
         relative_share = (RelativeLayout) mRootView.findViewById(R.id.relative_share);
         relative_setting = (RelativeLayout) mRootView.findViewById(R.id.relative_setting);
-
+        btn_login = (Button) mRootView.findViewById(R.id.btn_login);
     }
 
     @Override

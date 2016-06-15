@@ -56,6 +56,9 @@ public class ArticleDetailActivity extends BaseFragmentActivity {
         String url = getIntent().getExtras().getString("url");
         L.i("url:" + url);
         webView.loadUrl(url);
+        webView.getSettings().setDefaultTextEncodingName("UTF -8");//设置默认为utf-8
+//        webView.loadData(data, "text/html", "UTF -8");//API提供的标准用法，无法解决乱码问题
+        webView.loadData(url, "text/html; charset=UTF-8", null);//这种写法可以正确解码
     }
 
     @Override
