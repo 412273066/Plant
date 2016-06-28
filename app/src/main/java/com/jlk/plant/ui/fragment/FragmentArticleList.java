@@ -62,7 +62,7 @@ public class FragmentArticleList extends BaseFragment {
             @Override
             public void onItemClick(int position, Article data) {
                 Bundle bundle = new Bundle();
-                bundle.putString("url", data.getArticleContent());
+                bundle.putString("content", data.getArticleContent());
                 ((BaseFragmentActivity) mContext).startActivityAnim(bundle, ArticleDetailActivity.class);
 
 

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jlk.plant.R;
+import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.models.Article;
 import com.jlk.plant.utils.TimeUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -41,7 +42,13 @@ public class ListArticleAdapter extends BaseRecyclerAdapter<Article> {
             ((MyHolder) viewHolder).text_type.setText(data.getTypeName());
 
             ((MyHolder) viewHolder).text_summary.setText(data.getArticleSummary());
-            ImageLoader.getInstance().displayImage(data.getImg(), ((MyHolder) viewHolder).imageView);
+
+            String img = data.getImg();
+            if (!img.contains("http")) {
+                img = AppInterface.SERVER_IMG_URL + img;
+            }
+
+            ImageLoader.getInstance().displayImage(img, ((MyHolder) viewHolder).imageView);
         }
     }
 
