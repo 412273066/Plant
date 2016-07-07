@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="无法登陆?"
-            android:textColor="@color/color_black_secondary_text"
+            android:textColor="@color/selector_text_gray_color"
             android:textSize="@dimen/text_button" />
 
         <TextView
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="新用户"
-            android:textColor="@color/color_black_secondary_text"
+            android:textColor="@color/selector_text_gray_color"
             android:textSize="@dimen/text_button" />
 
     </RelativeLayout>

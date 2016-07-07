@@ -31,7 +31,7 @@ import okhttp3.Response;
 public class IdentifyActivity extends BaseFragmentActivity {
 
     private final String tag = "IdentifyActivity";
-    private TextView text_result;
+    private TextView text_result, label_tip;
     private ImageView image;
     private Button btn_upload;
     private File file;
@@ -59,6 +59,7 @@ public class IdentifyActivity extends BaseFragmentActivity {
         findViewById(R.id.back).setVisibility(View.VISIBLE);
 
         text_result = (TextView) findViewById(R.id.text_result);
+        label_tip = (TextView) findViewById(R.id.label_tip);
         image = (ImageView) findViewById(R.id.image);
         btn_upload = (Button) findViewById(R.id.btn_upload);
 
@@ -67,7 +68,8 @@ public class IdentifyActivity extends BaseFragmentActivity {
 
     @Override
     public void initListeners() {
-        image.setOnClickListener(new View.OnClickListener() {
+
+        label_tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();

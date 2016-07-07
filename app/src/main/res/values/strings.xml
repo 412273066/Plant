@@ -5,4 +5,6 @@
     <string name="action_settings">Settings</string>
     <string name="label_commit_button_text">确定</string>
     <string name="label_cancel_button_text">取消</string>
+    <string name="label_title_tip">提示</string>
+    <string name="get_captcha">获取验证码</string>
 </resources>

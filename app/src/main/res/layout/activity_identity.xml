@@ -16,12 +16,14 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_below="@id/layout_title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:src="@mipmap/ic_add_pic" />
+            android:scaleType="fitCenter"
+
+            />
 
         <TextView
             android:id="@+id/label_tip"
@@ -30,8 +32,8 @@
             android:layout_below="@id/image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="(点击上图设置图片)"
-            android:textColor="@color/color_black_disable_text"
+            android:text="(点击设置图片)"
+            android:textColor="@color/selector_text_gray_color"
             android:textSize="@dimen/text_title_small" />
 
         <TextView

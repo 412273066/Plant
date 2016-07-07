@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/layout_title_bar" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="请输入手机"
+                android:padding="5dp"
+                android:textColor="@color/color_black_secondary_text"
+                android:textColorHint="@color/color_black_disable_text"
+                android:textSize="@dimen/text_button" />
+
+            <Button
+                android:id="@+id/btn_get_captcha"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:background="@null"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="@string/get_captcha"
+                android:textColor="@color/selector_main_color"
+                android:textSize="@dimen/text_button" />
+
+
+        </LinearLayout>
+
+        <View style="@style/LineHorizontalStyle" />
+
+        <EditText
+            android:id="@+id/edit_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:hint="请输入昵称"
+            android:padding="5dp"
+            android:textColor="@color/color_black_secondary_text"
+            android:textColorHint="@color/color_black_disable_text"
+            android:textSize="@dimen/text_button" />
+
+        <View style="@style/LineHorizontalStyle" />
+
+        <EditText
+            android:id="@+id/edit_captcha"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:hint="请输入验证码"
+            android:padding="5dp"
+            android:textColor="@color/color_black_secondary_text"
+            android:textColorHint="@color/color_black_disable_text"
+            android:textSize="@dimen/text_button" />
+
+        <View style="@style/LineHorizontalStyle" />
+
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:hint="请输入密码"
+            android:padding="5dp"
+            android:textColor="@color/color_black_secondary_text"
+            android:textColorHint="@color/color_black_disable_text"
+            android:textSize="@dimen/text_button" />
+
+        <View style="@style/LineHorizontalStyle" />
+
+        <EditText
+            android:id="@+id/edit_comfirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:hint="请再输入密码"
+            android:padding="5dp"
+            android:textColor="@color/color_black_secondary_text"
+            android:textColorHint="@color/color_black_disable_text"
+            android:textSize="@dimen/text_button" />
+
+        <View style="@style/LineHorizontalStyle" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_bg_green_5radius"
+        android:text="注册"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_title_small" />
+
+
+</LinearLayout>
