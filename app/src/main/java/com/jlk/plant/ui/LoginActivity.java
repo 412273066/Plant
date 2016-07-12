@@ -5,8 +5,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.jlk.plant.R;
+import com.jlk.plant.app.AppInterface;
+import com.jlk.plant.app.AppSetting;
 import com.jlk.plant.base.BaseFragmentActivity;
+import com.jlk.plant.models.requestmodels.LoginRequest;
+import com.jlk.plant.models.returnmodels.BaseReturn;
+import com.jlk.plant.utils.L;
+import com.jlk.plant.utils.OkHttpUtils;
+import com.jlk.plant.utils.StringUtils;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class LoginActivity extends BaseFragmentActivity {
@@ -15,6 +28,7 @@ public class LoginActivity extends BaseFragmentActivity {
     private EditText edit_username, edit_password;
     private Button btn_login;
     private TextView text_forget_password, text_register;
+    private String user, password;
 
     @Override
     public void setActivityContext() {
@@ -44,6 +58,96 @@ public class LoginActivity extends BaseFragmentActivity {
                 startActivityAnim(null, RegisterActivity.class);
             }
         });
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String msg = checkInput();
+                if (!StringUtils.isEmpty(msg)) {
+                    showToast(msg);
+                } else {
+                    doLogin();
+                }
+            }
+        });
+        text_forget_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                DialogUtil.getInstance().createLoadingDialog(mContext,"加载中,请稍后..").show();
+            }
+        });
+    }
+
+    private void doLogin() {
+        LoginRequest request = new LoginRequest(user, password);
+        String json = new Gson().toJson(request);
+
+        OkHttpUtils client = new OkHttpUtils(mContext, json, AppInterface.LOGIN);
+
+        client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
+            @Override
+            public void onPostSuccessListener(Call call, Response response) {
+                try {
+                    String json = response.body().string();
+                    L.i("返回" + AppInterface.LOGIN + ":" + json);
+                    Gson gson = new Gson();
+                    final BaseReturn result = gson.fromJson(json, BaseReturn.class);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showToast(result.getMsg());
+                            if (result.getResCode().equals(AppSetting.code_success)) {
+                                finishActivityAnim();
+                            } else {
+
+                            }
+                        }
+                    });
+
+
+                } catch (Exception e) {
+                    L.e(e.getMessage());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showToast("接口出错，开发人员正在修复中。");
+                        }
+                    });
+                } finally {
+
+                }
+            }
+
+            @Override
+            public void onPostFailListener(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                });
+            }
+
+            @Override
+            public void onPrePostListener() {
+
+            }
+        });
+
+
+        client.doPost();
+    }
+
+    private String checkInput() {
+        String msg = null;
+        user = edit_username.getText().toString().trim();
+        password = edit_password.getText().toString().trim();
+        if (StringUtils.isEmpty(user)) {
+            msg = "请输入账号。";
+        } else if (StringUtils.isEmpty(password)) {
+            msg = "请输入密码。";
+        }
+
+        return msg;
     }
 
 

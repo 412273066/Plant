@@ -19,4 +19,13 @@ public class AppSetting {
      */
     public final static String sdCard_dir = Environment
             .getExternalStorageDirectory() + "/" + app_name;
+
+    /**
+     * 接口返回成功
+     */
+    public final static String code_success = "1";
+    /**
+     * 接口返回失败
+     */
+    public final static String code_fail = "0";
 }

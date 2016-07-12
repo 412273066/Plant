@@ -7,11 +7,15 @@ public class AppInterface {
     /**
      * 服务器接口地址
      */
-    public static final String SERVER_URL = "http://192.168.3.250/plant_server/app/";
+    public static final String SERVER_URL = "http://192.168.3.67/plant_server/app/";
     /**
      * 服务器ip地址
      */
     public static final String SERVER_IMG_URL = "http://192.168.3.250";
+    /**
+     * 百度识图接口
+     */
+    public static final String BAIDUSHITU = "http://image.baidu.com/pictureup/uploadshitu";
     /**
      * 广告栏借口
      */
@@ -37,7 +41,11 @@ public class AppInterface {
      */
     public static final String SEARCHPLANT = SERVER_URL + "searchPlant/";
     /**
-     * 百度识图接口
+     * 注册接口
      */
-    public static final String BAIDUSHITU = "http://image.baidu.com/pictureup/uploadshitu";
+    public static final String REGISTER = SERVER_URL + "user/register";
+    /**
+     * 登录接口
+     */
+    public static final String LOGIN = SERVER_URL + "user/login";
 }
