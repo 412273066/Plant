@@ -19,4 +19,6 @@ public class GetArticleListReturn extends BaseReturn {
     public void setList(List<Article> list) {
         this.list = list;
     }
+
+
 }

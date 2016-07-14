@@ -19,4 +19,5 @@ public class GetCategoryListReturn extends BaseReturn {
     public void setList(List<Category> list) {
         this.list = list;
     }
+
 }

@@ -10,6 +10,7 @@ import com.jlk.plant.R;
 import com.jlk.plant.app.AppInterface;
 import com.jlk.plant.app.AppSetting;
 import com.jlk.plant.base.BaseFragmentActivity;
+import com.jlk.plant.base.CustomApplication;
 import com.jlk.plant.models.requestmodels.LoginRequest;
 import com.jlk.plant.models.returnmodels.BaseReturn;
 import com.jlk.plant.utils.L;
@@ -97,6 +98,8 @@ public class LoginActivity extends BaseFragmentActivity {
                         public void run() {
                             showToast(result.getMsg());
                             if (result.getResCode().equals(AppSetting.code_success)) {
+                                CustomApplication app = (CustomApplication) getApplication();
+                                app.setLogin(true);
                                 finishActivityAnim();
                             } else {
 

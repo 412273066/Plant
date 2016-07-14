@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by test on 2016/2/16.
+ * Created by test on 2016/7/13.
  */
 public class Plant {
     @Expose
@@ -43,7 +43,7 @@ public class Plant {
 
     public Plant(String plantId, String plantName, String plantType,
                  String plantInfo, String plantFeature, String plantHabit,
-                 String plantUse,String plantCreatTime, String categoryId,
+                 String plantUse, String plantCreatTime, String categoryId,
                  String img, String userId) {
         this.plantId = plantId;
         this.plantName = plantName;

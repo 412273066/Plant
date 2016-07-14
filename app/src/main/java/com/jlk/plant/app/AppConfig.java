@@ -17,7 +17,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
  */
 public class AppConfig {
     /**
-     * ????????????????
+     * 初始化imageloader
      */
 
     public static void initImageLoader(Context mContext) {
@@ -26,7 +26,7 @@ public class AppConfig {
                 showImageForEmptyUri(R.mipmap.ic_default_not_found)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
-                .displayer(new FadeInBitmapDisplayer(300))//?????????ú??????????
+                .displayer(new FadeInBitmapDisplayer(300))//设置渐变
                 .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
@@ -39,7 +39,7 @@ public class AppConfig {
     }
 
     /**
-     * ??????????
+     * 初始化数据库
      */
     public static void initDatabase(Context mContext) {
         SharedPreferences sp = mContext.getSharedPreferences(AppSetting.spfile, mContext.MODE_PRIVATE);

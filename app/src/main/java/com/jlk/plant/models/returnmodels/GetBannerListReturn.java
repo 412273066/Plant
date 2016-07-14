@@ -7,7 +7,7 @@ import com.jlk.plant.models.Banner;
 import java.util.List;
 
 
-public class GetBannerListReturn extends BaseReturn{
+public class GetBannerListReturn extends BaseReturn {
     @Expose
     @SerializedName("list")
     private List<Banner> list; //
@@ -19,4 +19,6 @@ public class GetBannerListReturn extends BaseReturn{
     public void setList(List<Banner> list) {
         this.list = list;
     }
+
+
 }

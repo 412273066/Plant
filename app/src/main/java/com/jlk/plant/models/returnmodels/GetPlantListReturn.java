@@ -19,4 +19,6 @@ public class GetPlantListReturn extends BaseReturn {
     public void setList(List<Plant> list) {
         this.list = list;
     }
+
+
 }

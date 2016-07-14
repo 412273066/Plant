@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by test on 2016/2/5.
+ * Created by test on 2016/7/13.
  */
 public class Category {
     @Expose

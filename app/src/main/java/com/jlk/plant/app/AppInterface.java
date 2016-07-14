@@ -4,14 +4,15 @@ package com.jlk.plant.app;
  * Created by test on 2016/2/23.
  */
 public class AppInterface {
-    /**
-     * 服务器接口地址
-     */
-    public static final String SERVER_URL = "http://192.168.3.67/plant_server/app/";
+
     /**
      * 服务器ip地址
      */
-    public static final String SERVER_IMG_URL = "http://192.168.3.250";
+    public static final String SERVER_IMG_URL = "http://192.168.3.67";
+    /**
+     * 服务器接口地址
+     */
+    public static final String SERVER_URL = SERVER_IMG_URL+"/plant_server/app/";
     /**
      * 百度识图接口
      */

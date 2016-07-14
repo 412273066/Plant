@@ -28,11 +28,11 @@ public class BannerDao extends BaseDao {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
 
-        if (db.isOpen()) { // Èç¹ûÊý¾Ý¿â´ò¿ª, Ö´ÐÐÌí¼ÓµÄ²Ù×÷
+        if (db.isOpen()) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½, Ö´ï¿½ï¿½ï¿½ï¿½ÓµÄ²ï¿½ï¿½ï¿½
             try {
                 Banner item = (Banner) object;
 
-                // Ö´ÐÐÌí¼Óµ½Êý¾Ý¿âµÄ²Ù×÷
+                // Ö´ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½Ý¿ï¿½Ä²ï¿½ï¿½ï¿½
                 String cmd = "insert into banner(title,content,img,user_id,create_time) values(?,?,?,?,?);";
 
                 db.execSQL(
@@ -42,7 +42,7 @@ public class BannerDao extends BaseDao {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                db.close(); // Êý¾Ý¿â¹Ø±Õ
+                db.close(); // ï¿½ï¿½ï¿½Ý¿ï¿½Ø±ï¿½
             }
         }
 
@@ -58,13 +58,13 @@ public class BannerDao extends BaseDao {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
 
-        if (db.isOpen()) { // Èç¹ûÊý¾Ý¿â´ò¿ª, Ö´ÐÐÌí¼ÓµÄ²Ù×÷
+        if (db.isOpen()) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½, Ö´ï¿½ï¿½ï¿½ï¿½ÓµÄ²ï¿½ï¿½ï¿½
             try {
                 ArrayList<Banner> newList = (ArrayList<Banner>) list;
 
                 for (int i = 0; i < newList.size(); i++) {
                     Banner item = newList.get(i);
-                    // Ö´ÐÐÌí¼Óµ½Êý¾Ý¿âµÄ²Ù×÷
+                    // Ö´ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½Ý¿ï¿½Ä²ï¿½ï¿½ï¿½
                     String cmd = "insert into banner(title,content,img,user_id,create_time) values(?,?,?,?,?);";
 
                     db.execSQL(
@@ -76,7 +76,7 @@ public class BannerDao extends BaseDao {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                db.close(); // Êý¾Ý¿â¹Ø±Õ
+                db.close(); // ï¿½ï¿½ï¿½Ý¿ï¿½Ø±ï¿½
             }
         }
 
@@ -87,8 +87,8 @@ public class BannerDao extends BaseDao {
 
     @Override
     public Object query(int id) {
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase(); // »ñµÃ¿ÉÐ´µÄÊý¾Ý¿â¶ÔÏó
-        if (db.isOpen()) { // Èç¹ûÊý¾Ý¿â´ò¿ª, Ö´ÐÐÌí¼ÓµÄ²Ù×÷
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase(); // ï¿½ï¿½Ã¿ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½
+        if (db.isOpen()) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½, Ö´ï¿½ï¿½ï¿½ï¿½ÓµÄ²ï¿½ï¿½ï¿½
             try {
                 String table = "banner";
 
@@ -107,7 +107,7 @@ public class BannerDao extends BaseDao {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                db.close(); // Êý¾Ý¿â¹Ø±Õ
+                db.close(); // ï¿½ï¿½ï¿½Ý¿ï¿½Ø±ï¿½
             }
 
         }
@@ -116,8 +116,8 @@ public class BannerDao extends BaseDao {
 
     @Override
     public List queryAll() {
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase(); // »ñµÃ¿ÉÐ´µÄÊý¾Ý¿â¶ÔÏó
-        if (db.isOpen()) { // Èç¹ûÊý¾Ý¿â´ò¿ª, Ö´ÐÐÌí¼ÓµÄ²Ù×÷
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase(); // ï¿½ï¿½Ã¿ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½
+        if (db.isOpen()) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½, Ö´ï¿½ï¿½ï¿½ï¿½ÓµÄ²ï¿½ï¿½ï¿½
             try {
                 String table = "banner";
                 Cursor cursor = db.rawQuery("select banner_id,title,content,img,user_id,create_time from "
@@ -147,7 +147,7 @@ public class BannerDao extends BaseDao {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                db.close(); // Êý¾Ý¿â¹Ø±Õ
+                db.close(); // ï¿½ï¿½ï¿½Ý¿ï¿½Ø±ï¿½
             }
 
         }
@@ -165,7 +165,7 @@ public class BannerDao extends BaseDao {
         if (object == null) {
             return false;
         }
-        SQLiteDatabase db = mOpenHelper.getReadableDatabase(); // »ñµÃÒ»¸öÖ»¶ÁµÄÊý¾Ý¿â¶ÔÏó
+        SQLiteDatabase db = mOpenHelper.getReadableDatabase(); // ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½
         if (db.isOpen()) {
             try {
                 Banner item = (Banner) object;
