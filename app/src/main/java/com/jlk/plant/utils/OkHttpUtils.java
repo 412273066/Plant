@@ -1,6 +1,8 @@
 package com.jlk.plant.utils;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -25,28 +27,30 @@ public class OkHttpUtils {
 
     private String json;
     private String url;
+    private boolean isShowLoadingDialog;
     private OnHttpPostListener httpPostListener;
 
-    //    public static final int POST_SUCCESS = 200;
-//    public static final int POST_FAIL = 400;
     private int timeout = 10;
 
-    Handler mHandler;
+    private Handler mHandler;
     private Context mContext;
+    private Dialog loadingDialog;
 
     public OkHttpUtils(Context mContext, String json, String url) {
-        this.json = json;
-        this.url = url;
-        this.mContext = mContext;
-        this.mHandler = new Handler();
+        this(mContext, json, url, false);
     }
 
-    public OkHttpUtils(Context mContext, String json, String url, OnHttpPostListener httpPostListener) {
+    public OkHttpUtils(Context mContext, String json, String url, boolean isShowLoadingDialog) {
+        this(mContext, json, url, isShowLoadingDialog, null);
+    }
+
+    public OkHttpUtils(Context mContext, String json, String url, boolean isShowLoadingDialog, OnHttpPostListener httpPostListener) {
         this.json = json;
         this.url = url;
         this.mContext = mContext;
         this.httpPostListener = httpPostListener;
-
+        this.isShowLoadingDialog = isShowLoadingDialog;
+        this.mHandler = new Handler();
     }
 
     /**
@@ -58,7 +62,18 @@ public class OkHttpUtils {
             httpPostListener.onPrePostListener();
         }
 
+        if (isShowLoadingDialog) {
+            loadingDialog = DialogUtil.getInstance().createLoadingDialog(mContext);
+            loadingDialog.setCanceledOnTouchOutside(false);
+            loadingDialog.setCancelable(true);
+            loadingDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
 
+                }
+            });
+            loadingDialog.show();
+        }
 //        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 //        RequestBody body = RequestBody.create(JSON, json);
 
@@ -124,6 +139,7 @@ public class OkHttpUtils {
             httpPostListener.onPrePostListener();
         }
 
+
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(timeout, TimeUnit.SECONDS)
                 .writeTimeout(timeout, TimeUnit.SECONDS)
@@ -176,18 +192,16 @@ public class OkHttpUtils {
         /**
          * 连接成功
          *
-         * @param call
          * @param response
          */
-        public abstract void onPostSuccessListener(Call call, Response response);
+        public abstract void onPostSuccessListener(String response);
 
         /**
          * 连接失败
          *
-         * @param call
          * @param e
          */
-        public abstract void onPostFailListener(Call call, IOException e);
+        public abstract void onPostFailListener(IOException e);
 
         /**
          * 连接之前
@@ -197,26 +211,43 @@ public class OkHttpUtils {
 
     private class MyCallback implements Callback {
         @Override
-        public void onFailure(Call call, IOException e) {
-            e.printStackTrace();
+        public void onFailure(final Call call, final IOException e) {
+            L.e(e.getMessage());
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    if (loadingDialog != null && loadingDialog.isShowing()) {
+                        loadingDialog.dismiss();
+                    }
                     Toast.makeText(mContext, "加载失败,请检查网络是否正常!", Toast.LENGTH_SHORT).show();
+                    if (httpPostListener != null) {
+                        httpPostListener.onPostFailListener(e);
+                    }
                 }
             });
 
-            if (httpPostListener != null) {
-                httpPostListener.onPostFailListener(call, e);
-            }
+
         }
 
         @Override
-        public void onResponse(Call call, Response response) {
-            if (httpPostListener != null) {
-                httpPostListener.onPostSuccessListener(call, response);
+        public void onResponse(final Call call, final Response response) {
+            String res = null;
+            try {
+                res = response.body().string();
+            } catch (IOException e) {
+                L.e(e.getMessage());
             }
+            final String finalRes = res;
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (loadingDialog != null && loadingDialog.isShowing()) {
+                        loadingDialog.dismiss();
+                    }
+                    if (httpPostListener != null)
+                        httpPostListener.onPostSuccessListener(finalRes);
+                }
+            });
         }
-
     }
 }

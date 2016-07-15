@@ -20,9 +20,6 @@ import com.jlk.plant.utils.StringUtils;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Response;
-
 
 public class RegisterActivity extends BaseFragmentActivity {
 
@@ -79,31 +76,23 @@ public class RegisterActivity extends BaseFragmentActivity {
         RegisterRequest request = new RegisterRequest(user, password, comfirm_pass, nickname, captcha);
         String json = new Gson().toJson(request);
 
-        OkHttpUtils client = new OkHttpUtils(mContext, json, AppInterface.REGISTER);
+        OkHttpUtils client = new OkHttpUtils(mContext, json, AppInterface.REGISTER, true);
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
-            public void onPostSuccessListener(Call call, Response response) {
+            public void onPostSuccessListener(String json) {
                 try {
-                    String json = response.body().string();
                     L.i("返回" + AppInterface.REGISTER + ":" + json);
                     Gson gson = new Gson();
                     final BaseReturn result = gson.fromJson(json, BaseReturn.class);
 
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showToast(result.getMsg());
-                            if (result.getResCode().equals(AppSetting.code_success)) {
-                                finishActivityAnim();
-                            } else {
+                    showToast(result.getMsg());
+                    if (result.getResCode().equals(AppSetting.code_success)) {
+                        finishActivityAnim();
+                    } else {
 
-                            }
-
-
-                        }
-                    });
+                    }
 
 
                 } catch (Exception e) {
@@ -114,18 +103,11 @@ public class RegisterActivity extends BaseFragmentActivity {
                             showToast("接口出错，开发人员正在修复中。");
                         }
                     });
-                } finally {
-
                 }
             }
 
             @Override
-            public void onPostFailListener(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                });
+            public void onPostFailListener(IOException e) {
             }
 
             @Override

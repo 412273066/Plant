@@ -1,7 +1,6 @@
 package com.jlk.plant.ui.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,9 +35,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Response;
-
 
 /**
  * 首页fragment
@@ -62,8 +58,6 @@ public class FragmentOne extends BaseFragment {
     private int size = 10;
 
     private CacheUtils cache;
-
-    Handler mHandler;
 
     TextView text_share, text_shop, text_identify, text_weather;
 
@@ -136,8 +130,6 @@ public class FragmentOne extends BaseFragment {
 
     @Override
     public void initViews() {
-        mHandler = new Handler();
-
         cache = new CacheUtils(mContext);
 
         headerView = LayoutInflater.from(mContext).inflate(R.layout.layout_header_view, mRecyclerView, false);
@@ -293,40 +285,32 @@ public class FragmentOne extends BaseFragment {
     /**
      * 连接成功操作
      *
-     * @param call
-     * @param response
+     * @param json
      */
-    private void doOnPostSuccess(Call call, Response response) {
+    private void doOnPostSuccess(String json) {
         try {
-            String json = response.body().string();
             L.i("返回" + AppInterface.GETBANNERLIST + ":" + json);
             Gson gson = new Gson();
             GetBannerListReturn result = gson.fromJson(json, GetBannerListReturn.class);
             final List<Banner> list = result.getList();
 
-            mHandler.post(new Runnable() {
-                @Override
+            setupBanner(list);
+            isLoading = false;
+            mPullToLoadView.setComplete();
+
+            new Thread() {
                 public void run() {
-                    setupBanner(list);
-                    isLoading = false;
-                    mPullToLoadView.setComplete();
+                    //在子线程缓存数据
+                    cache.CacheBannerToDatabase(list);
                 }
-            });
-            //在子线程缓存数据
-            cache.CacheBannerToDatabase(list);
+            }.start();
+
 
         } catch (Exception e) {
             e.printStackTrace();
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
-                    isLoading = false;
-                    mPullToLoadView.setComplete();
-                }
-            });
-        } finally {
-
+            Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+            isLoading = false;
+            mPullToLoadView.setComplete();
         }
     }
 
@@ -334,10 +318,9 @@ public class FragmentOne extends BaseFragment {
     /**
      * 连接失败操作
      *
-     * @param call
      * @param e
      */
-    private void doOnPostFail(Call call, IOException e) {
+    private void doOnPostFail(IOException e) {
 
 //
 
@@ -356,65 +339,54 @@ public class FragmentOne extends BaseFragment {
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
-            public void onPostSuccessListener(Call call, Response response) {
+            public void onPostSuccessListener(String json) {
                 try {
-                    String json = response.body().string();
                     L.i("返回" + AppInterface.GETCATEGORYLIST + ":" + json);
                     Gson gson = new Gson();
                     final GetCategoryListReturn result = gson.fromJson(json, GetCategoryListReturn.class);
 
                     data = (ArrayList<Category>) result.getList();
 
-                    mHandler.post(new Runnable() {
-                        @Override
+                    if (data == null || data.size() == 0) {
+                        Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
+                        data = new ArrayList<Category>();
+                    }
+
+                    //创建并设置Adapter
+                    mAdapter.removeAllData();
+                    mAdapter.addDatas(data);
+
+                    page = 1;
+                    isHasLoadedAll = false;
+
+
+                    isLoading = false;
+                    mPullToLoadView.setComplete();
+                    new Thread() {
                         public void run() {
-                            if (data == null || data.size() == 0) {
-                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                data = new ArrayList<Category>();
-                            }
-
-                            //创建并设置Adapter
-                            mAdapter.removeAllData();
-                            mAdapter.addDatas(data);
-
-                            page = 1;
-                            isHasLoadedAll = false;
-
-
-                            isLoading = false;
-                            mPullToLoadView.setComplete();
+                            //在子线程缓存数据
+                            cache.CacheCategoryToDatabase(data);
                         }
-                    });
-                    //在子线程缓存数据
-                    cache.CacheCategoryToDatabase(data);
+                    }.start();
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
-                            isLoading = false;
-                            mPullToLoadView.setComplete();
-                        }
-                    });
+                    Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+                    isLoading = false;
+                    mPullToLoadView.setComplete();
                 } finally {
 
                 }
             }
 
             @Override
-            public void onPostFailListener(Call call, IOException e) {
+            public void onPostFailListener(IOException e) {
                 e.printStackTrace();
                 isLoading = false;
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
 //                        loadCategory();
 //                        Toast.makeText(mContext, "加载失败,请检查网络是否正常!", Toast.LENGTH_SHORT).show();
-                        mPullToLoadView.setComplete();
-                    }
-                });
+                mPullToLoadView.setComplete();
 
             }
 
@@ -438,13 +410,13 @@ public class FragmentOne extends BaseFragment {
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
-            public void onPostSuccessListener(Call call, Response response) {
-                doOnPostSuccess(call, response);
+            public void onPostSuccessListener(String response) {
+                doOnPostSuccess(response);
             }
 
             @Override
-            public void onPostFailListener(Call call, IOException e) {
-                doOnPostFail(call, e);
+            public void onPostFailListener(IOException e) {
+                doOnPostFail(e);
             }
 
             @Override
@@ -469,60 +441,42 @@ public class FragmentOne extends BaseFragment {
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
-            public void onPostSuccessListener(Call call, Response response) {
+            public void onPostSuccessListener(String json) {
                 try {
-                    String json = response.body().string();
                     L.i("返回" + AppInterface.GETCATEGORYLIST + ":" + json);
                     Gson gson = new Gson();
                     final GetCategoryListReturn result = gson.fromJson(json, GetCategoryListReturn.class);
 
 
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ArrayList<Category> newData = (ArrayList<Category>) result.getList();
-                            if (newData == null || newData.size() == 0) {
+                    ArrayList<Category> newData = (ArrayList<Category>) result.getList();
+                    if (newData == null || newData.size() == 0) {
 //                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
 
-                            } else {
-                                mAdapter.addDatas(newData);
-                                page++;
-                                L.i("page++");
-                            }
-                            if (newData.size() < size) {
-                                isHasLoadedAll = true;
+                    } else {
+                        mAdapter.addDatas(newData);
+                        page++;
+                        L.i("page++");
+                    }
+                    if (newData.size() < size) {
+                        isHasLoadedAll = true;
 
-                            }
-                            isLoading = false;
-                            mPullToLoadView.setComplete();
-                        }
-                    });
+                    }
+                    isLoading = false;
+                    mPullToLoadView.setComplete();
 
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
-                            isLoading = false;
-                            mPullToLoadView.setComplete();
-                        }
-                    });
-                } finally {
-
+                    Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+                    isLoading = false;
+                    mPullToLoadView.setComplete();
                 }
             }
 
             @Override
-            public void onPostFailListener(Call call, IOException e) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        isLoading = false;
-                        mPullToLoadView.setComplete();
-                    }
-                });
+            public void onPostFailListener(IOException e) {
+                isLoading = false;
+                mPullToLoadView.setComplete();
 
             }
 
@@ -532,9 +486,7 @@ public class FragmentOne extends BaseFragment {
             }
         });
 
-
         client.doPost();
-
 
     }
 

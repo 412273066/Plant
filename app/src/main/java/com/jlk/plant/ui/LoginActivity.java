@@ -19,9 +19,6 @@ import com.jlk.plant.utils.StringUtils;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Response;
-
 
 public class LoginActivity extends BaseFragmentActivity {
 
@@ -82,47 +79,34 @@ public class LoginActivity extends BaseFragmentActivity {
         LoginRequest request = new LoginRequest(user, password);
         String json = new Gson().toJson(request);
 
-        OkHttpUtils client = new OkHttpUtils(mContext, json, AppInterface.LOGIN);
+        OkHttpUtils client = new OkHttpUtils(mContext, json, AppInterface.LOGIN, true);
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
-            public void onPostSuccessListener(Call call, Response response) {
+            public void onPostSuccessListener(String json) {
                 try {
-                    String json = response.body().string();
                     L.i("返回" + AppInterface.LOGIN + ":" + json);
                     Gson gson = new Gson();
                     final BaseReturn result = gson.fromJson(json, BaseReturn.class);
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showToast(result.getMsg());
-                            if (result.getResCode().equals(AppSetting.code_success)) {
-                                CustomApplication app = (CustomApplication) getApplication();
-                                app.setLogin(true);
-                                finishActivityAnim();
-                            } else {
+                    showToast(result.getMsg());
+                    if (result.getResCode().equals(AppSetting.code_success)) {
+                        CustomApplication app = (CustomApplication) getApplication();
+                        app.setLogin(true);
+                        finishActivityAnim();
+                    } else {
 
-                            }
-                        }
-                    });
+                    }
 
 
                 } catch (Exception e) {
                     L.e(e.getMessage());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showToast("接口出错，开发人员正在修复中。");
-                        }
-                    });
-                } finally {
-
+                    showToast("接口出错，开发人员正在修复中。");
                 }
             }
 
             @Override
-            public void onPostFailListener(Call call, IOException e) {
+            public void onPostFailListener(IOException e) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

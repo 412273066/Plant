@@ -24,9 +24,6 @@ import com.srx.widget.PullToLoadView;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import okhttp3.Call;
-import okhttp3.Response;
-
 
 public class ListPlantActivity extends BaseFragmentActivity {
 
@@ -189,61 +186,47 @@ public class ListPlantActivity extends BaseFragmentActivity {
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
-            public void onPostSuccessListener(Call call, Response response) {
+            public void onPostSuccessListener(String json) {
                 try {
-                    String json = response.body().string();
                     L.i("返回" + AppInterface.GETPLANTLIST + ":" + json);
                     Gson gson = new Gson();
                     final GetPlantListReturn result = gson.fromJson(json, GetPlantListReturn.class);
 
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ArrayList<Plant> newData = (ArrayList<Plant>) result.getList();
-                            if (newData == null || newData.size() == 0) {
-                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                isHasLoadedAll = true;
-                            } else {
+                    ArrayList<Plant> newData = (ArrayList<Plant>) result.getList();
+                    if (newData == null || newData.size() == 0) {
+                        Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
+                        isHasLoadedAll = true;
+                    } else {
 
-                                if (isRefreshing) {
-                                    L.i("刷新时清空adapter!");
-                                    mAdapter.removeAllData();
-                                    isRefreshing = false;
-                                }
-
-                                mAdapter.addDatas(newData);
-                                page++;
-                                L.i("page++");
-
-                            }
-                            if (newData.size() < size) {
-                                isHasLoadedAll = true;
-                            }
-                            isLoading = false;
-                            mPullToLoadView.setComplete();
+                        if (isRefreshing) {
+                            L.i("刷新时清空adapter!");
+                            mAdapter.removeAllData();
+                            isRefreshing = false;
                         }
-                    });
 
+                        mAdapter.addDatas(newData);
+                        page++;
+                        L.i("page++");
+
+                    }
+                    if (newData.size() < size) {
+                        isHasLoadedAll = true;
+                    }
+                    isLoading = false;
+                    mPullToLoadView.setComplete();
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
-                            isLoading = false;
-                            isRefreshing = false;
-                            mPullToLoadView.setComplete();
-                        }
-                    });
-                } finally {
-
+                    Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+                    isLoading = false;
+                    isRefreshing = false;
+                    mPullToLoadView.setComplete();
                 }
             }
 
             @Override
-            public void onPostFailListener(Call call, IOException e) {
+            public void onPostFailListener(IOException e) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

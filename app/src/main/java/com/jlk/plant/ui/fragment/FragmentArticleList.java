@@ -23,9 +23,6 @@ import com.srx.widget.PullToLoadView;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import okhttp3.Call;
-import okhttp3.Response;
-
 
 /**
  * 健康管理fragment
@@ -92,69 +89,53 @@ public class FragmentArticleList extends BaseFragment {
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
-            public void onPostSuccessListener(Call call, Response response) {
+            public void onPostSuccessListener(String json) {
                 try {
-                    String json = response.body().string();
                     L.i("返回" + AppInterface.GETARTICLTLIST + ":" + json);
                     Gson gson = new Gson();
                     final GetArticleListReturn result = gson.fromJson(json, GetArticleListReturn.class);
 
 
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ArrayList<Article> newData = (ArrayList<Article>) result.getList();
-                            if (newData == null || newData.size() == 0) {
-                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                isHasLoadedAll = true;
-                            } else {
+                    ArrayList<Article> newData = (ArrayList<Article>) result.getList();
+                    if (newData == null || newData.size() == 0) {
+                        Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
+                        isHasLoadedAll = true;
+                    } else {
 
-                                if (isRefreshing) {
-                                    L.i("刷新时清空adapter!");
-                                    mAdapter.removeAllData();
-                                    isRefreshing = false;
-                                }
-
-                                mAdapter.addDatas(newData);
-                                page++;
-                                L.i("page-----" + page);
-
-                            }
-                            if (newData.size() < size) {
-                                isHasLoadedAll = true;
-                            }
-                            isLoading = false;
-                            mPullToLoadView.setComplete();
+                        if (isRefreshing) {
+                            L.i("刷新时清空adapter!");
+                            mAdapter.removeAllData();
+                            isRefreshing = false;
                         }
-                    });
+
+                        mAdapter.addDatas(newData);
+                        page++;
+                        L.i("page-----" + page);
+
+                    }
+                    if (newData.size() < size) {
+                        isHasLoadedAll = true;
+                    }
+                    isLoading = false;
+                    mPullToLoadView.setComplete();
 
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
-                            isLoading = false;
-                            isRefreshing = false;
-                            mPullToLoadView.setComplete();
-                        }
-                    });
+                    Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
+                    isLoading = false;
+                    isRefreshing = false;
+                    mPullToLoadView.setComplete();
                 } finally {
 
                 }
             }
 
             @Override
-            public void onPostFailListener(Call call, IOException e) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        isLoading = false;
-                        isRefreshing = false;
-                        mPullToLoadView.setComplete();
-                    }
-                });
+            public void onPostFailListener(IOException e) {
+                isLoading = false;
+                isRefreshing = false;
+                mPullToLoadView.setComplete();
             }
 
             @Override

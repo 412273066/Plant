@@ -24,9 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Response;
-
 
 public class IdentifyActivity extends BaseFragmentActivity {
 
@@ -96,9 +93,8 @@ public class IdentifyActivity extends BaseFragmentActivity {
 
                         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
                             @Override
-                            public void onPostSuccessListener(Call call, Response response) {
+                            public void onPostSuccessListener(String result) {
                                 try {
-                                    String result = response.body().string();
 
                                     String data = RegexUtil.getString(result, "data-word-index=\"0\" target=\"_blank\">[\\u4e00-\\u9fa5]{1,}</a>");
 
@@ -118,7 +114,7 @@ public class IdentifyActivity extends BaseFragmentActivity {
                                             text_result.setText("最佳猜测:" + finalData);
                                         }
                                     });
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 } finally {
                                     if (loadingDialog != null) {
@@ -130,7 +126,7 @@ public class IdentifyActivity extends BaseFragmentActivity {
                             }
 
                             @Override
-                            public void onPostFailListener(Call call, IOException e) {
+                            public void onPostFailListener(IOException e) {
                                 if (loadingDialog != null) {
                                     loadingDialog.dismiss();
                                 }

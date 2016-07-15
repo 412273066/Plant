@@ -24,9 +24,6 @@ import com.jlk.plant.utils.StringUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import okhttp3.Call;
-import okhttp3.Response;
-
 
 public class SearchActivity extends BaseFragmentActivity {
 
@@ -110,43 +107,30 @@ public class SearchActivity extends BaseFragmentActivity {
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
-            public void onPostSuccessListener(Call call, Response response) {
+            public void onPostSuccessListener(String json) {
                 try {
-                    String json = response.body().string();
                     L.i("返回" + AppInterface.GETPLANTLIST + ":" + json);
                     Gson gson = new Gson();
                     final GetPlantListReturn result = gson.fromJson(json, GetPlantListReturn.class);
 
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ArrayList<Plant> newData = (ArrayList<Plant>) result.getList();
-                            if (newData == null || newData.size() == 0) {
-                                showToast(result.getMsg());
-                                mAdapter.removeAllData();
-                            } else {
-                                mAdapter.resetData(newData);
-                            }
-                        }
-                    });
+                    ArrayList<Plant> newData = (ArrayList<Plant>) result.getList();
+                    if (newData == null || newData.size() == 0) {
+                        showToast(result.getMsg());
+                        mAdapter.removeAllData();
+                    } else {
+                        mAdapter.resetData(newData);
+                    }
 
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } finally {
-
+                    Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onPostFailListener(Call call, IOException e) {
+            public void onPostFailListener(IOException e) {
 
             }
 

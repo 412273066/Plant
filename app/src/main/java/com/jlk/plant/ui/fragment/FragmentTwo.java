@@ -1,6 +1,5 @@
 package com.jlk.plant.ui.fragment;
 
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
@@ -19,9 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Response;
-
 
 /**
  * 健康管理fragment
@@ -33,13 +29,10 @@ public class FragmentTwo extends BaseFragment {
     List<ArticleType> list;
     private ViewPager mViewPager;
     private TabPageIndicator indicator;
-    private Handler mHandler;
     private ArticleTypeAdapter adapter;
 
     @Override
     public void initData() {
-        mHandler = new Handler();
-
         list = new ArrayList<ArticleType>();
         //indicator先绑定viewpager，再更新
         adapter = new ArticleTypeAdapter(getActivity().getSupportFragmentManager(), list);
@@ -73,47 +66,34 @@ public class FragmentTwo extends BaseFragment {
 
         client.setOnHttpPostListener(new OkHttpUtils.OnHttpPostListener() {
             @Override
-            public void onPostSuccessListener(Call call, Response response) {
+            public void onPostSuccessListener(String json) {
                 try {
-                    String json = response.body().string();
                     L.i("返回" + AppInterface.GETARTICLTTYPELIST + ":" + json);
                     Gson gson = new Gson();
                     final GetArticleTypeListReturn result = gson.fromJson(json, GetArticleTypeListReturn.class);
 
                     list.addAll((ArrayList<ArticleType>) result.getList());
 
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
 
-                            if (list == null || list.size() == 0) {
-                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
+                    if (list == null || list.size() == 0) {
+                        Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
 
-                                return;
-                            }
-                            //两个都要notify，缺一不可，一个更新标签tab，一个更新fragment
-                            adapter.notifyDataSetChanged();
-                            indicator.notifyDataSetChanged();
+                        return;
+                    }
+                    //两个都要notify，缺一不可，一个更新标签tab，一个更新fragment
+                    adapter.notifyDataSetChanged();
+                    indicator.notifyDataSetChanged();
 
-                        }
-                    });
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } finally {
-
+                    Toast.makeText(mContext, "接口出错，开发人员正在修复中。", Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
-            public void onPostFailListener(Call call, IOException e) {
+            public void onPostFailListener(IOException e) {
                 e.printStackTrace();
             }
 
