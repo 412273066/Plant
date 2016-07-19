@@ -99,6 +99,7 @@
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.2.1" level="project" />
+    <orderEntry type="library" exported="" name="wire-runtime-2.1.2" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="pullloadview-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="materialloadingprogressbar-0.5.8-RELEASE" level="project" />
@@ -109,5 +110,6 @@
     <orderEntry type="library" exported="" name="cardview-v7-21.0.2" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="okhttp-3.1.2" level="project" />
+    <orderEntry type="module" module-name="PushSDK" exported="" />
   </component>
 </module>

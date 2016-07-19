@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.jlk.plant.R;
 import com.jlk.plant.utils.L;
 import com.jlk.plant.utils.StringUtils;
+import com.umeng.message.PushAgent;
 
 public abstract class BaseFragmentActivity extends FragmentActivity {
     private final String TAG = "BaseFragmentActivity";
@@ -42,7 +43,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
             TextView title = (TextView) findViewById(R.id.title);
             title.setText(getTitleName());
         }
-
+        PushAgent.getInstance(mContext).onAppStart();
         initViews();
         initListeners();
         initData();

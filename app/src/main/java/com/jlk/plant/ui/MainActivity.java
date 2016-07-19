@@ -13,6 +13,9 @@ import com.jlk.plant.base.BaseFragmentActivity;
 import com.jlk.plant.ui.fragment.FragmentOne;
 import com.jlk.plant.ui.fragment.FragmentThree;
 import com.jlk.plant.ui.fragment.FragmentTwo;
+import com.jlk.plant.utils.L;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UmengRegistrar;
 
 
 public class MainActivity extends BaseFragmentActivity {
@@ -39,6 +42,15 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     public void initViews() {
 
+        PushAgent mPushAgent = PushAgent.getInstance(mContext);
+        mPushAgent.enable();
+        String device_token = UmengRegistrar.getRegistrationId(mContext);
+
+        if (mPushAgent.isEnabled()) {
+            L.d("----Enabled-------" + device_token);
+        } else {
+            L.d("----disabled-------");
+        }
 
         if (mTabContentFrameLayout == null)
             mTabContentFrameLayout = (FrameLayout) findViewById(R.id.tab_content);
